@@ -37,7 +37,7 @@ cmd({
       *│  ◦*📅 *Created At*: ${new Date(user.created_at).toDateString()}
       *│  ◦*Following: ${user.following}
       
-      *Made with ❤️ by Silent-Sobx-MD*
+      *Made with ❤️ by Demon_V1*
     `;
 
     await message.sendMessage(userId, {
