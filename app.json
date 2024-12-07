@@ -8,7 +8,7 @@
   "env": {
     "SESSION_ID": {
       "description": "Put the session-id below.",
-      "value": "ggg"
+      "value": "SNlAyT7J#b7padX3C5A3mdcSZFlwdsW7trcRDFTV9qLl52c1dEJA"
       "required": true
       },
     "MODE": {
