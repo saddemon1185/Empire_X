@@ -17,6 +17,7 @@ const util = require('util')
 const { sms,downloadMediaMessage } = require('./lib/msg')
 const axios = require('axios')
 const { File } = require('megajs')
+const googleTTS = require("google-tts-api")
 const prefix = config.PREFIX
 
 const ownerNumber = ['2348078582627']
