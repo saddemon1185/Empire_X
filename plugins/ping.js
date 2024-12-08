@@ -13,27 +13,26 @@ cmd({
     try {
         const initialTime = new Date().getTime();
         const sentMessage = await conn.sendMessage(from, { text: '```Pinging from server...```' }, { quoted: mek });
-        const { key } = sentMessage;
 
-        // Loading bar steps
+        // Update the message with a loading bar
         const loadingSteps = [20, 40, 60, 80, 100];
         for (const step of loadingSteps) {
             const bar = '█'.repeat(step / 5) + '░'.repeat(20 - step / 5);
+            await new Promise(resolve => setTimeout(resolve, 500)); // Simulate loading delay
             await conn.sendMessage(from, { 
                 text: `*Pong*\nLoading: [${bar}] ${step}%` 
-            }, { edit: key }); // Use "edit" to update the message instead of sending new ones
-            await new Promise(resolve => setTimeout(resolve, 1000)); // Pause between steps
+            }, { quoted: mek, edit: sentMessage.key }); // Edit the message with the loading bar
         }
 
-        // Calculate ping value and send the final message
+        // Calculate ping and send the final message
         const pingValue = new Date().getTime() - initialTime;
         await conn.sendMessage(from, { 
             text: `*Pong: ${pingValue} ms*` 
-        }, { edit: key });
+        }, { quoted: mek, edit: sentMessage.key });
 
     } catch (error) {
         console.error("Error in ping command:", error);
-        await reply("An error occurred while checking the ping.");
+        await reply("❌ An error occurred while checking the ping.");
     }
 });
 
@@ -46,8 +45,6 @@ cmd({
     filename: __filename,
 }, async (conn, mek, m, { from, reply }) => {
     try {
-        const config = await readEnv(); // Fetch configuration from your database or environment
-
         // Construct system status message
         const status = `*Empire_V1 UPTIME↷*\n\n` +
                        `*_UPTIME:➠_* ${runtime(process.uptime())}\n` +
@@ -58,12 +55,12 @@ cmd({
 
         // Send system status message with an image (if configured)
         await conn.sendMessage(from, {
-            image: { url: config.ALIVE_IMG }, // Ensure this URL is valid
+            image: { url: config.ALIVE_IMG || 'https://via.placeholder.com/512' }, // Default image fallback
             caption: status
         }, { quoted: mek });
 
     } catch (error) {
-        console.error(error);
-        reply("❌ An error occurred while fetching the system status.");
+        console.error("Error in system status command:", error);
+        await reply("❌ An error occurred while fetching the system status.");
     }
 });
