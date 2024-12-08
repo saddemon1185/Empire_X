@@ -71,12 +71,14 @@ console.log('Plugins installed successful ✅')
 console.log('Bot connected to whatsapp ✅')
 
 let up = `*╭──────────────●●►*
-> *Demon_V1 Cᴏɴɴᴇᴄᴛᴇᴅ sᴜᴄᴄᴇssғᴜʟʏ ᴛʏᴘᴇ .ᴍᴇɴᴜ*
-
-*YOUR BOT ACTIVE NOW ENJOY♥️🪄*\n\n*PREFIX: ${prefix}*
-
+> *Demon_V1 Cᴏɴɴᴇᴄᴛᴇᴅ sᴜᴄᴄᴇssғᴜʟʟʏ ᴛʏᴘᴇ .ᴍᴇɴᴜ*
+*\n\n*PREFIX: ${prefix}*
 *╰──────────────●●►*`;
-conn.sendMessage(ownerNumber + "@s.whatsapp.net", { image: { url: `https://telegra.ph/file/900435c6d3157c98c3c88.jpg` }, caption: up })
+
+conn.sendMessage(`${ownerNumber}@s.whatsapp.net`, { 
+    image: { url: 'https://telegra.ph/file/900435c6d3157c98c3c88.jpg' }, 
+    caption: up 
+});
 
 }
 })
@@ -199,7 +201,7 @@ command.function(conn, mek, m,{from, l, quoted, body, isCmd, command, args, q, i
 })
 }
 app.get("/", (req, res) => {
-res.send("HEY, SILENT-SOBX-MD STARTED ✅");
+res.send("HEY, Demon_V1 STARTED ✅");
 });
 app.listen(port, () => console.log(`Server listening on port http://localhost:${port}`));
 setTimeout(() => {
