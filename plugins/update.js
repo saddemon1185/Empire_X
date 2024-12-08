@@ -1,38 +1,36 @@
-const config = require('../config');
-let fs = require('fs');
+const fs = require('fs');
 const { exec } = require('child_process');
 const { cmd } = require('../command');
 
 cmd({
-    pattern: "update",
+    pattern: "updatebot",
     react: "🔄",
     desc: "Update folder from GitHub",
-    category: "system",
+    category: "main",
     use: '.update',
     filename: __filename
 }, async (conn, mek, m, { from, reply }) => {
     try {
         const repoUrl = 'https://github.com/efeurhobo/Demon_V1.git'; // GitHub repository link
         const targetFolder = 'plugins'; // Folder to be updated
-    
+
         // Check if the target folder exists
         if (!fs.existsSync(targetFolder)) {
-            fs.mkdirSync(targetFolder); // Create folder if it doesn't exist
+            fs.mkdirSync(targetFolder, { recursive: true }); // Create folder if it doesn't exist
         }
 
-        // Determine the appropriate git command
+        // Determine the git command
         const gitCommand = fs.existsSync(`${targetFolder}/.git`)
-            ? `git -C ${targetFolder} pull`
-            : `git clone ${repoUrl} ${targetFolder}`;
+            ? `git -C ${targetFolder} pull origin main` // Pull latest changes
+            : `git clone ${repoUrl} ${targetFolder}`; // Clone repository if .git does not exist
 
         // Execute the git command
         await new Promise((resolve, reject) => {
             exec(gitCommand, (err, stdout, stderr) => {
                 if (err) {
-                    reject(`Git command failed: ${stderr}`);
-                } else {
-                    resolve(stdout);
+                    return reject(new Error(`Git command failed: ${stderr || err.message}`));
                 }
+                resolve(stdout.trim());
             });
         });
 
