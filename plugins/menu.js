@@ -4,7 +4,7 @@ const os = require("os");
 const { runtime } = require('../lib/functions');
 const axios = require('axios');
 
-cmd({
+        cmd({
     pattern: "menu",
     desc: "get cmd list",
     react: "⚙️",
@@ -26,13 +26,11 @@ async (conn, mek, m, { from, quoted, pushname, reply }) => {
         // Iterate through commands and categorize them
         for (let i = 0; i < commands.length; i++) {
             if (commands[i].pattern && !commands[i].dontAddCommandList) {
-                menu[commands[i].category] += `⬡│▸  ${commands[i].pattern}\n`;
+                menu[commands[i].category] += `⬡│▸  .${commands[i].pattern}\n`; // Added `.` before pattern
             }
         }
 
-        // Create the dynamic menu with system and creator info
-        let madeMenu = `
-*╭─────────────────❒⁠⁠⁠⁠*
+        let madeMenu = `*╭─────────────────❒⁠⁠⁠⁠*
 *CREATOR:- 𝐎𝐧𝐥𝐲_𝐨𝐧𝐞_🥇𝐞𝐦𝐩𝐢𝐫𝐞*
 *OWNER:- ${config.OWNER_NAME}*
 *VERSION:- v1.0.0*
