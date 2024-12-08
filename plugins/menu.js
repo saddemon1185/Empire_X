@@ -25,11 +25,10 @@ async (conn, mek, m, { from, quoted, pushname, reply }) => {
 
         // Iterate through commands and categorize them
         for (let i = 0; i < commands.length; i++) {
-            const cmd = commands[i];
-            if (cmd.pattern && !cmd.dontAddCommandList && menu[cmd.category] !== undefined) {
-                menu[cmd.category] += `${cmd.pattern}\n`;
-            }
-        }
+if (commands[i].pattern && !commands[i].dontAddCommandList) {
+menu[commands[i].category] += `.${commands[i].pattern}\n`;
+ }
+}
 
         let madeMenu = `*╭─────────────────❒⁠⁠⁠⁠*
         *CREATOR:- 𝐎𝐧𝐥𝐲_𝐨𝐧𝐞_🥇𝐞𝐦𝐩𝐢𝐫𝐞*
