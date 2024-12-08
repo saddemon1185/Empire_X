@@ -1,59 +1,69 @@
 const config = require('../config');
-const fs = require('fs');
-const os = require('os');
 const { cmd, commands } = require('../command');
-const { getBuffer, getGroupAdmins, getRandom, h2k, isUrl, Json, runtime, sleep, fetchJson } = require('../lib/functions');
+const os = require("os");
+const { runtime } = require('../lib/functions');
 
-// Command to check the bot's speed
+// PING COMMAND
 cmd({
-    pattern: 'speed',
-    react: '🤖',
-    alias: ['speed'],
-    desc: 'Check bot\'s ping',
-    category: 'main',
-    use: '.speed',
-    filename: __filename
-}, async (client, message, args, { from, reply, quoted }) => {
+    pattern: "ping",
+    desc: "To check ping",
+    category: "main",
+    filename: __filename,
+}, async (conn, mek, m, { from, reply }) => {
     try {
-        const start = new Date().getTime();
-        let sentMessage = await client.sendMessage(from, { text: '🪄 Pinging...' }, { quoted });
-        const end = new Date().getTime();
+        const initialTime = new Date().getTime();
+        const sentMessage = await conn.sendMessage(from, { text: '```Pinging from server...```' }, { quoted: mek });
+        const { key } = sentMessage;
 
-        // Calculate the ping time
-        const ping = end - start;
+        // Loading bar steps
+        const loadingSteps = [20, 40, 60, 80, 100];
+        for (const step of loadingSteps) {
+            const bar = '█'.repeat(step / 5) + '░'.repeat(20 - step / 5);
+            await conn.sendMessage(from, { 
+                text: `*Pong*\nLoading: [${bar}] ${step}%` 
+            }, { edit: key }); // Use "edit" to update the message instead of sending new ones
+            await new Promise(resolve => setTimeout(resolve, 1000)); // Pause between steps
+        }
 
-        // Delete the temporary "pinging" message and send the ping result
-        await client.sendMessage(from, { delete: sentMessage.key.id });
-        await client.sendMessage(from, { text: `♻️ Speed...: ${ping}ms` }, { quoted });
+        // Calculate ping value and send the final message
+        const pingValue = new Date().getTime() - initialTime;
+        await conn.sendMessage(from, { 
+            text: `*Pong: ${pingValue} ms*` 
+        }, { edit: key });
+
     } catch (error) {
-        console.log(error);
-        reply('*Error !!*');
+        console.error("Error in ping command:", error);
+        await reply("An error occurred while checking the ping.");
     }
 });
 
-// Command to ping the bot and check response time
+// SYSTEM STATUS COMMAND
 cmd({
-    pattern: 'ping',
-    react: '♻️',
-    alias: ['ping'],
-    desc: 'Check bot\'s ping',
-    category: 'main',
-    use: '.ping',
-    filename: __filename
-}, async (client, message, args, { from, reply, quoted }) => {
+    pattern: "system",
+    alias: ["status", "uptime"],
+    desc: "Check uptime, RAM usage, and more.",
+    category: "main",
+    filename: __filename,
+}, async (conn, mek, m, { from, reply }) => {
     try {
-        const start = new Date().getTime();
-        let sentMessage = await client.sendMessage(from, { text: '*🪄Pinging...*' }, { quoted });
-        const end = new Date().getTime();
+        const config = await readEnv(); // Fetch configuration from your database or environment
 
-        // Calculate the ping time
-        const ping = end - start;
+        // Construct system status message
+        const status = `*Empire_V1 UPTIME↷*\n\n` +
+                       `*_UPTIME:➠_* ${runtime(process.uptime())}\n` +
+                       `*_RAM USAGE:➠_* ${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)}MB / ` +
+                       `${(os.totalmem() / 1024 / 1024).toFixed(2)}MB\n` +
+                       `*_HOSTNAME:➠_* ${os.hostname()}\n` +
+                       `*_OWNER:➠_* *${config.OWNER_NAME || 'Unknown Owner'}*`;
 
-        // Delete the temporary "pinging" message and send the ping result
-        await client.sendMessage(from, { delete: sentMessage.key.id });
-        await client.sendMessage(from, { text: `*_♻️ Speed...: ${ping}ms_*` }, { quoted });
+        // Send system status message with an image (if configured)
+        await conn.sendMessage(from, {
+            image: { url: config.ALIVE_IMG }, // Ensure this URL is valid
+            caption: status
+        }, { quoted: mek });
+
     } catch (error) {
-        console.log(error);
-        reply('' + error);
+        console.error(error);
+        reply("❌ An error occurred while fetching the system status.");
     }
 });
