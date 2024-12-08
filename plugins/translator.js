@@ -8,7 +8,7 @@ cmd({
   alias: ["translate"],
   desc: "🌍 Translate text between languages",
   react: "⚡",
-  category: "other",
+  category: "main",
   filename: __filename,
 }, async (_context, _replyContext, args, { from, q, reply }) => {
   try {
