@@ -2,20 +2,18 @@ const axios = require('axios');
 const { cmd } = require('../command');
 
 cmd({
-  pattern: 'repo',
-  desc: 'Fetch information about a GitHub repository.',
-  category: 'other',
-  react: '🍃',
+  pattern: "repo",
+  desc: "Fetch information about a GitHub repository",
+  category: "main",
+  react: "😊",
   filename: __filename,
-}, async (bot, message, args, extra) => {
-  const { reply, from } = extra;
-
+}, async (conn, mek, m, { from, reply, args, bot }) => {
   try {
-    // Default repository
+    // Default repository (your repository)
     const defaultRepo = 'efeurhobo/Demon_V1';
 
     // Use the provided repo or fallback to the default repo
-    const repo = args[0] || defaultRepo;
+    const repo = args && args[0] ? args[0] : defaultRepo;
 
     // GitHub API URL
     const apiUrl = `https://api.github.com/repos/${repo}`;
@@ -31,9 +29,10 @@ cmd({
 🔗 *URL:* ${data.html_url}
     `.trim();
 
-    await bot.sendMessage(from, { text: info }, { quoted: message });
+    // Send the response message
+    await bot.sendMessage(from, { text: info }, { quoted: mek });
   } catch (error) {
     console.error(error);
-    reply(`Error fetching repository data: ${error.message}`);
+    reply(`Error fetching repository data: ${error.response?.data?.message || error.message}`);
   }
 });
