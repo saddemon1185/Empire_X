@@ -1,15 +1,17 @@
-const config = require('../config');
-const { cmd, commands } = require('../command');
-const os = require('os');
-const fs = require('fs');
+const config = require('../config')
+const {cmd , commands} = require('../command')
+const os = require("os")
+const {runtime} = require('../lib/functions')
+const axios = require('axios')
 
 cmd({
     pattern: "menu",
     desc: "get cmd list",
+    react: "⚙️",
     category: "main",
     filename: __filename
 },
-async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
+async (conn, mek, m, { from, quoted, pushname, reply }) => {
     try {
         // Initialize menu categories
         let menu = {
@@ -21,34 +23,77 @@ async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sen
             search: ''
         };
 
-        let madeMenu = `
-Owner: ${pushname}
+        // Iterate through commands and categorize them
+        for (let i = 0; i < commands.length; i++) {
+            const cmd = commands[i];
+            if (cmd.pattern && !cmd.dontAddCommandList && menu[cmd.category] !== undefined) {
+                menu[cmd.category] += `${cmd.pattern}\n`;
+            }
+        }
 
->DOWNLOAD COMMANDS:
+        let madeMenu = `*╭─────────────────❒⁠⁠⁠⁠*
+        *CREATOR:- 𝐎𝐧𝐥𝐲_𝐨𝐧𝐞_🥇𝐞𝐦𝐩𝐢𝐫𝐞*
+        *OWNER:- ${config.OWNER_NAME}*
+        *VERSION:- v1.0.0*
+        *UPTIME:- ${runtime(process.uptime())}*
+        *MEM:- ${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)}MB / ${Math.round(require('os').totalmem / 1024 / 1024)}MB*
+*┕─────────────────❒*
+*╭───────────────❒⁠⁠⁠⁠*
+*│* *❂ᴅᴏᴡɴʟᴏᴀᴅ ᴄᴏᴍᴍᴀɴᴅs❂*
+*┕───────────────❒*
+*╭──────────●●►*
 ${menu.download}
+*╰──────────●●►*
 
->MAIN COMMANDS:
+*╭───────────────❒⁠⁠⁠⁠*
+*│* *❂ᴍᴀɪɴ ᴄᴏᴍᴍᴀɴᴅs❂*
+*┕───────────────❒*
+*╭──────────●●►*
 ${menu.main}
+*╰──────────●●►*
 
->GROUP COMMANDS:
+*╭───────────────❒⁠⁠⁠⁠*
+*│* *❂ɢʀᴏᴜᴘ ᴄᴏᴍᴍᴀɴᴅs❂*
+*┕───────────────❒*
+
+*╭──────────●●►*
 ${menu.group}
+*╰──────────●●►*
 
->OWNER COMMANDS:
+*╭───────────────❒⁠⁠⁠⁠*
+*│* *❂ᴏᴡɴᴇʀ ᴄᴏᴍᴍᴀɴᴅs❂*
+*┕───────────────❒*
+
+*╭──────────●●►*
 ${menu.owner}
+*╰──────────●●►*
 
->CONVERT COMMANDS:
+*╭───────────────❒⁠⁠⁠⁠*
+*│* *❂ᴄᴏɴᴠᴇʀᴛ ᴄᴏᴍᴍᴀɴᴅs❂*
+*┕───────────────❒*
+
+*╭──────────●●►*
 ${menu.convert}
+*╰──────────●●►*
 
->SEARCH COMMANDS:
+*╭─────────────────❒⁠⁠⁠⁠*
+*│* *❂sᴇᴀʀᴄʜ ᴄᴏᴍᴍᴀɴᴅs❂*
+*┕─────────────────❒*
+
+*╭──────────●●►*
 ${menu.search}
+*╰──────────●●►*
 
-Powered By Only_one_🥇empire
+*❒⁠⁠⁠⁠▭▬▭▬▭▬▭▬▭▬▭▬▭▬▭❒*⁠⁠⁠⁠
+
+> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ Only_one_🥇Empire*
 `;
 
         // Send the dynamic menu to the user
-        await conn.sendMessage(from, { text: madeMenu }, { quoted: mek });
-    } catch (e) {
-        console.log(e);
-        reply(`${e}`);
-    }
+await conn.sendMessage(from,{image:{url:config.ALIVE_IMG},caption:madeMenu},{quoted:mek})
+
+}catch(e){
+console.log(e)
+reply(`${e}`)
+}
 })
