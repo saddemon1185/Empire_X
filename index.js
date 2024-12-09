@@ -73,7 +73,7 @@ require("./plugins/" + plugin);
 console.log('Plugins installed successful ✅')
 console.log('Bot connected to whatsapp ✅')
 
-        let up = `*╭──〈 **Empire_V1 Connected** 〉────
+        let up = `*╭──〈 **Empire_X Connected** 〉────
 │▸ **Prefix**: [ ${prefix} ]
 │▸ **Mode**: ${mode}
 ╰────────────────*`;
