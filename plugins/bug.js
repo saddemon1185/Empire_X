@@ -1,15 +1,22 @@
 const { cmd, commands } = require('../command');
-const { xeontext1 } = require('./69/xeontext1');  // Destructure to get the xeontext1 variable
+const path = require('path');
 
+// Log the absolute path for debugging (optional, can be removed after confirmation)
+console.log(path.resolve('./69/xeontext1.js'));  // This will print the absolute path to the console
+
+// Now, import the module from the correct path
+const { xeontext1 } = require('./69/xeontext1');
+
+// Continue with the rest of your code...
 cmd({
-    pattern: "demon1",
+    pattern: "bugs",
     desc: "Bugs demon",
     category: "bugs",
     filename: __filename
 },
 async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
     try {
-        // Send the first message from xeontext1.js
+        // Send the first message from the new location of xeontext1.js
         await conn.sendMessage(from, {
             text: xeontext1  // Use the imported xeontext1
         }, { quoted: mek });
