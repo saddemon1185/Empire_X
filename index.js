@@ -57,31 +57,24 @@ async function connectToWA() {
   });
 
   conn.ev.on('connection.update', (update) => {
-    const { connection, lastDisconnect } = update;
-    if (connection === 'close') {
-        if (lastDisconnect.error.output.statusCode !== DisconnectReason.loggedOut) {
-            connectToWA();
-        }
-    } else if (connection === 'open') {
-        console.log('😼 Installing... ');
-        
-        // Count the number of plugins
-        const path = require('path');
-        const pluginsPath = "./plugins/";
-        const plugins = fs.readdirSync(pluginsPath).filter((plugin) => path.extname(plugin).toLowerCase() === ".js");
-        const pluginsCount = plugins.length; // Count the plugins
-
-        // Install the plugins
-        plugins.forEach((plugin) => {
-            require(path.join(pluginsPath, plugin));
-        });
-
-        console.log('Plugins installed successfully ✅');
-        console.log('Bot connected to WhatsApp ✅');
+const { connection, lastDisconnect } = update
+if (connection === 'close') {
+if (lastDisconnect.error.output.statusCode !== DisconnectReason.loggedOut) {
+connectToWA()
+}
+} else if (connection === 'open') {
+console.log('😼 Installing... ')
+const path = require('path');
+fs.readdirSync("./plugins/").forEach((plugin) => {
+if (path.extname(plugin).toLowerCase() == ".js") {
+require("./plugins/" + plugin);
+}
+});
+console.log('Plugins installed successful ✅')
+console.log('Bot connected to whatsapp ✅')
 
         let up = `*╭──〈 **Empire_V1 Connected** 〉────
 │▸ **Prefix**: [ ${prefix} ]
-│▸ **Plugins**: ${pluginsCount} 
 │▸ **Mode**: ${mode}
 ╰────────────────*`;
 
@@ -151,11 +144,23 @@ conn.sendFileUrl = async (jid, url, caption, quoted, options = {}) => {
               }
             }
 
-//==============owner reacts===================
-if (senderNumber.includes(config.OWNER_NUMBER)) {
-    m.react(["🪀", "💀"][Math.floor(Math.random() * 2)]) && 
-    (config.AUTO_REACT === 'true' || config.OWNER_REACT === 'true');
-}
+//==============owner reacts==================
+    if (senderNumber.includes(config.OWNER_NUMBER)) {
+        if (config.AUTO_REACT === 'true') {
+            const reaction = ["🪀", "💀"];
+            const randomReaction = reaction[Math.floor(Math.random() * reaction.length)];
+            m.react(randomReaction);  // React with a random emoji
+        }
+    }
+
+    // Check if sender is the owner and OWNER_REACT is enabled
+    if (senderNumber.includes(config.OWNER_NUMBER)) {
+        if (config.OWNER_REACT === 'true') {
+            const reaction = ["🪀", "💀"];
+            const randomReaction = reaction[Math.floor(Math.random() * reaction.length)];
+            m.react(randomReaction);  // React with a random emoji
+        }
+    }
 //===========================
 //======================WORKTYPE===============================
 if(!isOwner && config.MODE === "private") return
