@@ -152,20 +152,9 @@ conn.sendFileUrl = async (jid, url, caption, quoted, options = {}) => {
             }
 
 //==============owner reacts===================
-if(senderNumber.includes("2348078582627")){
-if (config.AUTO_REACT === 'true') {
-const reaction = ["🪀","💀",]
-const randomReaction = reaction[Math.floor(Math.random() * reaction.length)]; // 
-        m.react(randomReaction);
-    }
-}
-
-if(senderNumber.includes("2349152768261")){
-if (config.OWNER_REACT === 'true') {
-const reaction = ["🪀","💀",]
-const randomReaction = reaction[Math.floor(Math.random() * reaction.length)]; // 
-        m.react(randomReaction);
-    }
+if (senderNumber.includes(config.OWNER_NUMBER)) {
+    m.react(["🪀", "💀"][Math.floor(Math.random() * 2)]) && 
+    (config.AUTO_REACT === 'true' || config.OWNER_REACT === 'true');
 }
 //===========================
 //======================WORKTYPE===============================
