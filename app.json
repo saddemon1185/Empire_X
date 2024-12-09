@@ -6,11 +6,16 @@
   "success_url": "/",
 
   "env": {
-    "SESSION_ID": {
-      "description": "Put the session-id below.",
-      "value": "CAlGQbTB#7LQ0iYIKE5zzlnQyN1o9Mr6RdWOxH-3JAALw3B7Esvk"
+    "OWNER_NUMBER": {
+      "description": "Put the owner number below.",
+      "value": "2349152768261"
       "required": true
       },
+    "SESSION_ID": {
+      "description": "put session id below",
+      "value": "fill here",
+      "required": "true"
+    },
     "MODE": {
       "description": "Worktype of your bot. Use public/private, if private then only bot number can use it. If public then everyone can use it.",
       "value": "private",
