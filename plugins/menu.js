@@ -46,7 +46,7 @@ async (conn, mek, m, { from, quoted, pushname, reply }) => {
         }
 
         let madeMenu = `
-╭────《 *𝐄𝐦𝐩𝐢𝐫𝐞_𝐕𝟏* 》────⊷
+╭────《 *Empire_X* 》────⊷
 │ ╭──────✧❁✧──────◆
 │ │ Prefix : [ ${config.PREFIX} ]
 │ │ User : ${config.OWNER_NAME}  
