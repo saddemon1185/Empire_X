@@ -98,9 +98,10 @@ cmd({
     filename: __filename
 },
 async (conn, mek, m, { from, isOwner, reply }) => {
+    if (!isOwner) return reply("❌ You are not the owner!");
     try {
-        // Check if the user is the owner
-        if (!isOwner) return reply("❌ You are not the owner!");
+        // Debug the chats object to see what it contains
+        console.log(conn.chats);
 
         // Ensure that chats data exists
         if (!conn.chats || Object.keys(conn.chats).length === 0) {
