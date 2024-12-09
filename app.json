@@ -8,12 +8,12 @@
   "env": {
     "OWNER_NUMBER": {
       "description": "Put the owner number below.",
-      "value": "2349014277524"
+      "value": "2349152768261"
       "required": true
       },
     "SESSION_ID": {
       "description": "put session id below",
-      "value": "zRVADLwY#fzIkdhwwta70Wmmu-oJXxMVOASWt3m10TXZ93VkWaGg",
+      "value": "bc9kCBoA#TCq0Ojm8zKwertl5UgraaDqFinizszSzosbbJwDlryM",
       "required": "true"
     },
     "MODE": {
