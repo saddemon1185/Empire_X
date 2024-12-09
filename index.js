@@ -63,14 +63,31 @@ if (lastDisconnect.error.output.statusCode !== DisconnectReason.loggedOut) {
 connectToWA()
 }
 } else if (connection === 'open') {
-console.log('😼 Installing... ')
-const path = require('path');
-fs.readdirSync("./plugins/").forEach((plugin) => {
-if (path.extname(plugin).toLowerCase() == ".js") {
-require("./plugins/" + plugin);
+ console.log('😼 Installing...');
+
+const pluginsDir = './plugins/';
+if (fs.existsSync(pluginsDir)) {
+    const plugins = fs.readdirSync(pluginsDir);
+    if (plugins.length === 0) {
+        console.log('No plugins found in the directory.');
+    } else {
+        plugins.forEach((plugin) => {
+            console.log(`Checking plugin: ${plugin}`);
+            if (path.extname(plugin).toLowerCase() === ".js") {
+                try {
+                    require(`${pluginsDir}${plugin}`);
+                    console.log(`Plugin ${plugin} loaded successfully.`);
+                } catch (e) {
+                    console.error(`Failed to load plugin ${plugin}:`, e);
+                }
+            }
+        });
+        console.log('Plugins installed successfully ✅');
+    }
+} else {
+    console.error('Plugins directory not found!');
 }
-});
-console.log('Plugins installed successful ✅')
+
 console.log('Bot connected to whatsapp ✅')
 
         let up = `*╭──〈 **Empire_V1 Connected** 〉────
