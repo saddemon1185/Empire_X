@@ -1,72 +1,70 @@
 {
-  "name": "Demon_V1",
+  "name": "Empire_X",
   "description": "Javascript WhatsApp bot made by 𝐎𝐧𝐥𝐲_𝐨𝐧𝐞_🥇𝐞𝐦𝐩𝐢𝐫𝐞",
   "logo": "https://files.catbox.moe/g4qzs7.jpg",
-  "keywords": ["Empire_V1","Bot"],
+  "keywords": ["Empire_V1", "Bot"],
   "success_url": "/",
-
   "env": {
     "OWNER_NUMBER": {
       "description": "Put the owner number below.",
-      "value": "2349152768261"
+      "value": "2349152768261",
       "required": true
-      },
+    },
     "SESSION_ID": {
-      "description": "put session id below",
+      "description": "Put session ID below.",
       "value": "acM23ISK#8IrRef2HWa36mGO3q3Groc4LhEvyrQxIjeyxB7gyjKk",
-      "required": "true"
+      "required": true
     },
     "MODE": {
-      "description": "Worktype of your bot. Use public/private, if private then only bot number can use it. If public then everyone can use it.",
+      "description": "Work type of your bot. Use 'public' or 'private'. If private, only the bot number can use it.",
       "value": "private",
-      "required": "true"
-      },
+      "required": true
+    },
     "OWNER_NAME": {
-      "description": "Owner name",
+      "description": "Owner name.",
       "value": "𝐎𝐧𝐥𝐲_𝐨𝐧𝐞_🥇𝐞𝐦𝐩𝐢𝐫𝐞",
-      "required": "true"
+      "required": true
     },
     "BOT_NAME": {
-      "description": "bot name",
-      "value": "𝐄𝐦𝐩𝐢𝐫𝐞_𝐕𝟏",
-      "required": "true"
+      "description": "Bot name.",
+      "value": "Empire_X",
+      "required": true
     },
     "AUTO_REACT": {
-      "description": "TRUE OR FALSE",
+      "description": "Enable auto-reaction. TRUE or FALSE.",
       "value": "true",
-      "required": "true"
+      "required": true
     },
     "OWNER_REACT": {
-      "description": "true or false",
+      "description": "Enable owner reactions. TRUE or FALSE.",
       "value": "true",
-      "required": "true"
+      "required": true
     },
     "PREFIX": {
-      "description": "Enter your desired prefix for bot. you can set `all | . | .!*`",
+      "description": "Enter your desired prefix for the bot. You can set `all | . | .!*`.",
       "value": ".",
-      "required": "true"
+      "required": true
     },
     "ALIVE_IMG": {
-      "description": "ALIVE IMAGE",
+      "description": "URL for the alive image.",
       "value": "https://files.catbox.moe/g4qzs7.jpg",
-      "required": "true"
+      "required": true
     },
     "ALIVE_MSG": {
-      "description": "ALIVE MESSAGE",
+      "description": "Message displayed when the bot is online.",
       "value": "HI DEAR EMPIRE_V1 IS ONLINE",
-      "required": "true"
+      "required": true
     },
     "AUTO_READ_STATUS": {
-      "description": "TRUE OR FALSE",
+      "description": "Enable auto-read status. TRUE or FALSE.",
       "value": "false",
-      "required": "true"
+      "required": true
     }
-},
-
-     "buildpacks": [
-        {
-            "url": "https://github.com/heroku/heroku-buildpack-nodejs.git"
-        }
-     ],
-  "stack": "heroku-24"
+  },
+  "buildpacks": [
+    {
+      "url": "https://github.com/heroku/heroku-buildpack-nodejs.git"
+    }
+  ],
+  "stack": "heroku-20"
 }
