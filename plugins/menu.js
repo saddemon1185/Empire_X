@@ -21,7 +21,6 @@ cmd({
             convert: "",
             search: "",
             system: "",
-            tools: "",
             user: "",
             whatsapp: "",
             ai: ""  // Ensure 'ai' category exists
@@ -47,8 +46,8 @@ cmd({
 *MEM:* ${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)}MB / ${Math.round(os.totalmem() / 1024 / 1024)}MB
 ╰────────────────
 
-╭──〈 *ᴀɪ* 〉────
-${menu.ai || "No commands in this category."}
+╭──〈 *MAIN* 〉────
+${menu.main || "No commands in this category."}
 ╰──────────────
 
 ╭──〈 *ᴄᴏɴᴠᴇʀᴛᴇʀ* 〉────
@@ -67,8 +66,8 @@ ${menu.group || "No commands in this category."}
 ${menu.system || "No commands in this category."}
 ╰──────────────
 
-╭──〈 *ᴛᴏᴏʟs* 〉────
-${menu.tools || "No commands in this category."}
+╭──〈 *OWNEE* 〉────
+${menu.owner || "No commands in this category."}
 ╰──────────────
 
 ╭──〈 *ᴜsᴇʀ* 〉────
