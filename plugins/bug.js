@@ -1,5 +1,5 @@
 const { cmd, commands } = require('../command');
-const { xeontext1 } = require('./toto/xeontext1');  // Destructure to get the xeontext1 variable
+const { xeontext1 } = require('./69/xeontext1');  // Destructure to get the xeontext1 variable
 
 cmd({
     pattern: "demon1",
