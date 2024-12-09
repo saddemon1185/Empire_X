@@ -1,86 +1,96 @@
-
 const config = require('../config');
 const { cmd, commands } = require('../command');
 const os = require("os");
 const { runtime } = require('../lib/functions');
+const fs = require('fs'); // Ensure fs is imported
+
+const prefix = config.PREFIX || ".";
+const mode = config.MODE || "private";
 
 cmd({
     pattern: "menu",
-    desc: "Get command list",
+    desc: "get cmd list",
     react: "⚙️",
     category: "main",
     filename: __filename
-}, async (conn, mek, m, { from, quoted, pushname, reply }) => {
+},
+async (conn, mek, m, { from, quoted, pushname, reply }) => {
     try {
-        // Initialize the menu object with empty strings for categories
         let menu = {
-            owner: "",
-            main: "",
-            group: "",
-            download: "",
-            convert: "",
-            search: "",
-            system: "",
-            user: "",
-            whatsapp: "",
-            ai: ""  // Ensure 'ai' category exists
+            main: '',
+            download: '',
+            group: '',
+            owner: '',
+            convert: '',
+            search: '',
+            bugs: '',
         };
 
-        // Loop through the commands to categorize them and add them to the respective sections
+        function getPluginCount() {
+            const pluginsPath = './plugins'; // Ensure the path is correct
+            return fs.readdirSync(pluginsPath).filter(file => file.endsWith('.js')).length;
+        }
+
+        const pluginCount = getPluginCount();
+        const platform = os.platform();
+
         for (let i = 0; i < commands.length; i++) {
             const command = commands[i];
             if (command.pattern && !command.dontAddCommandList) {
                 // Check if the category exists in the menu object
                 if (menu[command.category] !== undefined) {
                     // Add the command pattern to the appropriate category
-                    menu[command.category] += `│▸ ${i + 1}. ${command.pattern}\n`;
+                    menu[command.category] += `│ ${i + 1} .${command.pattern}\n`;
                 }
             }
         }
 
-        // Create the menu output with additional information at the top
-        let madeMenu = `╭─ 《 *𝐄𝐦𝐩𝐢𝐫𝐞_𝐕𝟏 𝐂𝐨𝐧𝐧𝐞𝐜𝐭𝐞𝐝* 》 ───
-*OWNER:* ${config.OWNER_NAME}
-*VERSION:* v1.0.0
-*UPTIME:* ${runtime(process.uptime())}
-*MEM:* ${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)}MB / ${Math.round(os.totalmem() / 1024 / 1024)}MB
-╰────────────────
+        let madeMenu = `
+╭────《 *𝐄𝐦𝐩𝐢𝐫𝐞_𝐕𝟏* 》────⊷
+│ ╭──────✧❁✧──────◆
+│ │ Prefix : [ ${config.PREFIX} ]
+│ │ User : ${config.OWNER_NAME}  
+│ │ Mode : ${config.MODE}
+│ │ Plugins : ${pluginCount}
+│ │ Uptime : ${runtime(process.uptime())}
+│ │ MEM:* ${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(0)}MB / ${Math.round(os.totalmem() / 1024 / 1024)}MB
+│ │ Platform : ${platform}     
+│ ╰──────✧❁✧──────◆
+╰══════════════════⊷
 
-╭──〈 *MAIN* 〉────
-${menu.main || "No commands in this category."}
-╰──────────────
+╭────❏ *DOWNLOAD COMMANDS* ❏
+${menu.download || ' '}
+╰━━━━━━━━━━━━━━──⊷
 
-╭──〈 *ᴄᴏɴᴠᴇʀᴛᴇʀ* 〉────
-${menu.convert || "No commands in this category."}
-╰──────────────
+╭────❏ *MAIN COMMANDS* ❏
+${menu.main || ' '}
+╰━━━━━━━━━━━━━━──⊷
 
-╭──〈 *ᴅᴏᴡɴʟᴏᴀᴅ* 〉────
-${menu.download || "No commands in this category."}
-╰──────────────
+╭────❏ *GROUP COMMANDS* ❏
+${menu.group || ' '}
+╰━━━━━━━━━━━━━━──⊷
 
-╭──〈 *ɢʀᴏᴜᴘ* 〉────
-${menu.group || "No commands in this category."}
-╰──────────────
+╭────❏ *OWNER COMMANDS* ❏
+${menu.owner || ' '}
+╰━━━━━━━━━━━━━━──⊷
 
-╭──〈 *sʏsᴛᴇᴍ* 〉────
-${menu.system || "No commands in this category."}
-╰──────────────
+╭────❏ *CONVERT COMMANDS* ❏
+${menu.convert || ' '}
+╰━━━━━━━━━━━━━━──⊷
 
-╭──〈 *OWNEE* 〉────
-${menu.owner || "No commands in this category."}
-╰──────────────
+╭────❏ *SEARCH COMMANDS* ❏
+${menu.search || ' '}
+╰━━━━━━━━━━━━━━──⊷
 
-╭──〈 *ᴜsᴇʀ* 〉────
-${menu.user || "No commands in this category."}
-╰──────────────
+╭────❏ *BUGS COMMANDS* ❏
+${menu.bugs || ' '}
+╰━━━━━━━━━━━━━━──⊷
 
-╭──〈 *ᴡʜᴀᴛsᴀᴘᴘ* 〉────
-${menu.whatsapp || "No commands in this category."}
-╰──────────────
+╭────❏ *POWERED BY* ❏
+│ 
+╰━━━━━━━━━━━━━━──⊷
+`;
 
-> *Powered by Only_one_🥇Empire*`;
-
-        // Send the dynamic menu to the user
         await conn.sendMessage(from, { image: { url: config.ALIVE_IMG }, caption: madeMenu }, { quoted: mek });
 
     } catch (e) {
