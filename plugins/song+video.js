@@ -31,7 +31,7 @@ MADE BY 𝐎𝐧𝐥𝐲_𝐨𝐧𝐞_🥇𝐞𝐦𝐩𝐢𝐫𝐞
 
         // Download and send the audio
         await conn.sendMessage(from, {
-            audio: { url: `https://ironman.koyeb.app/ironman/dl/yta?url=${url}` },
+            audio: { url: `https://api.giftedtech.my.id/api/download/dlmp3?apikey=gifted&url=${url}` },
             mimetype: "audio/mpeg"
         }, { quoted: mek });
 
@@ -70,7 +70,7 @@ MADE BY 𝐎𝐧𝐥𝐲_𝐨𝐧𝐞_🥇𝐞𝐦𝐩𝐢𝐫𝐞
 
         // Download and send the videos 
         await conn.sendMessage(from, {
-            video: { url: `https://ironman.koyeb.app/ironman/dl/yta?url=${url}` },
+            video: { url: `https://api.giftedtech.my.id/api/download/dlmp4?apikey=gifted&url=${url}` },
             mimetype: "video/mp4",
             caption: "MADE BY 𝐎𝐧𝐥𝐲_𝐨𝐧𝐞_🥇𝐞𝐦𝐩𝐢𝐫𝐞",
             fileName: `${data.title}.mp4`
