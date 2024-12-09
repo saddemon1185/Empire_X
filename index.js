@@ -1,37 +1,40 @@
 const {
-default: makeWASocket,
-useMultiFileAuthState,
-DisconnectReason,
-jidNormalizedUser,
-getContentType,
-fetchLatestBaileysVersion,
-Browsers
-} = require('@whiskeysockets/baileys')
+  default: makeWASocket,
+  useMultiFileAuthState,
+  DisconnectReason,
+  jidNormalizedUser,
+  getContentType,
+  fetchLatestBaileysVersion,
+  Browsers
+} = require('@whiskeysockets/baileys');
 
-const { getBuffer, getGroupAdmins, getRandom, h2k, isUrl, Json, runtime, sleep, fetchJson } = require('./lib/functions')
-const fs = require('fs')
-const P = require('pino')
-const config = require('./config')
-const qrcode = require('qrcode-terminal')
-const util = require('util')
-const { sms,downloadMediaMessage } = require('./lib/msg')
-const axios = require('axios')
-const { File } = require('megajs')
-const googleTTS = require("google-tts-api")
-const prefix = config.PREFIX
+const { getBuffer, getGroupAdmins, getRandom, h2k, isUrl, Json, runtime, sleep, fetchJson } = require('./lib/functions');
+const fs = require('fs');
+const P = require('pino');
+const config = require('./config');
+const qrcode = require('qrcode-terminal');
+const util = require('util');
+const { sms, downloadMediaMessage } = require('./lib/msg');
+const axios = require('axios');
+const { File } = require('megajs');
+const googleTTS = require("google-tts-api");
+const prefix = config.PREFIX;
+const mode = config.MODE || "private";
 
-const ownerNumber = ['2348078582627']
+const ownerNumber = ['2349152768261'];
 
 //===================SESSION-AUTH============================
 if (!fs.existsSync(__dirname + '/auth_info_baileys/creds.json')) {
-if(!config.SESSION_ID) return console.log('Please add your session to SESSION_ID env !!')
-const sessdata = config.SESSION_ID
-const filer = File.fromURL(`https://mega.nz/file/${sessdata}`)
-filer.download((err, data) => {
-if(err) throw err
-fs.writeFile(__dirname + '/auth_info_baileys/creds.json', data, () => {
-console.log("Session downloaded ✅")
-})})}
+  if(!config.SESSION_ID) return console.log('Please add your session to SESSION_ID env !!');
+  const sessdata = config.SESSION_ID;
+  const filer = File.fromURL(`https://mega.nz/file/${sessdata}`);
+  filer.download((err, data) => {
+      if(err) throw err;
+      fs.writeFile(__dirname + '/auth_info_baileys/creds.json', data, () => {
+          console.log("Session downloaded ✅");
+      });
+  });
+}
 
 const express = require("express");
 const app = express();
@@ -40,20 +43,20 @@ const port = process.env.PORT || 8000;
 //=============================================
 
 async function connectToWA() {
-console.log("Connecting wa bot 🧬...");
-const { state, saveCreds } = await useMultiFileAuthState(__dirname + '/auth_info_baileys/')
-var { version } = await fetchLatestBaileysVersion()
+  console.log("Connecting wa bot 🧬...");
+  const { state, saveCreds } = await useMultiFileAuthState(__dirname + '/auth_info_baileys/');
+  var { version } = await fetchLatestBaileysVersion();
 
-const conn = makeWASocket({
-        logger: P({ level: 'silent' }),
-        printQRInTerminal: false,
-        browser: Browsers.macOS("Firefox"),
-        syncFullHistory: true,
-        auth: state,
-        version
-        })
-    
-conn.ev.on('connection.update', (update) => {
+  const conn = makeWASocket({
+      logger: P({ level: 'silent' }),
+      printQRInTerminal: false,
+      browser: Browsers.macOS("Firefox"),
+      syncFullHistory: true,
+      auth: state,
+      version
+  });
+
+  conn.ev.on('connection.update', (update) => {
 const { connection, lastDisconnect } = update
 if (connection === 'close') {
 if (lastDisconnect.error.output.statusCode !== DisconnectReason.loggedOut) {
@@ -68,18 +71,19 @@ require("./plugins/" + plugin);
 }
 });
 console.log('Plugins installed successful ✅')
-console.log('Bot connected to whatsapp ✅')
+console.log('Bot connected to whatsapp ✅');
 
-let up = `*╭──────────────●●►*
-> *Demon_V1 Cᴏɴɴᴇᴄᴛᴇᴅ sᴜᴄᴄᴇssғᴜʟʟʏ ᴛʏᴘᴇ .ᴍᴇɴᴜ*
-*\n\n*PREFIX: ${prefix}*
-*╰──────────────●●►*`;
+          let up = `*╭──〈 **Empire_V1 Connected** 〉────
+│▸ **Prefix**: [ ${prefix} ]
+│▸ **Plugins**: ${pluginsCount}
+│▸ **Mode**: ${mode}
+╰────────────────*`;
 
-conn.sendMessage(`${ownerNumber}@s.whatsapp.net`, { 
-    image: { url: 'https://telegra.ph/file/900435c6d3157c98c3c88.jpg' }, 
-    caption: up 
-});
-
+          conn.sendMessage(`${ownerNumber}@s.whatsapp.net`, { 
+              image: { url: 'https://telegra.ph/file/900435c6d3157c98c3c88.jpg' }, 
+              caption: up 
+      });
+        
 }
 })
 conn.ev.on('creds.update', saveCreds)  
@@ -207,4 +211,3 @@ app.listen(port, () => console.log(`Server listening on port http://localhost:${
 setTimeout(() => {
 connectToWA()
 }, 4000);
-        
