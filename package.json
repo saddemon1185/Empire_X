@@ -1,12 +1,12 @@
 {
-  "name": "Demon_V1",
+  "name": "Empire_X",
   "version": "1.0.0",
   "description": "A WhatsApp bot created using Node.js",
   "main": "index.js",
   "scripts": {
-    "start": "pm2 start index.js --deep-monitoring --attach --name Demon_V1",
-    "stop": "pm2 stop Demon_V1",
-    "restart": "pm2 restart Demon_V1"
+    "start": "pm2 start index.js --deep-monitoring --attach --name Empire_X",
+    "stop": "pm2 stop Empire_X",
+    "restart": "pm2 restart Empire_X"
   },
   "dependencies": {
     "@adiwajshing/keyed-db": "^0.2.4",
