@@ -91,6 +91,7 @@ async (conn, mek, m, { from, isOwner, quoted, reply }) => {
 });
 // 6. Clear All Chats
 cmd({
+cmd({
     pattern: "clearchats",
     desc: "Clear all chats from the bot.",
     category: "owner",
@@ -100,9 +101,9 @@ cmd({
 async (conn, mek, m, { from, isOwner, reply }) => {
     if (!isOwner) return reply("❌ You are not the owner!");
     try {
-        const chats = conn.chats.all();
+        const chats = await conn.chats.getAll(); // Adjusted to use Baileys method
         for (const chat of chats) {
-            await conn.modifyChat(chat.jid, 'delete');
+            await conn.chatDelete(chat.jid); // Use correct Baileys method to delete chat
         }
         reply("🧹 All chats cleared successfully!");
     } catch (error) {
