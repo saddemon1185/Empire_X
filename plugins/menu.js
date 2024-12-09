@@ -1,42 +1,46 @@
+
 const config = require('../config');
 const { cmd, commands } = require('../command');
 const os = require("os");
 const { runtime } = require('../lib/functions');
-const axios = require('axios');
 
-        cmd({
+cmd({
     pattern: "menu",
-    desc: "get cmd list",
+    desc: "Get command list",
     react: "⚙️",
     category: "main",
     filename: __filename
-},
-async (conn, mek, m, { from, quoted, pushname, reply }) => {
+}, async (conn, mek, m, { from, quoted, pushname, reply }) => {
     try {
         // Initialize the menu object with empty strings for categories
-let menu = {
-    owner: "",
-    main: "",
-    group: "",
-    download: "",
-    convert: "",
-    search: "",
-    system: "",
-    tools: "",
-    user: "",
-    whatsapp: ""
-};
+        let menu = {
+            owner: "",
+            main: "",
+            group: "",
+            download: "",
+            convert: "",
+            search: "",
+            system: "",
+            tools: "",
+            user: "",
+            whatsapp: "",
+            ai: ""  // Ensure 'ai' category exists
+        };
 
-// Loop through the commands to categorize them and add them to the respective sections
-for (let i = 0; i < commands.length; i++) {
-    if (commands[i].pattern && !commands[i].dontAddCommandList) {
-        // Categorize commands based on their category
-        menu[commands[i].category] += `│▸ ${i + 1}. ${commands[i].pattern}\n`;
-    }
-}
+        // Loop through the commands to categorize them and add them to the respective sections
+        for (let i = 0; i < commands.length; i++) {
+            const command = commands[i];
+            if (command.pattern && !command.dontAddCommandList) {
+                // Check if the category exists in the menu object
+                if (menu[command.category] !== undefined) {
+                    // Add the command pattern to the appropriate category
+                    menu[command.category] += `│▸ ${i + 1}. ${command.pattern}\n`;
+                }
+            }
+        }
 
-// Create the menu output with additional information at the top
-let madeMenu = `╭─ 《 *𝐄𝐦𝐩𝐢𝐫𝐞_𝐕𝟏 𝐂𝐨𝐧𝐧𝐞𝐜𝐭𝐞𝐝* 》 ───
+        // Create the menu output with additional information at the top
+        let madeMenu = `╭─ 《 *𝐄𝐦𝐩𝐢𝐫𝐞_𝐕𝟏 𝐂𝐨𝐧𝐧𝐞𝐜𝐭𝐞𝐝* 》 ───
 *OWNER:* ${config.OWNER_NAME}
 *VERSION:* v1.0.0
 *UPTIME:* ${runtime(process.uptime())}
@@ -44,38 +48,44 @@ let madeMenu = `╭─ 《 *𝐄𝐦𝐩𝐢𝐫𝐞_𝐕𝟏 𝐂𝐨𝐧𝐧�
 ╰────────────────
 
 ╭──〈 *ᴀɪ* 〉────
-${menu.ai}
+${menu.ai || "No commands in this category."}
 ╰──────────────
 
 ╭──〈 *ᴄᴏɴᴠᴇʀᴛᴇʀ* 〉────
-${menu.convert}
+${menu.convert || "No commands in this category."}
 ╰──────────────
 
 ╭──〈 *ᴅᴏᴡɴʟᴏᴀᴅ* 〉────
-${menu.download}
+${menu.download || "No commands in this category."}
 ╰──────────────
 
 ╭──〈 *ɢʀᴏᴜᴘ* 〉────
-${menu.group}
+${menu.group || "No commands in this category."}
 ╰──────────────
 
 ╭──〈 *sʏsᴛᴇᴍ* 〉────
-${menu.system}
+${menu.system || "No commands in this category."}
 ╰──────────────
 
 ╭──〈 *ᴛᴏᴏʟs* 〉────
-${menu.tools}
+${menu.tools || "No commands in this category."}
 ╰──────────────
 
 ╭──〈 *ᴜsᴇʀ* 〉────
-${menu.user}
+${menu.user || "No commands in this category."}
 ╰──────────────
 
 ╭──〈 *ᴡʜᴀᴛsᴀᴘᴘ* 〉────
-${menu.whatsapp}
+${menu.whatsapp || "No commands in this category."}
 ╰──────────────
 
 > *Powered by Only_one_🥇Empire*`;
 
-// Send the dynamic menu to the user
-await conn.sendMessage(from, { image: { url: config.ALIVE_IMG }, caption: madeMenu }, { quoted: mek });
+        // Send the dynamic menu to the user
+        await conn.sendMessage(from, { image: { url: config.ALIVE_IMG }, caption: madeMenu }, { quoted: mek });
+
+    } catch (e) {
+        console.log(e);
+        reply(`An error occurred: ${e.message || e}`);
+    }
+});
