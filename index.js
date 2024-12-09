@@ -21,7 +21,7 @@ const googleTTS = require("google-tts-api");
 const prefix = config.PREFIX;
 const mode = config.MODE || "private";
 
-const ownerNumber = ['2349152768261'];
+const ownerNumber = [config.OWNER_NUMBER];
 
 //===================SESSION-AUTH============================
 if (!fs.existsSync(__dirname + '/auth_info_baileys/creds.json')) {
