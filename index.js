@@ -57,33 +57,38 @@ async function connectToWA() {
   });
 
   conn.ev.on('connection.update', (update) => {
-const { connection, lastDisconnect } = update
-if (connection === 'close') {
-if (lastDisconnect.error.output.statusCode !== DisconnectReason.loggedOut) {
-connectToWA()
-}
-} else if (connection === 'open') {
-console.log('😼 Installing... ')
-const path = require('path');
-fs.readdirSync("./plugins/").forEach((plugin) => {
-if (path.extname(plugin).toLowerCase() == ".js") {
-require("./plugins/" + plugin);
-}
-});
-console.log('Plugins installed successful ✅')
-console.log('Bot connected to whatsapp ✅');
+    const { connection, lastDisconnect } = update;
+    if (connection === 'close') {
+        if (lastDisconnect.error.output.statusCode !== DisconnectReason.loggedOut) {
+            connectToWA();
+        }
+    } else if (connection === 'open') {
+        console.log('😼 Installing... ');
+        
+        // Count the number of plugins
+        const path = require('path');
+        const pluginsPath = "./plugins/";
+        const plugins = fs.readdirSync(pluginsPath).filter((plugin) => path.extname(plugin).toLowerCase() === ".js");
+        const pluginsCount = plugins.length; // Count the plugins
 
-          let up = `*╭──〈 **Empire_V1 Connected** 〉────
+        // Install the plugins
+        plugins.forEach((plugin) => {
+            require(path.join(pluginsPath, plugin));
+        });
+
+        console.log('Plugins installed successfully ✅');
+        console.log('Bot connected to WhatsApp ✅');
+
+        let up = `*╭──〈 **Empire_V1 Connected** 〉────
 │▸ **Prefix**: [ ${prefix} ]
-│▸ **Plugins**: ${pluginsCount}
+│▸ **Plugins**: ${pluginsCount} 
 │▸ **Mode**: ${mode}
 ╰────────────────*`;
 
-          conn.sendMessage(`${ownerNumber}@s.whatsapp.net`, { 
-              image: { url: 'https://telegra.ph/file/900435c6d3157c98c3c88.jpg' }, 
-              caption: up 
-      });
-        
+        conn.sendMessage(`${ownerNumber}@s.whatsapp.net`, { 
+            image: { url: 'https://telegra.ph/file/900435c6d3157c98c3c88.jpg' }, 
+            caption: up 
+        });
 }
 })
 conn.ev.on('creds.update', saveCreds)  
