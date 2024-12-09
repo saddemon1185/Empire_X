@@ -91,21 +91,32 @@ async (conn, mek, m, { from, isOwner, quoted, reply }) => {
 });
 // 6. Clear All Chats
 cmd({
-    pattern: "clearchats",
+    pattern: "clear",
     desc: "Clear all chats from the bot.",
     category: "owner",
     react: "🧹",
     filename: __filename
 },
 async (conn, mek, m, { from, isOwner, reply }) => {
-    if (!isOwner) return reply("❌ You are not the owner!");
     try {
-        const chats = await conn.chats.getAll(); // Adjusted to use Baileys method
-        for (const chat of chats) {
-            await conn.chatDelete(chat.jid); // Use correct Baileys method to delete chat
+        // Check if the user is the owner
+        if (!isOwner) return reply("❌ You are not the owner!");
+
+        // Ensure that chats data exists
+        if (!conn.chats || Object.keys(conn.chats).length === 0) {
+            return reply("❌ No chats found to clear.");
         }
+
+        // Get all chats and clear them
+        const chats = Object.values(conn.chats);
+        for (const chat of chats) {
+            // Modify the chat (this will depend on your version of Baileys)
+            await conn.modifyChat(chat.jid, 'delete');
+        }
+        
         reply("🧹 All chats cleared successfully!");
     } catch (error) {
+        console.log(error);
         reply(`❌ Error clearing chats: ${error.message}`);
     }
 });
