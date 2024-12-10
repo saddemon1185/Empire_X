@@ -7,15 +7,15 @@ services:
     runtime: "node"  # Use the Node.js runtime (this should work on Render)
     envVars:
       - key: OWNER_NUMBER
-        value: "YOUR_OWNER_NUMBER"  # Replace with your actual owner's phone number
+        value: "2349152768261"  # Replace with your actual owner's phone number
       - key: SESSION_ID
-        value: "YOUR_SESSION_ID"  # Replace with your actual session ID (if needed)
+        value: "bZMWWbJL#z1xJyolpVZ2cQ3vnrb_7U6bE_kv_WxzwcSM0csdWnTU"  # Replace with your actual session ID (if needed)
       - key: PREFIX
-        value: "!"  # Your bot's prefix
+        value: "."  # Your bot's prefix
       - key: MODE
         value: "private"  # Set the bot's mode: "private" or "groups"
       - key: AUTO_READ_STATUS
-        value: "true"  # Enable auto-read status
+        value: "false"  # Enable auto-read status
       - key: AUTO_REACT
         value: "true"  # Enable auto reactions if required
       - key: OWNER_REACT
