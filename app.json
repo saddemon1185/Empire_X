@@ -1,7 +1,7 @@
 {
   "name": "Empire_X",
   "description": "Javascript WhatsApp bot made by 𝐎𝐧𝐥𝐲_𝐨𝐧𝐞_🥇𝐞𝐦𝐩𝐢𝐫𝐞",
-  "logo": "https://files.catbox.moe/g4qzs7.jpg",
+  "logo": "https://github.com/SuhailTechInfo/Suhail-Md/blob/main/lib/assets/empire.jpg?raw=true",
   "keywords": ["Empire_V1", "Bot"],
   "success_url": "/",
   "env": {
@@ -47,7 +47,7 @@
     },
     "ALIVE_IMG": {
       "description": "URL for the alive image.",
-      "value": "https://files.catbox.moe/g4qzs7.jpg",
+      "value": "https://github.com/SuhailTechInfo/Suhail-Md/blob/main/lib/assets/empire.jpg?raw=true",
       "required": true
     },
     "ALIVE_MSG": {
