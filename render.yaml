@@ -4,6 +4,7 @@ services:
     buildCommand: "npm install"  # Install dependencies
     startCommand: "pm2 start index.js --deep-monitoring --attach --name Empire_X"  # Start command with PM2
     plan: free  # Choose the free plan, or upgrade depending on your needs
+    runtime: "node"  # Use the Node.js runtime (this should work on Render)
     envVars:
       - key: OWNER_NUMBER
         value: "YOUR_OWNER_NUMBER"  # Replace with your actual owner's phone number
