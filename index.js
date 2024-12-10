@@ -79,7 +79,7 @@ console.log('Bot connected to whatsapp ✅')
 ╰────────────────*`;
 
         conn.sendMessage(`${ownerNumber}@s.whatsapp.net`, { 
-            image: { url: 'https://telegra.ph/file/900435c6d3157c98c3c88.jpg' }, 
+            image: { url: 'https://github.com/efeurhobo/Empire_X/blob/main/lib/assets/suhail.jpg?raw=true' }, 
             caption: up 
         });
 }
