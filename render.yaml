@@ -1,7 +1,6 @@
 services:
-  - type: node
+  - type: web
     name: Empire_X
-    env: node
     buildCommand: "npm install"  # Install dependencies
     startCommand: "pm2 start index.js --deep-monitoring --attach --name Empire_X"  # Start command with PM2
     plan: free  # Choose the free plan, or upgrade depending on your needs
