@@ -1,44 +1,35 @@
-const fs = require('fs');
 const { exec } = require('child_process');
 const { cmd } = require('../command');
 
 cmd({
     pattern: "updatebot",
     react: "🔄",
-    desc: "Update folder from GitHub",
+    desc: "Update the bot from the GitHub repository",
     category: "main",
     use: '.update',
     filename: __filename
 }, async (conn, mek, m, { from, reply }) => {
     try {
         const repoUrl = 'https://github.com/efeurhobo/Demon_V1.git'; // GitHub repository link
-        const targetFolder = 'plugins'; // Folder to be updated
+        const targetFolder = 'bot'; // Folder for your bot to be updated
 
-        // Check if the target folder exists, if not create it
-        if (!fs.existsSync(targetFolder)) {
-            fs.mkdirSync(targetFolder, { recursive: true });
-        }
+        // Check if the target folder exists and contains a git repository
+        const gitCommand = `git -C ${targetFolder} pull origin main`; // Command to pull updates
 
-        // Determine the git command
-        const gitCommand = fs.existsSync(`${targetFolder}/.git`)
-            ? `git -C ${targetFolder} pull origin main` // Pull latest changes if repo exists
-            : `git clone ${repoUrl} ${targetFolder}`; // Clone repository if not
+        // Execute the git pull command
+        exec(gitCommand, (err, stdout, stderr) => {
+            if (err) {
+                return reply(`*Error during update:* ${err.message}`); // Handle command execution errors
+            }
+            if (stderr) {
+                return reply(`*Git error:* ${stderr}`); // Handle errors returned by Git
+            }
 
-        // Execute the git command
-        await new Promise((resolve, reject) => {
-            exec(gitCommand, (err, stdout, stderr) => {
-                if (err || stderr) {
-                    return reject(new Error(`Git command failed: ${stderr || err.message}`));
-                }
-                resolve(stdout.trim());
-            });
+            // If everything goes well, send the update confirmation message
+            conn.sendMessage(from, { text: '*✅ Bot updated successfully from the repository!*' }, { quoted: mek });
         });
-
-        // Send success message
-        await conn.sendMessage(from, { text: '*✅ Update completed successfully!*' }, { quoted: mek });
-
     } catch (error) {
-        console.error("Error during update:", error);
-        reply(`*Error during update:* ${error.message}`);
+        console.error("Error during bot update:", error);
+        reply(`*Error during bot update:* ${error.message}`);
     }
 });
