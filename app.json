@@ -47,7 +47,7 @@
     },
     "ALIVE_IMG": {
       "description": "URL for the alive image.",
-      "value": "https://github.com/efeurhobo/Empire_X/blob/main/lib/assets/empire.jpg?raw=true",
+      "value": "https://raw.githubusercontent.com/efeurhobo/Empire_X/main/lib/assets/empire.jpg",
       "required": true
     },
     "ALIVE_MSG": {
