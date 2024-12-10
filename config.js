@@ -11,7 +11,7 @@ module.exports = {
     SESSION_ID: process.env.SESSION_ID || "rA9wSJyK#rFVrLwU58ka_ihxTVCSA9DgfWfAg9GwHKWWJJJUnD2w",
     AUTO_READ_STATUS: convertToBool(process.env.AUTO_READ_STATUS, 'true'),
     MODE: process.env.MODE || "private",
-    ALIVE_IMG: process.env.ALIVE_IMG || "https://files.catbox.moe/g4qzs7.jpg",
+    ALIVE_IMG: process.env.ALIVE_IMG || "https://raw.githubusercontent.com/efeurhobo/Empire_X/main/lib/assets/empire.jpg",
     ALIVE_MSG: process.env.ALIVE_MSG || "HI DEAR EMPIRE_V1 IS ONLINE",
     PREFIX: process.env.PREFIX || ".",
     OWNER_REACT: convertToBool(process.env.OWNER_REACT, 'true'),
