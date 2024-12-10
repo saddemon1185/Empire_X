@@ -50,7 +50,7 @@
 5.  ***Deploy on [Railway]()***
 6.  ***Deploy on [Koyeb]()***
 7. ***Deploy on [Glitch]()***
-8. ***Deploy on [RENDER]().FIXED! ✔️***
+8. ***Deploy on [RENDER](https://render.com/deploy?repo=https://github.com/efeurhobo/Empire_X.git).FIXED! ✔️***
 ---
 
 
