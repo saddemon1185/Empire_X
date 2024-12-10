@@ -1,0 +1,24 @@
+name: Empire_X
+services:
+  - name: empire-x-service
+    image: node:16  # Official Node.js image
+    env:
+      - key: OWNER_NUMBER
+        value: "YOUR_OWNER_NUMBER"  # Replace with your owner's phone number
+      - key: SESSION_ID
+        value: "YOUR_SESSION_ID"  # Replace with your session ID if needed
+      - key: PREFIX
+        value: "!"  # Set your bot's prefix
+      - key: MODE
+        value: "private"  # Set your bot's mode: "private" or "groups"
+      - key: AUTO_READ_STATUS
+        value: "true"  # Enable auto-read status
+      - key: AUTO_REACT
+        value: "true"  # Enable auto reactions if required
+      - key: OWNER_REACT
+        value: "true"  # Enable owner-specific reactions if needed
+    build:
+      type: npm
+      buildCommand: "npm install"  # Command to install dependencies
+      startCommand: "pm2 start index.js --deep-monitoring --attach --name Empire_X"  # Start command with PM2
+    plan: free  # Choose the free plan, or upgrade depending on your needs
