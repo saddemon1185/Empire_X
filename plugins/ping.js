@@ -38,8 +38,8 @@ cmd({
 
 // SYSTEM STATUS COMMAND
 cmd({
-    pattern: "system",
-    alias: ["status", "uptime"],
+    pattern: "uptime",
+    alias: ["status"],
     desc: "Check uptime, RAM usage, and more.",
     category: "main",
     filename: __filename,
