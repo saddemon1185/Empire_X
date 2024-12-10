@@ -1,7 +1,7 @@
 {
   "name": "Empire_X",
   "description": "Javascript WhatsApp bot made by 𝐎𝐧𝐥𝐲_𝐨𝐧𝐞_🥇𝐞𝐦𝐩𝐢𝐫𝐞",
-  "logo": "https://github.com/efeurhobo/Empire_X/blob/main/lib/assets/empire.jpg?raw=true",
+  "logo": "https://raw.githubusercontent.com/efeurhobo/Empire_X/main/lib/assets/empire.jpg",
   "keywords": ["Empire_V1", "Bot"],
   "success_url": "/",
   "env": {
