@@ -48,6 +48,10 @@ async (conn, mek, m, { from, quoted, pushname, reply }) => {
         const pluginCount = getPluginCount();
         const platform = os.platform();
 
+        // Memory calculation in GB
+        const usedMemory = (process.memoryUsage().heapUsed / 1024 / 1024 / 1024).toFixed(2); // Used memory in GB
+        const totalMemory = (os.totalmem() / 1024 / 1024 / 1024).toFixed(2); // Total memory in GB
+
         // Categorize commands dynamically
         for (let i = 0; i < commands.length; i++) {
             const command = commands[i];
@@ -67,7 +71,7 @@ async (conn, mek, m, { from, quoted, pushname, reply }) => {
 │ │ Mode : ${config.MODE}
 │ │ Plugins : ${pluginCount}
 │ │ Uptime : ${uptime}
-│ │ MEM: ${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(0)}MB / ${Math.round(os.totalmem() / 1024 / 1024)}MB
+│ │ MEM: ${usedMemory} GB / ${totalMemory} GB
 │ │ Platform : ${platform}     
 │ ╰──────✧❁✧──────◆
 ╰══════════════════⊷
