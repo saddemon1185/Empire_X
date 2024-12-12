@@ -43,7 +43,7 @@
    
 ## Deployment Methods
 ---
-1.  ***Get SESSION ID by [PARING CODE](https://empire-x-paircode.onrender.com). Then Go-to Whatapp>Three dots>Linked Devices***
+1.  ***Get SESSION ID by [PARING CODE](https://empire-x-paircode.onrender.com). And Link Device***
 2.  ***Click [FORK](https://github.com/efeurhobo/Empire_X/fork) and Star ⭐ Repository***
 3.  ***Deploy on [HEROKU]()***
 4.  ***Deploy on [Replit]()***
