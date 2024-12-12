@@ -10,7 +10,7 @@
 ---
 1.  ***Get Session Id by [Pairing Code](https://empire-x-paircode.onrender.com).Link Device***
 2.  ***Click [Fork](https://github.com/efeurhobo/Empire_X/fork) and Star ⭐ Repository***
-3.  ***Deploy on [Heroku]()***
+3.  ***Deploy on [Heroku](https://heroku.com/deploy?template=https://github.com/efeurhobo/Empire_X.git)***
 4.  ***Deploy on [Replit]()***
 5.  ***Deploy on [Railway]()***
 6.  ***Deploy on [Koyeb](https://app.koyeb.com/deploy?name=empire-x&repository=efeurhobo%2FEmpire_X&branch=main&instance_type=free&env%5BBOT_NAME%5D=Empire_X&env%5BAUTO_REACT%5D=true&env%5BOWNER_REACT%5D=true&env%5BPREFIX%5D=.&env%5BMODE%5D=private&env%5BAUTO_READ_STATUS%5D=false&env%5BOWNER_NUMBER%5D=2348078582627&env%5BSESSION_ID%5D=Put+session+I%27d+here)***
