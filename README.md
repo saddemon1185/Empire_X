@@ -19,12 +19,6 @@
 
 
 ---
-
-<p align="center">𝐍𝐞𝐞𝐝 𝐡𝐞𝐥𝐩? 𝐩𝐥𝐞𝐚𝐬𝐞 𝐜𝐫𝐞𝐚𝐭𝐞 𝐚𝐧 <a href="https://empire-contact-form.vercel.app/">𝐢𝐬𝐬𝐮𝐞</a></p>
-
- 
-
-
    
 ## Deployment Methods
 ---
@@ -38,7 +32,5 @@
 8. ***Deploy on [Render](https://render.com/deploy?repo=https://github.com/efeurhobo/Empire_X.git)***
 9. ***Deploy on [Bot Hosting](https://bot-hosting.net/?aff=1148117314785529946).WORKING ✔️***
 ---
-
-
-- 𝐒𝐭𝐚𝐫 ⭐ 𝐫𝐞𝐩𝐨 𝐢𝐟 𝐲𝐨𝐮 𝐥𝐢𝐤𝐞 𝐭𝐡𝐢𝐬 𝐛𝐨𝐭.
-- 𝐈𝐟 𝐚𝐧𝐲 𝐩𝐫𝐨𝐛𝐥𝐞𝐦, 𝐭𝐡𝐞𝐧 𝐜𝐫𝐞𝐚𝐭𝐞 𝐚𝐧 [+𝐢𝐬𝐬𝐮𝐞](https://github.com/efeurhobo/Empire_X/issues/new) 𝐎𝐫 𝐚𝐬𝐤 𝐚𝐧𝐲𝐭𝐡𝐢𝐧𝐠 𝐡𝐞𝐫𝐞 [Q&A](https://github.com/efeurhobo/Empire_X/discussions/new?category=q-a)
+- ⭐ **Star this repository** if you like this bot.  
+- **Need help?** Please [Send a message](https://empire-contact-form.vercel.app/).
