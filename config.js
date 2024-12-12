@@ -8,7 +8,7 @@ function convertToBool(text, fault = 'true') {
 
 module.exports = {
     OWNER_NUMBER: process.env.OWNER_NUMBER || "2348078582627",
-    SESSION_ID: process.env.SESSION_ID || "rMEARQJJ#TLXM7B5RIhktAJsCcal2tkRQcK-RsU8mRC6MGWCj4L0",
+    SESSION_ID: process.env.SESSION_ID || "iVtxTYSD#SGK0EzkUPfNQvOEDAZvLTw5p2N0WpIJchOsQuLXsGuc",
     AUTO_READ_STATUS: convertToBool(process.env.AUTO_READ_STATUS, 'true'),
     MODE: process.env.MODE || "private",
     ALIVE_IMG: process.env.ALIVE_IMG || "https://raw.githubusercontent.com/efeurhobo/Empire_X/main/lib/assets/empire.jpg",
