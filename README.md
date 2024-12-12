@@ -23,15 +23,6 @@
 </p>
 <p align="center"><img src="https://profile-counter.glitch.me/{efeurhobo}/count.svg" alt="efeurhobo :: Visitor's Count" /></p>
 
-<p align="center">
-   <a href="https://github.com/efeurhobo">
-    <img src="https://img.shields.io/github/followers/efeurhobo?style=flat-square&logo=github&color=darkred">
-  </a>
-  
-
- 
- </p>
-
 
 ---
 
@@ -44,7 +35,7 @@
 ## Deployment Methods
 ---
 1.  ***Get Session Id by [Pairing Code](https://empire-x-paircode.onrender.com).Link Device***
-2.  ***Click [FORK](https://github.com/efeurhobo/Empire_X/fork) and Star ⭐ Repository***
+2.  ***Click [Fork](https://github.com/efeurhobo/Empire_X/fork) and Star ⭐ Repository***
 3.  ***Deploy on [Heroku]()***
 4.  ***Deploy on [Replit]()***
 5.  ***Deploy on [Railway]()***
