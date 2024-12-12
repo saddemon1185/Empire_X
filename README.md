@@ -1,4 +1,4 @@
-us up <h1 align="center"> Empire_X </h1> 
+<h1 align="center"> Empire_X </h1> 
 <p align="center"> 𝐀 𝐬𝐢𝐦𝐩𝐥𝐞 𝐖𝐡𝐚𝐭𝐬𝐀𝐩𝐩 𝐛𝐨𝐭 𝐌𝐚𝐝𝐞 𝐛𝐲 𝐎𝐧𝐥𝐲_𝐨𝐧𝐞_🥇𝐞𝐦𝐩𝐢𝐫𝐞. </p>
 
 
@@ -51,6 +51,7 @@ us up <h1 align="center"> Empire_X </h1>
 6.  ***Deploy on [Koyeb](https://app.koyeb.com/deploy?name=empire-x&repository=efeurhobo%2FEmpire_X&branch=main&instance_type=free&env%5BBOT_NAME%5D=Empire_X&env%5BAUTO_REACT%5D=true&env%5BOWNER_REACT%5D=true&env%5BPREFIX%5D=.&env%5BMODE%5D=private&env%5BAUTO_READ_STATUS%5D=false&env%5BOWNER_NUMBER%5D=2348078582627&env%5BSESSION_ID%5D=Put+session+I%27d+here)***
 7. ***Deploy on [Glitch]()***
 8. ***Deploy on [RENDER](https://render.com/deploy?repo=https://github.com/efeurhobo/Empire_X.git)***
+9. ***Deploy on [Bot Hosting](https://bot-hosting.net/?aff=1148117314785529946)***
 ---
 
 
