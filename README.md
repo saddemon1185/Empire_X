@@ -43,7 +43,7 @@
    
 ## Deployment Methods
 ---
-1.  ***Get SESSION ID by [PARING CODE](https://empire-x-paircode.onrender.com).To Link Device***
+1.  ***Get SESSION ID by [PARING CODE](https://empire-x-paircode.onrender.com).Link Device***
 2.  ***Click [FORK](https://github.com/efeurhobo/Empire_X/fork) and Star ⭐ Repository***
 3.  ***Deploy on [HEROKU]()***
 4.  ***Deploy on [Replit]()***
