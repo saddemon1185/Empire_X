@@ -31,7 +31,7 @@ if (!fs.existsSync(__dirname + '/auth_info_baileys/creds.json')) {
   filer.download((err, data) => {
       if(err) throw err;
       fs.writeFile(__dirname + '/auth_info_baileys/creds.json', data, () => {
-          console.log("Session downloaded ✅");
+          console.log("Checking Session ID ⏳");
       });
   });
 }
@@ -43,7 +43,7 @@ const port = process.env.PORT || 8000;
 //=============================================
 
 async function connectToWA() {
-  console.log("Connecting wa bot 🧬...");
+  console.log("Connecting Bot To WhatsApp 🤖");
   const { state, saveCreds } = await useMultiFileAuthState(__dirname + '/auth_info_baileys/');
   var { version } = await fetchLatestBaileysVersion();
 
@@ -63,14 +63,14 @@ if (lastDisconnect.error.output.statusCode !== DisconnectReason.loggedOut) {
 connectToWA()
 }
 } else if (connection === 'open') {
-console.log('😼 Installing... ')
+console.log('Whatsapp Login Successfully ✅')
 const path = require('path');
 fs.readdirSync("./plugins/").forEach((plugin) => {
 if (path.extname(plugin).toLowerCase() == ".js") {
 require("./plugins/" + plugin);
 }
 });
-console.log('Plugins installed successful ✅')
+console.log('Plugins installed successful 🔁')
 console.log('Bot connected to whatsapp ✅')
 console.log('Empire_X Connected 🔌')
 
