@@ -5,20 +5,6 @@
 </p>
 
 ---
-<p align="center">
-   <a href="https://github.com//efeurhobo/Empire_X/fork">
-    <img src="https://img.shields.io/github/forks/efeurhobo/Empire_X?style=flat-square&logo=github&color=darkred">
-   </a>
-  <a href="https://github.com/efeurhobo/Empire_X/stargazers"> 
-     <img src="https://img.shields.io/github/stars/efeurhobo/Empire_X?style=flat-square&logo=github&color=darkred">
- </a>
-
-
-</p>
-<p align="center"><img src="https://profile-counter.glitch.me/{efeurhobo}/count.svg" alt="efeurhobo :: Visitor's Count" /></p>
-
-
----
    
 ## Deployment Methods
 ---
