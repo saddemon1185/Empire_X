@@ -6,57 +6,57 @@
   "success_url": "/",
   "env": {
     "OWNER_NUMBER": {
-      "description": "Put the owner number below.",
+      "description": "Your phone number.",
       "value": "2348078582627",
       "required": true
     },
     "SESSION_ID": {
-      "description": "Put session ID below.",
+      "description": "Session ID for the bot.",
       "value": "iVtxTYSD#SGK0EzkUPfNQvOEDAZvLTw5p2N0WpIJchOsQuLXsGuc",
       "required": true
     },
     "MODE": {
-      "description": "Work type of your bot. Use 'public' or 'private'. If private, only the bot number can use it.",
+      "description": "Work type of your bot. Use 'public' or 'private'.",
       "value": "private",
       "required": true
     },
     "OWNER_NAME": {
-      "description": "Owner name.",
+      "description": "Owner's name.",
       "value": "𝐎𝐧𝐥𝐲_𝐨𝐧𝐞_🥇𝐞𝐦𝐩𝐢𝐫𝐞",
       "required": true
     },
     "BOT_NAME": {
-      "description": "Bot name.",
+      "description": "Bot's name.",
       "value": "Empire_X",
       "required": true
     },
     "AUTO_REACT": {
-      "description": "Enable auto-reaction. TRUE or FALSE.",
+      "description": "Enable auto-reactions (TRUE/FALSE).",
       "value": "true",
       "required": true
     },
     "OWNER_REACT": {
-      "description": "Enable owner reactions. TRUE or FALSE.",
+      "description": "Enable owner reactions (TRUE/FALSE).",
       "value": "true",
       "required": true
     },
     "PREFIX": {
-      "description": "Enter your desired prefix for the bot. You can set `all | . | .!*`.",
+      "description": "Prefix for bot commands.",
       "value": ".",
       "required": true
     },
     "ALIVE_IMG": {
-      "description": "URL for the alive image.",
+      "description": "Image URL for the bot alive status.",
       "value": "https://raw.githubusercontent.com/efeurhobo/Empire_X/main/lib/assets/empire.jpg",
       "required": true
     },
     "ALIVE_MSG": {
-      "description": "Message displayed when the bot is online.",
+      "description": "Message displayed when the bot is alive.",
       "value": "HI DEAR EMPIRE_V1 IS ONLINE",
       "required": true
     },
     "AUTO_READ_STATUS": {
-      "description": "Enable auto-read status. TRUE or FALSE.",
+      "description": "Enable auto-read status (TRUE/FALSE).",
       "value": "false",
       "required": true
     }
