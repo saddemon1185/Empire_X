@@ -1,5 +1,5 @@
-const { cmd, commands } = require('../command');
-const { downloadContentFromMessage } = require('@whiskeysockets/baileys');
+const { cmd } = require('../command');
+const { downloadMediaMessage } = require('../lib/msg'); // Import the function from lib/msg.js
 
 // Read View Once Message Command
 cmd({
@@ -7,42 +7,25 @@ cmd({
     desc: "Read and download view-once messages",
     category: "tools",
     filename: __filename
-},
-async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, reply }) => {
+}, async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, reply }) => {
     try {
-        // Check if the message is a quoted message and if it's a view-once message
         if (!quoted || !/viewOnce/.test(quoted.mtype)) {
             return reply("✳️❇️ It's not a View Once message.");
         }
 
-        const mtype = Object.keys(quoted.message)[0];  // Get the message type (imageMessage, videoMessage, etc.)
-        const mediaMessage = quoted.message[mtype];    // Extract the media message content
-
-        // If there's no content in the view-once message
-        if (!mediaMessage) {
-            return reply("Unable to access the content of the view-once message.");
-        }
-
-        // Download the media content
-        const stream = await downloadContentFromMessage(mediaMessage, mtype.replace("Message", "").toLowerCase());
-        let buffer = Buffer.from([]);
-        
-        // Collect chunks of the media
-        for await (const chunk of stream) {
-            buffer = Buffer.concat([buffer, chunk]);
-        }
-
-        // Prepare the caption if available
-        const caption = mediaMessage.caption || "Here is the content of the view-once message.";
+        // Download the content from the view-once message
+        const { buffer, caption } = await downloadMediaMessage(quoted);
         
         // Send the media back to the user
+        const mtype = Object.keys(quoted.message)[0].replace("Message", "").toLowerCase();
         await conn.sendMessage(from, {
-            [mtype.replace(/Message/, '').toLowerCase()]: buffer,
+            [mtype]: buffer,
             caption
         }, { quoted: mek });
-
-    } catch (e) {
-        console.error(e);
-        reply(`An error occurred: ${e.message}`);
+    } catch (error) {
+        console.error(error);
+        reply(`An error occurred: ${error.message}`);
     }
 });
+
+module.exports = { sms, downloadMediaMessage };
