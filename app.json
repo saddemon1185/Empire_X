@@ -28,7 +28,7 @@
     "BOT_NAME": {
       "description": "Bot's name.",
       "value": "Empire_X",
-      "required": true
+      "required": false
     },
     "AUTO_REACT": {
       "description": "Enable auto-reactions (TRUE/FALSE).",
