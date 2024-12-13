@@ -11,7 +11,14 @@ async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, reply }) => 
     const githubRepoURL = 'https://github.com/efeurhobo/Empire_X';
 
     try {
-        const [, username, repoName] = githubRepoURL.match(/github\.com\/([^/]+)\/([^/]+)/);
+        // Validate that the URL is in the correct format
+        const regexMatch = githubRepoURL.match(/github\.com\/([^/]+)\/([^/]+)/);
+        if (!regexMatch) {
+            reply("Empire_X says: Invalid GitHub URL format.");
+            return;
+        }
+        
+        const [, username, repoName] = regexMatch;
         const response = await axios.get(`https://api.github.com/repos/${username}/${repoName}`);
 
         if (response.status === 200) {
@@ -40,9 +47,7 @@ async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, reply }) => 
 `.trim();
 
             // Send the formatted information as a message
-            await conn.sendMessage(from, {
-                text: formattedInfo
-            }, { quoted: mek });
+            await conn.sendMessage(from, { text: formattedInfo }, { quoted: mek });
         } else {
             reply("Empire_X says: Unable to fetch repository information.");
         }
