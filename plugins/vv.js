@@ -10,7 +10,7 @@ cmd({
 }, async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, reply }) => {
     try {
         // Ensure the message is a view-once message
-        if (!quoted || !/viewOnce/.test(quoted.mtype)) {
+        if (!quoted || !quoted.isViewOnce) {
             return reply("✳️❇️ This is not a View Once message.");
         }
 
