@@ -7,9 +7,13 @@ services:
     runtime: "node"  # Use the Node.js runtime (this should work on Render)
     envVars:
       - key: OWNER_NUMBER
-        value: "2349152768261"  # Replace with your actual owner's phone number
+        value: "2348078582627"  # Replace with your actual owner's phone number
+      - key: OWNER_NAME
+        value: "Ony_one_🥇Empire"  # Replace with owner name 
+      - key: BOT_NAME
+        value: "Empire_X"  # Do not change
       - key: SESSION_ID
-        value: "here"  # Replace with your actual session ID (if needed)
+        value: "TQVwUIhJ#py2-mZE_ppXKB_n7GU2vRp_mCBgqqecQpviJy4aL4no"  # Replace with your actual session ID (if needed)
       - key: PREFIX
         value: "."  # Your bot's prefix
       - key: MODE
@@ -20,3 +24,7 @@ services:
         value: "true"  # Enable auto reactions if required
       - key: OWNER_REACT
         value: "true"  # Enable owner-specific reactions if needed
+      - key: ALIVE_IMG
+        value: "'https://raw.githubusercontent.com/efeurhobo/Empire_X/main/lib/assets/empire.jpg"  # Replace with owner
+      - key: AIVE_MSG
+        value: "HI DEAR EMPIRE_X IS ACTIVE"  # Replace with owner
