@@ -1,8 +1,8 @@
-import axios from 'axios';
-import { cmd, commands } from '../command';
+const axios = require('axios');
+const { cmd, commands } = require('../command');
 
 cmd({
-    pattern: "repo",  // Corrected pattern to 'repo'
+    pattern: "repo", 
     desc: "Fetch Empire_X repository details",
     category: "main",
     filename: __filename
@@ -18,7 +18,7 @@ async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, reply }) => 
             const repoData = response.data;
 
             // Format the repository information with the desired style
-            const formattedInfo = `
+            let formattedInfo = `
 ╭─────────────❏ *REPOSITORY INFORMATION* ❏
 │📂 Repository Name: ${repoData.name}
 │📝 Description: ${repoData.description || "No description available"}
