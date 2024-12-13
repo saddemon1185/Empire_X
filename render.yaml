@@ -13,7 +13,7 @@ services:
       - key: BOT_NAME
         value: "Empire_X"  # Do not change
       - key: SESSION_ID
-        value: "eMUnBK6Y#IF28FVhyL2HO5NEr66YB9plZfvYVfXcYMt7JasJNcxc"  # Replace with your actual session ID (if needed)
+        value: "eZVUAbBY#oqvSuDmQAAlDe6xticb1640rWkB0TXADuPNXFWp0Z1Y"  # Replace with your actual session ID (if needed)
       - key: PREFIX
         value: "."  # Your bot's prefix
       - key: MODE
