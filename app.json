@@ -7,46 +7,57 @@
   "env": {
     "OWNER_NUMBER": {
       "description": "Put the owner number below.",
+      "value": "2348078582627",
       "required": true
     },
     "SESSION_ID": {
       "description": "Put session ID below.",
+      "value": "iVtxTYSD#SGK0EzkUPfNQvOEDAZvLTw5p2N0WpIJchOsQuLXsGuc",
       "required": true
     },
     "MODE": {
-      "description": "Work type of your bot. Use 'public' or 'private'.",
+      "description": "Work type of your bot. Use 'public' or 'private'. If private, only the bot number can use it.",
+      "value": "private",
       "required": true
     },
     "OWNER_NAME": {
       "description": "Owner name.",
+      "value": "𝐎𝐧𝐥𝐲_𝐨𝐧𝐞_🥇𝐞𝐦𝐩𝐢𝐫𝐞",
       "required": true
     },
     "BOT_NAME": {
       "description": "Bot name.",
+      "value": "Empire_X",
       "required": true
     },
     "AUTO_REACT": {
       "description": "Enable auto-reaction. TRUE or FALSE.",
+      "value": "true",
       "required": true
     },
     "OWNER_REACT": {
       "description": "Enable owner reactions. TRUE or FALSE.",
+      "value": "true",
       "required": true
     },
     "PREFIX": {
-      "description": "Enter your desired prefix for the bot.",
+      "description": "Enter your desired prefix for the bot. You can set `all | . | .!*`.",
+      "value": ".",
       "required": true
     },
     "ALIVE_IMG": {
       "description": "URL for the alive image.",
+      "value": "https://raw.githubusercontent.com/efeurhobo/Empire_X/main/lib/assets/empire.jpg",
       "required": true
     },
     "ALIVE_MSG": {
       "description": "Message displayed when the bot is online.",
+      "value": "HI DEAR EMPIRE_V1 IS ONLINE",
       "required": true
     },
     "AUTO_READ_STATUS": {
       "description": "Enable auto-read status. TRUE or FALSE.",
+      "value": "false",
       "required": true
     }
   },
