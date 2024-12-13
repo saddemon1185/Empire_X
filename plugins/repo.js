@@ -24,11 +24,14 @@ async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, reply }) => 
         if (response.status === 200) {
             const repoData = response.data;
 
+            // Handle null description and provide fallback
+            const description = repoData.description || "No description available";
+
             // Format the repository information with the desired style
             let formattedInfo = `
 ╭─────────────❏ *REPOSITORY INFORMATION* ❏
 │📂 Repository Name: ${repoData.name}
-│📝 Description: ${repoData.description || "No description available"}
+│📝 Description: ${description}
 │👤 Owner: ${repoData.owner.login}
 │⭐ Stars: ${repoData.stargazers_count}
 │🍴 Forks: ${repoData.forks_count}
@@ -52,7 +55,8 @@ async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, reply }) => 
             reply("Empire_X says: Unable to fetch repository information.");
         }
     } catch (error) {
-        console.error(error);
+        // Log the full error message for debugging
+        console.error("Error fetching repository data:", error.response || error.message || error);
         reply("Empire_X says: An error occurred while fetching repository information.");
     }
 });
