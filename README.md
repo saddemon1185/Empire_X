@@ -3,9 +3,8 @@
 <p align="center">
   <img alt="Empire_X" src="https://raw.githubusercontent.com/efeurhobo/Empire_X/main/lib/assets/empire.jpg">
 </p>
-
 ---
-   
+  
 ## Deployment Methods
 ---
 1.  ***Get Session Id by [Pairing Code](https://empire-x-paircode.onrender.com).Link Device***
