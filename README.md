@@ -18,5 +18,4 @@
 8. ***Deploy on [Render](https://render.com/deploy?repo=https://github.com/efeurhobo/Empire_X.git)***
 9. ***Deploy on [Bot Hosting](https://bot-hosting.net/?aff=1148117314785529946).WORKING ✔️***
 ---
-- ⭐ **Star this repository** if you like this bot.  
 - **Need help?** Please [Send a message](https://empire-contact-form.vercel.app/).
