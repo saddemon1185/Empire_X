@@ -27,5 +27,13 @@
     "vm": "^0.1.0",
     "yt-search": "2.12.1",
     "google-tts-api": "2.0.2"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/efeurhobo/Empire_Md.git"
+  },
+  "bugs": {
+    "url": "https://github.com/efeurhobo/Empire_Md/issues"
+  },
+  "homepage": "https://github.com/efeurhobo/Empire_Md#readme"
 }
