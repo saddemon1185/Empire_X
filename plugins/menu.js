@@ -6,14 +6,14 @@ const fs = require('fs');
 const prefix = config.PREFIX || ".";
 const mode = config.MODE || "private";
 
-cmd({
+    cmd({
     pattern: "menu",
     desc: "Get command list",
     react: "⚙️",
     category: "main",
     filename: __filename
 },
-async (conn, mek, m, { from, quoted, pushname, reply }) => {
+async (conn, mek, m, { from, quoted, reply }) => {
     try {
         // Dynamic command categories
         let menu = {
@@ -26,7 +26,7 @@ async (conn, mek, m, { from, quoted, pushname, reply }) => {
             bugs: '',
         };
 
-        // Calculate uptime directly
+        // Format uptime function
         function formatUptime(seconds) {
             const days = Math.floor(seconds / (24 * 60 * 60));
             seconds %= 24 * 60 * 60;
@@ -37,20 +37,11 @@ async (conn, mek, m, { from, quoted, pushname, reply }) => {
             return `${days}d ${hours}h ${minutes}m ${seconds}s`;
         }
 
-        const uptime = formatUptime(process.uptime()); // Direct uptime calculation
-
-        // Function to get plugin count
-        function getPluginCount() {
-            const pluginsPath = './plugins'; // Ensure the path is correct
-            return fs.readdirSync(pluginsPath).filter(file => file.endsWith('.js')).length;
-        }
-
-        const pluginCount = getPluginCount();
+        const uptime = formatUptime(process.uptime());
+        const pluginCount = fs.readdirSync('./plugins').filter(file => file.endsWith('.js')).length;
         const platform = os.platform();
-
-        // Memory calculation in GB
-        const usedMemory = (process.memoryUsage().heapUsed / 1024 / 1024 / 1024).toFixed(2); // Used memory in GB
-        const totalMemory = (os.totalmem() / 1024 / 1024 / 1024).toFixed(2); // Total memory in GB
+        const memoryUsage = (process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2);
+        const totalCommands = commands.length;
 
         // Categorize commands dynamically
         for (let i = 0; i < commands.length; i++) {
@@ -62,56 +53,51 @@ async (conn, mek, m, { from, quoted, pushname, reply }) => {
             }
         }
 
-        // Construct menu
+        // Construct menu with the provided design
         let madeMenu = `
-╭────《 *Empire_X* 》────⊷
-│ ╭──────✧❁✧──────◆
-│ │ Prefix : [ ${config.PREFIX} ]
-│ │ User : ${config.OWNER_NAME}  
-│ │ Mode : ${config.MODE}
-│ │ Plugins : ${pluginCount}
-│ │ Uptime : ${uptime}
-│ │ MEM: ${usedMemory} GB / ${totalMemory} GB
-│ │ Platform : ${platform}     
-│ ╰──────✧❁✧──────◆
-╰══════════════════⊷
+╭━━━〔 Empire_X 〕━━━⬤
+┃𖠄│ Prefix: [ ${prefix} ]
+┃𖠄│ User: *${config.OWNER_NAME || "Unknown User"}*
+┃𖠄│ Mode: *${mode}*
+┃𖠄│ Platform: *${platform}*
+┃𖠄│ Uptime: *${uptime}*
+┃𖠄│ Memory: *${memoryUsage}MB*
+┃𖠄│ Plugins: *${pluginCount}*
+┃𖠄│ Commands: *${totalCommands}*
+┃𖠄╰──────────────⬤
+╰━━━━━━━━━━━━━━━⬤
 
-╭────❏ *DOWNLOAD COMMANDS* ❏
-${menu.download || 'None'}
-╰━━━━━━━━━━━━━━──⊷
+╭━━━〔 *DOWNLOAD COMMANDS* 〕━━━⬤
+${menu.download || '┃𖠄│ None'}
+╰━━━━━━━━━━━━━━━⬤
 
-╭────❏ *MAIN COMMANDS* ❏
-${menu.main || 'None'}
-╰━━━━━━━━━━━━━━──⊷
+╭━━━〔 *MAIN COMMANDS* 〕━━━⬤
+${menu.main || '┃𖠄│ None'}
+╰━━━━━━━━━━━━━━━⬤
 
-╭────❏ *GROUP COMMANDS* ❏
-${menu.group || 'None'}
-╰━━━━━━━━━━━━━━──⊷
+╭━━━〔 *GROUP COMMANDS* 〕━━━⬤
+${menu.group || '┃𖠄│ None'}
+╰━━━━━━━━━━━━━━━⬤
 
-╭────❏ *OWNER COMMANDS* ❏
-${menu.owner || 'None'}
-╰━━━━━━━━━━━━━━──⊷
+╭━━━〔 *OWNER COMMANDS* 〕━━━⬤
+${menu.owner || '┃𖠄│ None'}
+╰━━━━━━━━━━━━━━━⬤
 
-╭────❏ *CONVERT COMMANDS* ❏
-${menu.convert || 'None'}
-╰━━━━━━━━━━━━━━──⊷
+╭━━━〔 *CONVERT COMMANDS* 〕━━━⬤
+${menu.convert || '┃𖠄│ None'}
+╰━━━━━━━━━━━━━━━⬤
 
-╭────❏ *SEARCH COMMANDS* ❏
-${menu.search || 'None'}
-╰━━━━━━━━━━━━━━──⊷
+╭━━━〔 *SEARCH COMMANDS* 〕━━━⬤
+${menu.search || '┃𖠄│ None'}
+╰━━━━━━━━━━━━━━━⬤
 
-╭────❏ *BUGS COMMANDS* ❏
-${menu.bugs || 'None'}
-╰━━━━━━━━━━━━━━──⊷
-
-╭────❏ *POWERED BY* ❏
-│ 
-╰━━━━━━━━━━━━━━──⊷
+╭━━━〔 *BUGS COMMANDS* 〕━━━⬤
+${menu.bugs || '┃𖠄│ None'}
+╰━━━━━━━━━━━━━━━⬤
 `;
 
         // Send the constructed menu
-        await conn.sendMessage(from, { image: { url: config.ALIVE_IMG }, caption: madeMenu }, { quoted: mek });
-
+        await conn.sendMessage(from, { text: madeMenu }, { quoted: mek });
     } catch (e) {
         console.error(e);
         reply(`An error occurred: ${e.message || e}`);
