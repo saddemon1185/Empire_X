@@ -1,4 +1,3 @@
-I want this codes to have the output of this image 
 const config = require('../config');
 const { cmd } = require('../command');
 const os = require("os");
