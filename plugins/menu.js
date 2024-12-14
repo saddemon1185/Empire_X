@@ -17,13 +17,13 @@ async (conn, mek, m, { from, quoted, reply }) => {
     try {
         // Dynamic command categories
         let menu = {
-            main: '',
+            ai: '',
             download: '',
+            fun: '',
             group: '',
             owner: '',
-            convert: '',
             search: '',
-            bugs: '',
+            system: '',
         };
 
         // Format uptime function
@@ -67,12 +67,16 @@ async (conn, mek, m, { from, quoted, reply }) => {
 ┃𖠄╰──────────────⬤
 ╰━━━━━━━━━━━━━━━⬤
 
-╭━━━〔 *DOWNLOAD COMMANDS* 〕━━━⬤
+╭━━━〔 AI COMMANDS* 〕━━━⬤
+${menu.ai || '┃𖠄│ None'}
+╰━━━━━━━━━━━━━⬤
+
+╭━━━〔 *DOWNLOAD COMMANDS* 〕━━⬤
 ${menu.download || '┃𖠄│ None'}
 ╰━━━━━━━━━━━━━⬤
 
-╭━━━〔 *MAIN COMMANDS* 〕━━⬤
-${menu.main || '┃𖠄│ None'}
+╭━━━〔 *FUN COMMANDS* 〕━━⬤
+${menu.fun || '┃𖠄│ None'}
 ╰━━━━━━━━━━━━━⬤
 
 ╭━━━〔 *GROUP COMMANDS* 〕━━⬤
@@ -83,16 +87,12 @@ ${menu.group || '┃𖠄│ None'}
 ${menu.owner || '┃𖠄│ None'}
 ╰━━━━━━━━━━━━━⬤
 
-╭━━━〔 *CONVERT COMMANDS* 〕━━━⬤
-${menu.convert || '┃𖠄│ None'}
-╰━━━━━━━━━━━━━⬤
-
 ╭━━━〔 *SEARCH COMMANDS* 〕━━⬤
 ${menu.search || '┃𖠄│ None'}
 ╰━━━━━━━━━━━━━⬤
 
-╭━━━〔 *BUGS COMMANDS* 〕━━⬤
-${menu.bugs || '┃𖠄│ None'}
+╭━━━〔 *SYSTEM COMMANDS* 〕━━━⬤
+${menu.system || '┃𖠄│ None'}
 ╰━━━━━━━━━━━━━⬤
 `;
         // Send the constructed menu
