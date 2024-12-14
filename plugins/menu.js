@@ -43,14 +43,12 @@ async (conn, mek, m, { from, quoted, reply }) => {
         const memoryUsage = (process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2);
         const totalCommands = commands.length;
 
-        // Categorize commands dynamically and sequentially number them
-        let commandCounter = 1;
+        // Categorize commands dynamically
         for (let i = 0; i < commands.length; i++) {
             const command = commands[i];
             if (command.pattern && !command.dontAddCommandList) {
                 if (menu[command.category] !== undefined) {
-                    menu[command.category] += `│ ${commandCounter}. ${prefix}${command.pattern}\n`;
-                    commandCounter++;
+                    menu[command.category] += `│ ${i + 1}. ${prefix}${command.pattern}\n`;
                 }
             }
         }
@@ -73,11 +71,11 @@ async (conn, mek, m, { from, quoted, reply }) => {
 ${menu.download || '┃𖠄│ None'}
 ╰━━━━━━━━━━━━━⬤
 
-╭━━━〔 *MAIN COMMANDS* 〕━━━⬤
+╭━━━〔 *MAIN COMMANDS* 〕━━⬤
 ${menu.main || '┃𖠄│ None'}
 ╰━━━━━━━━━━━━━⬤
 
-╭━━━〔 *GROUP COMMANDS* 〕━━━⬤
+╭━━━〔 *GROUP COMMANDS* 〕━━⬤
 ${menu.group || '┃𖠄│ None'}
 ╰━━━━━━━━━━━━━⬤
 
@@ -89,15 +87,22 @@ ${menu.owner || '┃𖠄│ None'}
 ${menu.convert || '┃𖠄│ None'}
 ╰━━━━━━━━━━━━━⬤
 
-╭━━━〔 *SEARCH COMMANDS* 〕━━━⬤
+╭━━━〔 *SEARCH COMMANDS* 〕━━⬤
 ${menu.search || '┃𖠄│ None'}
 ╰━━━━━━━━━━━━━⬤
 
-╭━━━〔 *BUGS COMMANDS* 〕━━━⬤
+╭━━━〔 *BUGS COMMANDS* 〕━━⬤
 ${menu.bugs || '┃𖠄│ None'}
 ╰━━━━━━━━━━━━━⬤
 `;
 
+        // Send the constructed menu
+        await conn.sendMessage(from, { text: madeMenu }, { quoted: mek });
+    } catch (e) {
+        console.error(e);
+        reply(`An error occurred: ${e.message || e}`);
+    }
+});
         // Send the constructed menu
         await conn.sendMessage(from, {
             image: { url: config.ALIVE_IMG },
