@@ -97,7 +97,8 @@ ${menu.bugs || '┃𖠄│ None'}
 `;
 
         // Send the constructed menu
-        await conn.sendMessage(from, { text: madeMenu }, { quoted: mek });
+        await conn.sendMessage(from,{image:{ url: config.ALIVE_IMG }, caption: madeMenu
+}, { quoted: mek });
     } catch (e) {
         console.error(e);
         reply(`An error occurred: ${e.message || e}`);
