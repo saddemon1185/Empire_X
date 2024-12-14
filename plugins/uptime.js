@@ -1,3 +1,4 @@
+I want this codes to have the output of this image 
 const config = require('../config');
 const { cmd } = require('../command');
 const os = require("os");
@@ -8,7 +9,7 @@ cmd({
     category: "main",
     filename: __filename
 },
-async (conn, mek, m, { from }) => {
+async (conn, mek, m, { from, quoted, pushname, reply }) => {
     try {
         // Function to format uptime
         function formatUptime(seconds) {
@@ -22,38 +23,18 @@ async (conn, mek, m, { from }) => {
         }
 
         // Get the formatted uptime
-        const uptime = formatUptime(process.uptime());
+        const uptime = formatUptime(process.uptime()); // Direct uptime calculation
 
-        // Button with link
-        const buttons = [
-            {
-                buttonId: 'join_channel',
-                buttonText: { displayText: 'Join Channel' },
-                type: 1
-            }
-        ];
+        // Construct the uptime message
+        const uptimeMessage = `*📌 Empire_X*\n\n` +
+            `*🕒 Bot Has Been Up For:*\n` +
+            `${uptime}`;
 
-        const buttonMessage = {
-            text: `🕒 *Bot Uptime*: _${uptime}_`,
-            footer: '',
-            buttons: buttons,
-            headerType: 1,
-            contextInfo: {
-                externalAdReply: {
-                    title: "",
-                    body: "",
-                    mediaType: 1,
-                    mediaUrl: "https://whatsapp.com/channel/0029VajVvpQIyPtUbYt3Oz0k",
-                    sourceUrl: "https://whatsapp.com/channel/0029VajVvpQIyPtUbYt3Oz0k"
-                }
-            }
-        };
-
-        // Send the button message with uptime
-        await conn.sendMessage(from, buttonMessage, { quoted: mek });
+        // Send the message
+        await conn.sendMessage(from, { text: uptimeMessage }, { quoted: mek });
 
     } catch (e) {
         console.log(e);
-        reply(`❌ An error occurred: ${e.message || e}`);
+        reply(`An error occurred: ${e.message || e}`);
     }
 });
