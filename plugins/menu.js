@@ -6,6 +6,7 @@ const fs = require('fs');
 const prefix = config.PREFIX || ".";
 const mode = config.MODE || "private";
 
+    
     cmd({
     pattern: "menu",
     desc: "Get command list",
@@ -69,38 +70,41 @@ async (conn, mek, m, { from, quoted, reply }) => {
 
 ╭━━━〔 *DOWNLOAD COMMANDS* 〕━━━⬤
 ${menu.download || '┃𖠄│ None'}
-╰━━━━━━━━━━━━━━━⬤
+╰━━━━━━━━━━━━━⬤
 
-╭━━━〔 *MAIN COMMANDS* 〕━━━⬤
+╭━━━〔 *MAIN COMMANDS* 〕━━⬤
 ${menu.main || '┃𖠄│ None'}
-╰━━━━━━━━━━━━━━━⬤
+╰━━━━━━━━━━━━━⬤
 
-╭━━━〔 *GROUP COMMANDS* 〕━━━⬤
+╭━━━〔 *GROUP COMMANDS* 〕━━⬤
 ${menu.group || '┃𖠄│ None'}
-╰━━━━━━━━━━━━━━━⬤
+╰━━━━━━━━━━━━━⬤
 
 ╭━━━〔 *OWNER COMMANDS* 〕━━━⬤
 ${menu.owner || '┃𖠄│ None'}
-╰━━━━━━━━━━━━━━━⬤
+╰━━━━━━━━━━━━━⬤
 
 ╭━━━〔 *CONVERT COMMANDS* 〕━━━⬤
 ${menu.convert || '┃𖠄│ None'}
-╰━━━━━━━━━━━━━━━⬤
+╰━━━━━━━━━━━━━⬤
 
-╭━━━〔 *SEARCH COMMANDS* 〕━━━⬤
+╭━━━〔 *SEARCH COMMANDS* 〕━━⬤
 ${menu.search || '┃𖠄│ None'}
-╰━━━━━━━━━━━━━━━⬤
+╰━━━━━━━━━━━━━⬤
 
-╭━━━〔 *BUGS COMMANDS* 〕━━━⬤
+╭━━━〔 *BUGS COMMANDS* 〕━━⬤
 ${menu.bugs || '┃𖠄│ None'}
-╰━━━━━━━━━━━━━━━⬤
+╰━━━━━━━━━━━━━⬤
 `;
 
         // Send the constructed menu
-        await conn.sendMessage(from,{image:{ url: config.ALIVE_IMG }, caption: madeMenu
+        await conn.sendMessage(from, {
+    image: { url: config.ALIVE_IMG }, 
+    caption: madeMenu
 }, { quoted: mek });
-    } catch (e) {
-        console.error(e);
-        reply(`An error occurred: ${e.message || e}`);
-    }
-});
+
+} catch (e) {
+console.log(e);
+reply(`${e}`);
+}
+})
