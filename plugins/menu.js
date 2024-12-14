@@ -95,14 +95,6 @@ ${menu.search || '┃𖠄│ None'}
 ${menu.bugs || '┃𖠄│ None'}
 ╰━━━━━━━━━━━━━⬤
 `;
-
-        // Send the constructed menu
-        await conn.sendMessage(from, { text: madeMenu }, { quoted: mek });
-    } catch (e) {
-        console.error(e);
-        reply(`An error occurred: ${e.message || e}`);
-    }
-});
         // Send the constructed menu
         await conn.sendMessage(from, {
             image: { url: config.ALIVE_IMG },
