@@ -6,8 +6,7 @@ const fs = require('fs');
 const prefix = config.PREFIX || ".";
 const mode = config.MODE || "private";
 
-    
-    cmd({
+cmd({
     pattern: "menu",
     desc: "Get command list",
     react: "⚙️",
@@ -44,12 +43,14 @@ async (conn, mek, m, { from, quoted, reply }) => {
         const memoryUsage = (process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2);
         const totalCommands = commands.length;
 
-        // Categorize commands dynamically
+        // Categorize commands dynamically and sequentially number them
+        let commandCounter = 1;
         for (let i = 0; i < commands.length; i++) {
             const command = commands[i];
             if (command.pattern && !command.dontAddCommandList) {
                 if (menu[command.category] !== undefined) {
-                    menu[command.category] += `│ ${i + 1}. ${prefix}${command.pattern}\n`;
+                    menu[command.category] += `│ ${commandCounter}. ${prefix}${command.pattern}\n`;
+                    commandCounter++;
                 }
             }
         }
@@ -72,11 +73,11 @@ async (conn, mek, m, { from, quoted, reply }) => {
 ${menu.download || '┃𖠄│ None'}
 ╰━━━━━━━━━━━━━⬤
 
-╭━━━〔 *MAIN COMMANDS* 〕━━⬤
+╭━━━〔 *MAIN COMMANDS* 〕━━━⬤
 ${menu.main || '┃𖠄│ None'}
 ╰━━━━━━━━━━━━━⬤
 
-╭━━━〔 *GROUP COMMANDS* 〕━━⬤
+╭━━━〔 *GROUP COMMANDS* 〕━━━⬤
 ${menu.group || '┃𖠄│ None'}
 ╰━━━━━━━━━━━━━⬤
 
@@ -88,23 +89,23 @@ ${menu.owner || '┃𖠄│ None'}
 ${menu.convert || '┃𖠄│ None'}
 ╰━━━━━━━━━━━━━⬤
 
-╭━━━〔 *SEARCH COMMANDS* 〕━━⬤
+╭━━━〔 *SEARCH COMMANDS* 〕━━━⬤
 ${menu.search || '┃𖠄│ None'}
 ╰━━━━━━━━━━━━━⬤
 
-╭━━━〔 *BUGS COMMANDS* 〕━━⬤
+╭━━━〔 *BUGS COMMANDS* 〕━━━⬤
 ${menu.bugs || '┃𖠄│ None'}
 ╰━━━━━━━━━━━━━⬤
 `;
 
         // Send the constructed menu
         await conn.sendMessage(from, {
-    image: { url: config.ALIVE_IMG }, 
-    caption: madeMenu
-}, { quoted: mek });
+            image: { url: config.ALIVE_IMG },
+            caption: madeMenu
+        }, { quoted: mek });
 
-} catch (e) {
-console.log(e);
-reply(`${e}`);
-}
-})
+    } catch (e) {
+        console.log(e);
+        reply(`${e}`);
+    }
+});
