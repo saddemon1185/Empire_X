@@ -8,9 +8,9 @@ cmd({
     category: "main",
     filename: __filename
 },
-async (conn, mek, m, { from, quoted, pushname, reply }) => {
+async (conn, mek, m, { from }) => {
     try {
-        // Function to format uptime into days, hours, minutes, and seconds
+        // Function to format uptime
         function formatUptime(seconds) {
             const days = Math.floor(seconds / (24 * 60 * 60));
             seconds %= 24 * 60 * 60;
@@ -24,38 +24,32 @@ async (conn, mek, m, { from, quoted, pushname, reply }) => {
         // Get the formatted uptime
         const uptime = formatUptime(process.uptime());
 
-        // Message text
-        const uptimeMessage = `📌 *Empire_X*  \n\n` +
-            `🕒 *Bot Has Been Up For:* _${uptime}_`;
-
         // Button with link
         const buttons = [
             {
-                buttonId: 'view_channel',
-                buttonText: { displayText: 'View channel' },
+                buttonId: 'join_channel',
+                buttonText: { displayText: 'Join Channel' },
                 type: 1
             }
         ];
 
         const buttonMessage = {
-            text: uptimeMessage,
-            footer: 'Contact: 𝑂𝑛𝑙𝑦_𝑜𝑛𝑒_🥇𝐸𝑚𝑝𝑖𝑟𝑒',
+            text: `🕒 *Bot Uptime*: _${uptime}_`,
+            footer: '',
             buttons: buttons,
             headerType: 1,
             contextInfo: {
                 externalAdReply: {
-                    title: "Empire_X",
-                    body: "WhatsApp Business · Status",
-                    thumbnailUrl: "https://raw.githubusercontent.com/efeurhobo/Empire_X/main/lib/assets/empire.jpg",
+                    title: "",
+                    body: "",
                     mediaType: 1,
-                    renderLargerThumbnail: true,
                     mediaUrl: "https://whatsapp.com/channel/0029VajVvpQIyPtUbYt3Oz0k",
                     sourceUrl: "https://whatsapp.com/channel/0029VajVvpQIyPtUbYt3Oz0k"
                 }
             }
         };
 
-        // Send the button message
+        // Send the button message with uptime
         await conn.sendMessage(from, buttonMessage, { quoted: mek });
 
     } catch (e) {
