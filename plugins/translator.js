@@ -28,30 +28,3 @@ cmd({
     return reply("⚠️ An error occurred while translating your text. Please try again later🤕");
   }
 });
-
-cmd({
-  pattern: "tts",
-  desc: "download songs",
-  category: "download",
-  react: "👧",
-  filename: __filename,
-}, async (_context, _replyContext, args, { from, quoted, q }) => {
-  try {
-    if (!q) return reply("Need some text.");
-    
-    const audioUrl = googleTTS.getAudioUrl(q, {
-      lang: "hi-IN",
-      slow: false,
-      host: "https://translate.google.com",
-    });
-    
-    await _context.sendMessage(from, {
-      audio: { url: audioUrl },
-      mimetype: "audio/mpeg",
-      ptt: true,
-    }, { quoted });
-  } catch (error) {
-    console.error(error);
-    return reply("⚠️ Error occurred while generating TTS.");
-  }
-});
