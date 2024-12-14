@@ -21,7 +21,7 @@ services:
       - key: AUTO_READ_STATUS
         value: "false"  # Enable auto-read status
       - key: AUTO_REACT
-        value: "true"  # Enable auto reactions if required
+        value: "false"  # Enable auto reactions if required
       - key: OWNER_REACT
         value: "true"  # Enable owner-specific reactions if needed
       - key: ALIVE_IMG
