@@ -5,10 +5,10 @@ const { cmd, commands } = require('../command');
 
 // GitHub Stalker Command
 cmd({
-  pattern: 'gitstalk',
-  desc: 'Fetch detailed GitHub user profile including profile picture.',
-  category: 'main',
-  react: '📚',
+  pattern: "gitstalk",
+  desc: "Fetch detailed GitHub user profile including profile picture.",
+  category: "search",
+  react: "📚",
   filename: __filename
 }, async (message, chat, pluginData, {
   from: userId,
@@ -57,7 +57,7 @@ cmd({
 cmd({
     pattern: "gitclone",
     desc: "Clone GitHub Repositories",
-    category: "download",
+    category: "search",
     filename: __filename
 },
 async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
@@ -133,7 +133,7 @@ async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, reply }) => 
 cmd({
     pattern: "repo", 
     desc: "Fetch Empire_X repository details",
-    category: "main",
+    category: "search",
     filename: __filename
 },
 async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, reply }) => {
