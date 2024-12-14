@@ -32,7 +32,7 @@
     },
     "AUTO_REACT": {
       "description": "Enable auto-reaction. TRUE or FALSE.",
-      "value": "true",
+      "value": "false",
       "required": true
     },
     "OWNER_REACT": {
