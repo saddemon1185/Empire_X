@@ -86,8 +86,14 @@ cmd({
         // Fetch the response from the Llama AI API
         let data = await fetchJson(`https://api.giftedtech.my.id/api/ai/llamaai?apikey=gifted&q=${encodeURIComponent(q)}`);
         
-        // Reply with the AI's response
-        return reply(`${data.result}`);
+        console.log(data); // Log the entire response to inspect its structure
+        
+        // Check if the response has the expected structure
+        if (data && data.result) {
+            return reply(`${data.result}`);
+        } else {
+            return reply("Sorry, I couldn't get a response from Llama AI.");
+        }
     } catch (e) {
         console.log(e); // Log any error for debugging
         reply(`Error: ${e.message}`);
