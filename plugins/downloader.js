@@ -291,3 +291,47 @@ cmd({
         reply(`An error occurred: ${e.message || e.response?.data?.error || e}`);
     }
 });
+
+//Spotify commands 
+cmd({
+    pattern: "spotify",
+    alias: ["spotifydownload", "spotifydl"],
+    desc: "Download Spotify audio",
+    category: "download",
+    react: "🎶",
+    filename: __filename
+}, async (conn, mek, m, { from, quoted, body, args, q, reply }) => {
+    try {
+        // Check for query
+        if (!q) {
+            return reply(`Please Enter a Spotify Song Link. Usage Example:\n*${config.prefix}spotify https://open.spotify.com/track/5n1lXmNIN4pgsYki9kVg1D*`);
+        }
+
+        // If a Spotify link is provided
+        if (q.startsWith("https://open.spotify.com")) {
+            let downloadUrl;
+            try {
+                // Send the API request to fetch the download URL for the provided Spotify link (MP3 audio)
+                let response = await axios.get(`https://api.giftedtech.my.id/api/download/spotifydl?apikey=gifted&url=${encodeURIComponent(q)}`);
+                downloadUrl = response.data.result.download_url;
+
+                // Download the audio
+                const buffer = await axios.get(downloadUrl, { responseType: 'arraybuffer' });
+
+                // Send the audio to the user
+                await conn.sendMessage(from, { audio: buffer.data, mimetype: "audio/mp3" }, { quoted: mek });
+                await m.react("✅");
+                return;
+            } catch (err) {
+                console.error("Error fetching download URL:", err);
+                return reply("❌ Unable to fetch download URL. Please try again later.");
+            }
+        }
+
+        // If the query is not a Spotify URL, reply with instructions
+        return reply(`❌ Invalid Spotify URL. Please use a valid Spotify track link. Example:\n*${config.prefix}spotify https://open.spotify.com/track/5n1lXmNIN4pgsYki9kVg1D*`);
+    } catch (e) {
+        console.error("Error in Spotify download command:", e);
+        reply(`❌ Error: ${e.message}`);
+    }
+});
