@@ -48,7 +48,7 @@ cmd({
 ◐╤╤✪〘 *Tag All* 〙✪╤╤◑
 
 ➲ *Message:* ${args.join(' ') || "blank"}\n\n
-➲ *Author:* ${pushname} 💀
+➲ *Author:* ${pushname}
         `;
         
         // Loop through participants and tag each member
