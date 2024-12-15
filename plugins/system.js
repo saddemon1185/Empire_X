@@ -38,22 +38,22 @@ cmd({
     pattern: "updatebot",
     react: "🔄",
     desc: "Update the bot from the GitHub repository",
-    category: "system",  // Changed category to "system"
+    category: "system", // Changed category to "system"
     use: '.update',
     filename: __filename
 }, async (conn, mek, m, { from, reply }) => {
     try {
-        const repoUrl = 'https://github.com/efeurhobo/Demon_V1.git'; // GitHub repository link
         const targetFolder = 'bot'; // Folder for your bot to be updated
 
-        const gitCommand = `git -C ${targetFolder} pull origin main`; // Command to pull updates
+        // Command to pull the latest updates from the GitHub repository
+        const gitCommand = `git -C ${targetFolder} pull origin main`; // Pull latest changes from the main branch
 
-        exec(gitCommand, (err, stdout, stderr) => {
-            if (err) {
-                return reply(`*Error during update:* ${err.message}`);
+        exec(gitCommand, (gitErr, gitStdout, gitStderr) => {
+            if (gitErr) {
+                return reply(`*Error during update:* ${gitErr.message}`);
             }
-            if (stderr) {
-                return reply(`*Git error:* ${stderr}`);
+            if (gitStderr) {
+                return reply(`*Git error:* ${gitStderr}`);
             }
 
             conn.sendMessage(from, { text: '*✅ Bot updated successfully from the repository!*' }, { quoted: mek });
