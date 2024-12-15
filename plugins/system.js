@@ -37,26 +37,26 @@ async (conn, mek, m, { from, quoted, reply }) => {
 cmd({
     pattern: "updatebot",
     react: "🔄",
-    desc: "Update the bot from the GitHub repository",
-    category: "system", // Changed category to "system"
+    desc: "Automatically update the bot from the GitHub repository",
+    category: "system",
     use: '.update',
     filename: __filename
 }, async (conn, mek, m, { from, reply }) => {
     try {
-        const targetFolder = 'bot'; // Folder for your bot to be updated
+        const targetFolder = 'bot'; // Directory of your bot project
+        const gitCommand = `git -C ${targetFolder} pull origin main`; // Pull updates from the 'main' branch
 
-        // Command to pull the latest updates from the GitHub repository
-        const gitCommand = `git -C ${targetFolder} pull origin main`; // Pull latest changes from the main branch
-
-        exec(gitCommand, (gitErr, gitStdout, gitStderr) => {
-            if (gitErr) {
-                return reply(`*Error during update:* ${gitErr.message}`);
+        exec(gitCommand, (err, stdout, stderr) => {
+            if (err) {
+                reply(`*Error during update:* ${err.message}`);
+                return;
             }
-            if (gitStderr) {
-                return reply(`*Git error:* ${gitStderr}`);
+            if (stderr) {
+                reply(`*Git stderr:* ${stderr}`);
+                return;
             }
 
-            conn.sendMessage(from, { text: '*✅ Bot updated successfully from the repository!*' }, { quoted: mek });
+            conn.sendMessage(from, { text: '*✅ Bot updated successfully with the latest files from GitHub!*' }, { quoted: mek });
         });
     } catch (error) {
         console.error("Error during bot update:", error);
