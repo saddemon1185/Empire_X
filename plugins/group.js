@@ -179,8 +179,6 @@ cmd({
 }) => {
     try {
         if (!isGroup) return reply("📛 *This command can only be used in a group.*");
-        if (!isBotAdmins) return reply("📛 *I must be an admin to use this command.*");
-        if (!isAdmins) return reply("📛 *You must be an admin to use this command.*");
 
         // If no message is provided, prompt the user to use the correct format
         if (args.length === 0) {
@@ -196,7 +194,7 @@ cmd({
 
         // Send the message with mentions
         await conn.sendMessage(from, {
-            text: `hidetag ${message}`, // Format the message as "hidetag <message>"
+            text: `${message}`, // Send the message to tag everyone
             mentions: participants.map(a => a.id), // Mentions all participants
         }, { quoted: mek });
 
