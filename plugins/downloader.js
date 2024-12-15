@@ -221,38 +221,81 @@ cmd({
     filename: __filename
 }, async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, reply }) => {
     try {
-        if (!q) return reply("Please send me the TikTok URL.");
-
-        const tiktokUrl = encodeURIComponent(q.trim());
-        if (!/^https?:\/\/www\.tiktok\.com/.test(q)) {
-            return reply("Please enter a valid TikTok URL starting with https://www.tiktok.com.");
+        // Check for query
+        if (!q) {
+            return reply(`Please enter a TikTok URL. Usage Example:\n*${config.prefix}tiktok https://www.tiktok.com/@user/video/1234567890123456789*`);
         }
 
-        const options = {
-            method: 'GET',
-            url: 'https://tiktok-videos-without-watermark.p.rapidapi.com/getVideo',
-            params: { url: tiktokUrl },
-            headers: {
-                'x-rapidapi-key': 'dc3a3dca06msh47756334a0558a2p102b06jsn201858f0f222',
-                'x-rapidapi-host': 'tiktok-videos-without-watermark.p.rapidapi.com'
+        // Validate if the provided URL is a valid TikTok URL
+        if (!/^https?:\/\/www\.tiktok\.com/.test(q)) {
+            return reply("❌ Please enter a valid TikTok URL starting with https://www.tiktok.com.");
+        }
+
+        // Encode the TikTok URL for the API request
+        const tiktokUrl = encodeURIComponent(q.trim());
+
+        // Send the API request to fetch the download URL for the TikTok video
+        let response = await axios.get(`https://api.giftedtech.my.id/api/download/tiktokdlv1?apikey=gifted&url=${tiktokUrl}`);
+        
+        // Extract necessary data
+        const videoUrl = response.data.result.download_url;
+        const videoTitle = response.data.result.title || "Untitled Video";
+        const videoAuthor = response.data.result.author || "Unknown";
+        const videoDuration = response.data.result.duration || "N/A";
+        const videoLikes = response.data.stats.likeCount || 0;
+        const videoComments = response.data.stats.commentCount || 0;
+        const videoShares = response.data.stats.shareCount || 0;
+        const videoPlays = response.data.stats.playCount || 0;
+
+        // If the video URL is not found, send an error message
+        if (!videoUrl) {
+            return reply("❌ Sorry, I couldn't fetch the video. Please check the URL and try again.");
+        }
+
+        // Information message for the TikTok video
+        const infoMessage = {
+            image: { url: response.data.result.thumbnail },
+            caption: `> *TikTok Video Downloader*  
+╭───────────────◆  
+│⿻ *Video Title:* ${videoTitle}
+│⿻ *Uploader:* ${videoAuthor}
+│⿻ *Duration:* ${videoDuration}s
+│⿻ *Likes:* ${videoLikes}
+│⿻ *Comments:* ${videoComments}
+│⿻ *Shares:* ${videoShares}
+│⿻ *Plays:* ${videoPlays}
+╰────────────────◆  
+⦿ *Direct TikTok Link:* ${q}
+╭────────────────◆  
+│ Powered by Empire_X
+╰─────────────────◆`,
+            contextInfo: {
+                mentionedJid: [mek.sender],
+                forwardingScore: 5,
+                isForwarded: true,
+                forwardedNewsletterMessageInfo: {
+                    newsletterJid: '120363337275149306@newsletter',
+                    newsletterName: "Empire_X",
+                    serverMessageId: 143
+                }
             }
         };
 
-        const response = await axios.request(options);
-        const videoUrl = response.data;
+        // Send the information message
+        await conn.sendMessage(from, infoMessage, { quoted: mek });
 
-        if (!videoUrl) {
-            return reply("Sorry, I couldn't fetch the video. Please check the URL.");
-        }
-
+        // Send the video to the user
         await conn.sendMessage(from, {
             video: { url: videoUrl },
             mimetype: "video/mp4",
+            fileName: `${videoTitle}.mp4`,
             caption: "Here is your TikTok video!"
         }, { quoted: mek });
+
+        await m.react("✅");
     } catch (e) {
         console.error(e);
-        reply(`An error occurred: ${e.message}`);
+        reply(`❌ An error occurred: ${e.message}`);
     }
 });
 
