@@ -93,7 +93,7 @@ cmd({
 }, async (conn, mek, m, { from, reply }) => {
     try {
         let data = await get(`https://api.giftedtech.my.id/api/fun/jokes?apikey=gifted`);
-        return reply(`${data.result}`);
+        return reply(`${data.result}`);  // Ensure the result is a string.
     } catch (e) {
         console.log(e);
         reply(`Error: ${e.message}`);
