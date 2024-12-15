@@ -7,36 +7,106 @@ const config = require('../config'); // Importing config file
 // Song Downloader Command
 cmd({
     pattern: "play",
-    desc: "Download Songs",
+    alias: ["music", "ytmp3", "audio"],
+    desc: "Download songs",
     category: "download",
+    react: "🎶",
     filename: __filename
-}, async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, reply }) => {
+}, async (conn, mek, m, { from, quoted, body, args, q, reply }) => {
     try {
-        if (!q) return reply("Send me URL or title name");
+        // Check for query
+        if (!q) {
+            return reply(`Please Enter a Search Query or YouTube link. Usage Example:\n*${config.prefix}play Spectre*\n*${config.prefix}play https://youtu.be/aGjXa18XCRY?si=-rNZHD-trThO1x4Y*`);
+        }
+
+        // If a YouTube link is provided
+        if (q.startsWith("https://youtu")) {
+            let downloadUrl;
+            try {
+                // Send the API request to fetch the download URL for the provided YouTube link
+                let response = await axios.get(`https://api.giftedtech.my.id/api/download/dlmp3?apikey=gifted&url=${encodeURIComponent(q)}`);
+                downloadUrl = response.data.result.download_url;
+
+                // Download the audio
+                const buffer = await axios.get(downloadUrl, { responseType: 'arraybuffer' });
+
+                // Send the audio to the user
+                await conn.sendMessage(from, { audio: buffer.data, mimetype: "audio/mp3" }, { quoted: mek });
+                await m.react("✅");
+                return;
+            } catch (err) {
+                console.error("Error fetching download URL:", err);
+                return reply("❌ Unable to fetch download URL. Please try again later.");
+            }
+        }
+
+        // If no link, perform a search for the video
         const search = await yts(q);
         const data = search.videos[0];
-        const url = data.url;
+        const videoUrl = data.url;
 
-        let desc = `
-🌟 *𝐄𝐦𝐩𝐢𝐫𝐞_𝐕𝟏 SONG DOWNLOADER* 🌟
-  
-Title: ${data.title}
-Description: ${data.description}
-Duration: ${data.timestamp}
-Uploaded: ${data.ago}
-Views: ${data.views}
+        // Fetch the download URL for the found video
+        let downloadUrl;
+        try {
+            let response = await axios.get(`https://api.giftedtech.my.id/api/download/dlmp3?apikey=gifted&url=${encodeURIComponent(videoUrl)}`);
+            downloadUrl = response.data.result.download_url;
+        } catch (err) {
+            console.error("Error fetching download URL:", err);
+            return reply("❌ Unable to fetch download URL. Please try again later.");
+        }
 
-MADE BY 𝐎𝐧𝐥𝐲_𝐨𝐧𝐞_🥇𝐞𝐦𝐩𝐢𝐫𝐞
-        `;
-        await conn.sendMessage(from, { image: { url: data.thumbnail }, caption: desc }, { quoted: mek });
+        // Information Message
+        const infoMessage = {
+            image: { url: data.thumbnail },
+            caption: `> *${config.BOT_NAME} SONG DOWNLOADER*  
+╭───────────────◆  
+│⿻ *Title:* ${data.title}
+│⿻ *Quality:* mp3 (128kbps)
+│⿻ *Duration:* ${data.timestamp}
+│⿻ *Viewers:* ${data.views}
+│⿻ *Uploaded:* ${data.ago}
+│⿻ *Artist:* ${data.author.name}
+╰────────────────◆  
+⦿ *Direct Yt Link:* ${videoUrl}
+╭────────────────◆  
+│ Powered by Empire_X
+╰─────────────────◆`,
+            contextInfo: {
+                mentionedJid: [mek.sender],
+                forwardingScore: 5,
+                isForwarded: true,
+                forwardedNewsletterMessageInfo: {
+                    newsletterJid: '120363337275149306@newsletter',
+                    newsletterName: "Empire_X",
+                    serverMessageId: 143
+                }
+            }
+        };
 
+        await conn.sendMessage(from, infoMessage, { quoted: mek });
+
+        // Send the audio file
         await conn.sendMessage(from, {
-            audio: { url: `https://api.giftedtech.my.id/api/download/ytmp3?apikey=gifted&url=${url}` },
-            mimetype: "audio/mpeg"
+            audio: { url: downloadUrl },
+            fileName: `${data.title}.mp3`,
+            mimetype: 'audio/mpeg',
+            contextInfo: {
+                externalAdReply: {
+                    showAdAttribution: false,
+                    title: data.title,
+                    body: 'Powered by Empire_X',
+                    thumbnailUrl: data.thumbnail,
+                    sourceUrl: config.channelUrl,
+                    mediaType: 1,
+                    renderLargerThumbnail: false
+                }
+            }
         }, { quoted: mek });
+
+        await m.react("✅");
     } catch (e) {
-        console.log(e);
-        reply(`${e}`);
+        console.error("Error in play command:", e);
+        reply(`❌ Error: ${e.message}`);
     }
 });
 
