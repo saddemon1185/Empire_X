@@ -224,3 +224,41 @@ cmd({
         reply(`Error: ${e.message}`);
     }
 });
+
+// Lyrics Downloader Command
+cmd({
+    pattern: "lyrics",
+    desc: "Get lyrics of a song",
+    category: "search",
+    filename: __filename
+}, async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, reply }) => {
+    try {
+        if (!q) return reply("Please provide the song name to get the lyrics");
+
+        // Define the search query (e.g., "faded")
+        const query = q;
+
+        // Construct the search URL for lyrics API
+        const searchUrl = `https://api.giftedtech.my.id/api/search/lyrics?apikey=gifted&query=${query}`;
+
+        // Fetch the lyrics from the API
+        const response = await fetch(searchUrl);
+        const data = await response.json();
+
+        // Check if lyrics are available
+        if (data && data.lyrics) {
+            const lyrics = data.lyrics; // Get the lyrics of the song
+
+            // Send the lyrics as a text message
+            await conn.sendMessage(from, {
+                text: `🎤 *Lyrics for: ${query}* 🎶\n\n${lyrics}`
+            }, { quoted: mek });
+        } else {
+            reply("Sorry, no lyrics found for your query.");
+        }
+
+    } catch (e) {
+        console.log(e);
+        reply(`Error: ${e.message}`);
+    }
+});
