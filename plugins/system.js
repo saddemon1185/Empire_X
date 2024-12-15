@@ -141,30 +141,37 @@ cmd({
 cmd({
     pattern: "ping",
     desc: "To check ping",
-    category: "system",  // Changed category to "system"
+    category: "system",
     filename: __filename,
-}, async (conn, mek, m, { from, reply }) => {
+}, async (conn, mek, m, { from }) => {
     try {
         const initialTime = new Date().getTime();
+
+        // Send the initial message
         const sentMessage = await conn.sendMessage(from, { text: '```Pinging from server...```' }, { quoted: mek });
 
         const loadingSteps = [20, 40, 60, 80, 100];
         for (const step of loadingSteps) {
             const bar = '█'.repeat(step / 5) + '░'.repeat(20 - step / 5);
+            const updatedMessage = `*Pong*\nLoading: [${bar}] ${step}%`;
+
+            // Wait for 500ms before updating
             await new Promise(resolve => setTimeout(resolve, 500));
-            await conn.sendMessage(from, { 
-                text: `*Pong*\nLoading: [${bar}] ${step}%` 
-            }, { quoted: mek, edit: sentMessage.key });
+
+            // Edit the same message with updated progress
+            await conn.sendMessage(from, { text: updatedMessage }, { edit: sentMessage.key });
         }
 
+        // Calculate the ping value
         const pingValue = new Date().getTime() - initialTime;
-        await conn.sendMessage(from, { 
-            text: `*Pong: ${pingValue} ms*` 
-        }, { quoted: mek, edit: sentMessage.key });
+
+        // Final update with ping result
+        const finalMessage = `*Pong: ${pingValue} ms*`;
+        await conn.sendMessage(from, { text: finalMessage }, { edit: sentMessage.key });
 
     } catch (error) {
         console.error("Error in ping command:", error);
-        await reply("❌ An error occurred while checking the ping.");
+        await conn.sendMessage(from, { text: "❌ An error occurred while checking the ping." }, { quoted: mek });
     }
 });
 
