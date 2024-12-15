@@ -11,7 +11,7 @@ cmd({
   react: "📚",
   filename: __filename
 }, async (message, chat, pluginData, {
-  from: userId,
+  from,
   quoted,
   body,
   isCmd,
@@ -25,31 +25,34 @@ cmd({
       return reply('Please provide a GitHub username.');
     }
 
+    const axios = require('axios'); // Ensure axios is imported
     const url = `https://api.github.com/users/${username}`;
     const response = await axios.get(url);
     const user = response.data;
 
-    let userDetails = `
-      *│  ◦*🔗 *GitHub URL*: (${user.html_url})
-      *│  ◦*📝 *Bio*: ${user.bio || 'Not available'}
-      *│  ◦*🏙️ *Location*: ${user.location || 'Not available'}
-      *│  ◦*👥 *Followers*: ${user.followers}
-      *│  ◦*📊 *Public Repos*: ${user.public_repos}
-      *│  ◦*🔭 *Public Gists*: ${user.public_gists}
-      *│  ◦*📅 *Created At*: ${new Date(user.created_at).toDateString()}
-      *│  ◦*Following: ${user.following}
-      
-      *Made with ❤️ by Empire_X*
-    `;
+    const userDetails = `
+*GitHub User Profile*
+🔗 *GitHub URL*: [${user.login}](${user.html_url})
+📝 *Bio*: ${user.bio || 'Not available'}
+🏙️ *Location*: ${user.location || 'Not available'}
+👥 *Followers*: ${user.followers}
+📊 *Public Repos*: ${user.public_repos}
+🔭 *Public Gists*: ${user.public_gists}
+📅 *Created At*: ${new Date(user.created_at).toDateString()}
+👤 *Following*: ${user.following}
 
-    await message.sendMessage(userId, {
+*Made with ❤️ by Empire_X*
+`;
+
+    // Send profile picture and details
+    await message.sendMessage({
       image: { url: user.avatar_url },
       caption: userDetails
     }, { quoted });
 
   } catch (error) {
-    console.log(error);
-    reply('Error fetching data 🤕: ' + (error.response ? error.response.data.message : error.message));
+    console.error(error);
+    reply('Error fetching data 🤕: ' + (error.response?.data?.message || error.message));
   }
 });
 
