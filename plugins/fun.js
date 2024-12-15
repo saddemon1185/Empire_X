@@ -100,3 +100,22 @@ cmd({
         reply(`Error: ${e.message}`);
     }
 });
+
+//advice commands
+cmd({
+    pattern: "advice",
+    desc: "Get a random piece of advice",
+    category: "fun",
+    filename: __filename
+}, async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
+    try {
+        // Fetch a random piece of advice from the API
+        let data = await fetchJson(`https://api.giftedtech.my.id/api/fun/advice?apikey=gifted`);
+        
+        // Reply with the advice
+        return reply(`${data.result}`);
+    } catch (e) {
+        console.log(e); // Log any error for debugging
+        reply(`Error: ${e.message}`);
+    }
+});
