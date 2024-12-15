@@ -22,3 +22,74 @@ cmd({
         reply(`Error: ${e.message}`);
     }
 });
+
+//blackbox ai
+
+cmd({
+    pattern: "blackbox",
+    desc: "AI chat using Blackbox AI",
+    category: "ai",
+    filename: __filename
+}, async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
+    try {
+        if (!q) {
+            return reply("Please provide a query for Blackbox AI.");
+        }
+
+        // Fetch the response from the Blackbox AI API
+        let data = await fetchJson(`https://api.giftedtech.my.id/api/ai/blackbox?apikey=gifted&q=${encodeURIComponent(q)}`);
+        
+        // Reply with the AI's response
+        return reply(`${data.result}`);
+    } catch (e) {
+        console.log(e); // Log any error for debugging
+        reply(`Error: ${e.message}`);
+    }
+});
+
+//letmegpt commands 
+
+cmd({
+    pattern: "letmegpt",
+    desc: "AI chat using LetMeGPT",
+    category: "ai",
+    filename: __filename
+}, async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
+    try {
+        if (!q) {
+            return reply("Please provide a query for LetMeGPT.");
+        }
+
+        // Fetch the response from the LetMeGPT API
+        let data = await fetchJson(`https://api.giftedtech.my.id/api/ai/letmegpt?apikey=gifted&query=${encodeURIComponent(q)}`);
+        
+        // Reply with the AI's response
+        return reply(`${data.result}`);
+    } catch (e) {
+        console.log(e); // Log any error for debugging
+        reply(`Error: ${e.message}`);
+    }
+});
+
+//liama commands
+cmd({
+    pattern: "liama",
+    desc: "AI chat using Llama AI",
+    category: "ai",
+    filename: __filename
+}, async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
+    try {
+        if (!q) {
+            return reply("Please provide a query for Llama AI.");
+        }
+
+        // Fetch the response from the Llama AI API
+        let data = await fetchJson(`https://api.giftedtech.my.id/api/ai/llamaai?apikey=gifted&q=${encodeURIComponent(q)}`);
+        
+        // Reply with the AI's response
+        return reply(`${data.result}`);
+    } catch (e) {
+        console.log(e); // Log any error for debugging
+        reply(`Error: ${e.message}`);
+    }
+});
