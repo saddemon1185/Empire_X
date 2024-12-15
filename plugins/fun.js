@@ -1,7 +1,19 @@
 const { cmd, commands } = require('../command');
 const { sleep } = require('../lib/functions');
 const msg = require('../lib/msg');
+const axios = require('axios'); // Import axios
 
+// Helper function to fetch data from the API using axios
+async function get(url) {
+    try {
+        const response = await axios.get(url);
+        return response.data;
+    } catch (error) {
+        throw new Error(`HTTP error! status: ${error.response ? error.response.status : error.message}`);
+    }
+}
+
+// Hack prank command
 cmd({
     pattern: "hack",
     desc: "Hacking prank",
@@ -9,7 +21,6 @@ cmd({
     filename: __filename
 }, async (conn, mek, m, { from, reply }) => {
     try {
-        // Prank messages
         const messages = [
             "HAKI Injecting Malware",
             " █ 10%",
@@ -30,11 +41,9 @@ cmd({
             "BACKLOGS CLEARED"
         ];
 
-        let editedMessage;
         for (const message of messages) {
-            editedMessage = await conn.sendMessage(from, { text: message }, { quoted: mek });
-            await new Promise(resolve => setTimeout(resolve, 1000)); // Delay between messages
-            await conn.sendMessage(from, { text: message }, { quoted: mek, edit: editedMessage.key });
+            await conn.sendMessage(from, { text: message }, { quoted: mek });
+            await sleep(1000); // Delay between messages
         }
 
     } catch (e) {
@@ -43,79 +52,66 @@ cmd({
     }
 });
 
-//rizz command's 
+// Rizz command
 cmd({
     pattern: "rizz",
     desc: "Get a random pickup line",
     category: "fun",
     filename: __filename
-}, async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
+}, async (conn, mek, m, { from, reply }) => {
     try {
-        // Fetch a random pickup line from the API
-        let data = await fetchJson(`https://api.giftedtech.my.id/api/fun/pickupline?apikey=gifted`);
-        
-        // Reply with the pickup line
+        let data = await get(`https://api.giftedtech.my.id/api/fun/pickupline?apikey=gifted`);
         return reply(`${data.result}`);
     } catch (e) {
-        console.log(e); // Log any error for debugging
+        console.log(e);
         reply(`Error: ${e.message}`);
     }
 });
 
-// motivational commands
-
+// Motivation command
 cmd({
     pattern: "motivation",
     desc: "Get a motivational quote",
     category: "fun",
     filename: __filename
-}, async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
+}, async (conn, mek, m, { from, reply }) => {
     try {
-        // Fetch a motivational quote from the API
-        let data = await fetchJson(`https://api.giftedtech.my.id/api/fun/motivation?apikey=gifted`);
-        
-        // Reply with the motivational quote
+        let data = await get(`https://api.giftedtech.my.id/api/fun/motivation?apikey=gifted`);
         return reply(`${data.result}`);
     } catch (e) {
-        console.log(e); // Log any error for debugging
+        console.log(e);
         reply(`Error: ${e.message}`);
     }
 });
 
-//jokes commands 
+// Jokes command
 cmd({
     pattern: "jokes",
     desc: "Get a random joke",
     category: "fun",
     filename: __filename
-}, async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
+}, async (conn, mek, m, { from, reply }) => {
     try {
-        // Fetch a random joke from the API
-        let data = await fetchJson(`https://api.giftedtech.my.id/api/fun/jokes?apikey=gifted`);
-        
-        // Reply with the joke
+        let data = await get(`https://api.giftedtech.my.id/api/fun/jokes?apikey=gifted`);
         return reply(`${data.result}`);
     } catch (e) {
-        console.log(e); // Log any error for debugging
+        console.log(e);
         reply(`Error: ${e.message}`);
     }
 });
 
-//advice commands
+// Advice command
 cmd({
     pattern: "advice",
     desc: "Get a random piece of advice",
     category: "fun",
     filename: __filename
-}, async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
+}, async (conn, mek, m, { from, reply }) => {
     try {
-        // Fetch a random piece of advice from the API
-        let data = await fetchJson(`https://api.giftedtech.my.id/api/fun/advice?apikey=gifted`);
-        
-        // Reply with the advice
+        let data = await get(`https://api.giftedtech.my.id/api/fun/advice?apikey=gifted`);
         return reply(`${data.result}`);
     } catch (e) {
-        console.log(e); // Log any error for debugging
+        console.log(e);
         reply(`Error: ${e.message}`);
     }
 });
