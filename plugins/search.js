@@ -113,25 +113,17 @@ async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, reply }) => 
         // Fetch the screenshot
         const webimage = await axios.get(screenshotApi, { responseType: 'arraybuffer' });
 
-        // Send the screenshot as an image first
+        // Send the screenshot as an image without a caption
         await conn.sendMessage(from, {
             image: Buffer.from(webimage.data),
             mimetype: "image/png"
         }, { quoted: mek });
-
-        // Wait for 2 seconds and send the caption
-        setTimeout(async () => {
-            await conn.sendMessage(from, {
-                text: `🌟 *By Empire_X`
-            }, { quoted: mek });
-        }, 2000); // Delay of 2 seconds
 
     } catch (e) {
         console.error(e.response?.data || e.message); // Log detailed error
         reply(`An error occurred: ${e.response?.data?.error || e.message}`);
     }
 });
-
 // repo commands 
 
 cmd({
