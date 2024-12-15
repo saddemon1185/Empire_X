@@ -185,3 +185,42 @@ async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, reply }) => 
         reply("Empire_X says: An error occurred while fetching repository information.");
     }
 });
+
+// Image Downloader Command
+cmd({
+    pattern: "img",
+    desc: "Download image from Google",
+    category: "download",
+    filename: __filename
+}, async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, reply }) => {
+    try {
+        if (!q) return reply("Send me the search term to find an image");
+
+        // Define the search query (e.g., "cat")
+        const query = q;
+
+        // Construct the search URL for Google Images
+        const searchUrl = `https://api.giftedtech.my.id/api/search/googleimage?apikey=gifted&query=${query}`;
+
+        // Fetch the image from the API
+        const response = await fetch(searchUrl);
+        const data = await response.json();
+
+        // Check if data is available
+        if (data && data.results && data.results.length > 0) {
+            const imageUrl = data.results[0].url; // Get the first image URL
+
+            // Send the image as an 'img' type message
+            await conn.sendMessage(from, {
+                img: { url: imageUrl },
+                caption: `Here is the image you searched for: ${query}`
+            }, { quoted: mek });
+        } else {
+            reply("No images found for your query.");
+        }
+
+    } catch (e) {
+        console.log(e);
+        reply(`Error: ${e.message}`);
+    }
+});
