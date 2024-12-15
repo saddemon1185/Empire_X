@@ -53,7 +53,7 @@ cmd({
         
         // Loop through participants and tag each member
         for (let mem of participants) {
-            textt += `⚡️ @${mem.id.split('@')[0]}\n`;
+            textt += `📌 @${mem.id.split('@')[0]}\n`;
         }
 
         // Send the tagged message
