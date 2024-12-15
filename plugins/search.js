@@ -177,7 +177,7 @@ async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, reply }) => 
 ╰━━━━━━━━━━━━━━━━━━━━━━━━──⊷
 
 ╭────❏ *DEPLOY NOW* ❏
-│* _DEPLOY 𝐄𝐌𝐏𝐈𝐑𝐄_𝑋 NOW_*
+│*_DEPLOY 𝐄𝐌𝐏𝐈𝐑𝐄_𝑋 NOW_*
 ╰━━━━━━━━━━━━━━━━━━━━━━━━──⊷
 `.trim();
 
