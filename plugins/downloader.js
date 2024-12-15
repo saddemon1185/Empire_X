@@ -1,9 +1,9 @@
-const axios = require('axios');
 const { cmd, commands } = require('../command');
 const fg = require('api-dylux');
-const yts = require('yt-search');
 const googleTTS = require("google-tts-api");
-
+const axios = require('axios');
+const yts = require('yt-search');
+const config = require('../config'); // Importing config file
 // Song Downloader Command
 cmd({
     pattern: "play",
