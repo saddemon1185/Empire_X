@@ -190,7 +190,7 @@ async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, reply }) => 
 cmd({
     pattern: "img",
     desc: "Download image from Google",
-    category: "download",
+    category: "search",
     filename: __filename
 }, async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, reply }) => {
     try {
