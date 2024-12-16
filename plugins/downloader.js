@@ -4,6 +4,9 @@ const googleTTS = require("google-tts-api");
 const axios = require('axios');
 const yts = require('yt-search');
 const config = require('../config'); // Importing config file
+
+const prefix = config.PREFIX; // Get the prefix from the config
+
 // Song Downloader Command
 cmd({
     pattern: "play",
