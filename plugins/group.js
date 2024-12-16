@@ -4,19 +4,6 @@ const config = require('../config');
 const prefix = config.PREFIX; // Get the prefix from the config
 
 cmd({
-    pattern: "jid",
-    desc: "Get the bot's JID.",
-    category: "group", // Changed to group
-    react: "🤖",
-    filename: __filename
-},
-async (conn, mek, m, { from, isOwner, reply }) => {
-    if (!isOwner) return reply("❌ You are not the owner!");
-    reply(`🤖 *Bot JID:* ${conn.user.jid}`);
-});
-
-// Group JIDs List
-cmd({
     pattern: "gjid",
     desc: "Get the list of JIDs for all groups the bot is part of.",
     category: "group", // Changed to group
@@ -24,7 +11,7 @@ cmd({
     filename: __filename
 },
 async (conn, mek, m, { from, isOwner, reply }) => {
-    if (!isOwner) return reply("❌ You are not the owner!");
+    if (!isOwner) return reply("𝐓𝐡𝐢𝐬 𝐂𝐨𝐦𝐦𝐚𝐧𝐝 𝐈𝐬 𝐎𝐧𝐥𝐲 𝐅𝐨𝐫 𝐌𝐲 𝐎𝐰𝐧𝐞𝐫 ⚠️");
     const groups = await conn.groupFetchAllParticipating();
     const groupJids = Object.keys(groups).join('\n');
     reply(`📝 *Group JIDs:*\n\n${groupJids}`);
@@ -38,7 +25,7 @@ cmd({
     filename: __filename,
 }, async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber, pushname, groupMetadata, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
     try {
-        if (!isGroup) return reply("This command can only be used in a group.");
+        if (!isGroup) return reply("𝐓𝐡𝐢𝐬 𝐅𝐞𝐚𝐭𝐮𝐫𝐞 𝐈𝐬 𝐎𝐧𝐥𝐲 𝐅𝐨𝐫 𝐆𝐫𝐨𝐮𝐩❗");
         
         // Fetch group metadata to get participants
         groupMetadata = await conn.groupMetadata(from);
@@ -77,7 +64,7 @@ cmd({
 }, async (conn, mek, m, { from, quoted, body, args, q, isOwner, reply }) => {
     try {
         // Check if the command is being used by the owner
-        if (!isOwner) return reply("This command is restricted to the owner.");
+        if (!isOwner) return reply("𝐓𝐡𝐢𝐬 𝐂𝐨𝐦𝐦𝐚𝐧𝐝 𝐈𝐬 𝐎𝐧𝐥𝐲 𝐅𝐨𝐫 𝐌𝐲 𝐎𝐰𝐧𝐞𝐫 ⚠️");
 
         // Check if the URL is provided
         if (!args[0]) return reply("Please provide a valid WhatsApp group link.");
@@ -96,7 +83,7 @@ cmd({
 
         // Attempt to join the group using the extracted invite code
         await conn.groupAcceptInvite(inviteCode)
-            .then(() => reply("😁 Successfully joined the group!"))
+            .then(() => reply("𝐃𝐨𝐧𝐞 ✓"))
             .catch((err) => {
                 console.error("Error joining group:", err);
                 reply("❌ Failed to join the group. Please ensure the link is correct or the group is open to invites.");
@@ -118,7 +105,7 @@ cmd({
 }, async (conn, mek, m, { from, quoted, body, args, q, isGroup, sender, reply }) => {
     try {
         // Ensure this is being used in a group
-        if (!isGroup) return reply("📛 𝗧𝗵𝗶𝘀 𝗰𝗼𝗺𝗺𝗮𝗻𝗱 𝗰𝗮𝗻 𝗼𝗻𝗹𝘆 𝗯𝗲 𝘂𝘀𝗲𝗱 𝗶𝗻 𝗮 𝗴𝗿𝗼𝘂𝗽");
+        if (!isGroup) return reply("𝐓𝐡𝐢𝐬 𝐅𝐞𝐚𝐭𝐮𝐫𝐞 𝐈𝐬 𝐎𝐧𝐥𝐲 𝐅𝐨𝐫 𝐆𝐫𝐨𝐮𝐩❗");
 
         // Get the sender's number
         const senderNumber = sender.split('@')[0];
@@ -129,11 +116,11 @@ cmd({
         const groupAdmins = groupMetadata ? groupMetadata.participants.filter(member => member.admin) : [];
         const isBotAdmins = isGroup ? groupAdmins.some(admin => admin.id === botNumber + '@s.whatsapp.net') : false;
         
-        if (!isBotAdmins) return reply("I need to be an admin to generate the group link.");
+        if (!isBotAdmins) return reply("𝐏𝐥𝐞𝐚𝐬𝐞 𝐏𝐫𝐨𝐯𝐢𝐝𝐞 𝐌𝐞 𝐀𝐝𝐦𝐢𝐧 𝐑𝐨𝐥𝐞 ❗");
 
         // Check if the sender is an admin
         const isAdmins = isGroup ? groupAdmins.some(admin => admin.id === sender) : false;
-        if (!isAdmins) return reply("You must be an admin to generate the group link.");
+        if (!isAdmins) return reply("𝐏𝐥𝐞𝐚𝐬𝐞 𝐏𝐫𝐨𝐯𝐢𝐝𝐞 𝐌𝐞 𝐀𝐝𝐦𝐢𝐧 𝐑𝐨𝐥𝐞 ❗");
 
         // Get the invite code and generate the link
         const inviteCode = await conn.groupInviteCode(from);
@@ -178,7 +165,7 @@ cmd({
     reply
 }) => {
     try {
-        if (!isGroup) return reply("📛 𝗧𝗵𝗶𝘀 𝗰𝗼𝗺𝗺𝗮𝗻𝗱 𝗰𝗮𝗻 𝗼𝗻𝗹𝘆 𝗯𝗲 𝘂𝘀𝗲𝗱 𝗶𝗻 𝗮 𝗴𝗿𝗼𝘂𝗽");
+        if (!isGroup) return reply("𝐓𝐡𝐢𝐬 𝐅𝐞𝐚𝐭𝐮𝐫𝐞 𝐈𝐬 𝐎𝐧𝐥𝐲 𝐅𝐨𝐫 𝐆𝐫𝐨𝐮𝐩❗");
 
         // If no message is provided, prompt the user to use the correct format
         if (args.length === 0) {
