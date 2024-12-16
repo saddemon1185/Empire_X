@@ -58,7 +58,7 @@ cmd({
         // Skip blocking the example number
         if (numberToBlock === exampleNumber) {
             await conn.sendMessage(from, {
-                text: `The number ${exampleNumber} cannot be blocked.`,
+                text: `You Can't Block The Developer ${exampleNumber}`,
             }, { quoted: mek });
             return;
         }
@@ -70,7 +70,7 @@ cmd({
             try {
                 await conn.updateBlockStatus(userId, 'block');
                 await conn.sendMessage(from, {
-                    text: `Number ${numberToBlock} has been blocked successfully.`,
+                    text: `𝐃𝐨𝐧𝐞 ✓ ${numberToBlock} has been blocked successfully.`,
                 }, { quoted: mek });
             } catch (err) {
                 console.error(err);
@@ -84,7 +84,7 @@ cmd({
             try {
                 await conn.updateBlockStatus(userId, 'block');
                 await conn.sendMessage(from, {
-                    text: `Number ${numberToBlock} has been blocked successfully.`,
+                    text: `𝐃𝐨𝐧𝐞 ✓ ${numberToBlock} has been blocked successfully.`,
                 }, { quoted: mek });
             } catch (err) {
                 console.error(err);
@@ -122,7 +122,7 @@ cmd({
         // Skip unblocking the example number
         if (numberToUnblock === exampleNumber) {
             await conn.sendMessage(from, {
-                text: `The number ${exampleNumber} cannot be unblocked.`,
+                text: `You Can't Block The Developer ${exampleNumber}`,
             }, { quoted: mek });
             return;
         }
@@ -134,7 +134,7 @@ cmd({
             try {
                 await conn.updateBlockStatus(userId, 'unblock');
                 await conn.sendMessage(from, {
-                    text: `Number ${numberToUnblock} has been unblocked successfully.`,
+                    text: `𝐃𝐨𝐧𝐞 ✓${numberToUnblock} has been unblocked successfully.`,
                 }, { quoted: mek });
             } catch (err) {
                 console.error(err);
@@ -148,7 +148,7 @@ cmd({
             try {
                 await conn.updateBlockStatus(userId, 'unblock');
                 await conn.sendMessage(from, {
-                    text: `Number ${numberToUnblock} has been unblocked successfully.`,
+                    text: `𝐃𝐨𝐧𝐞 ✓ ${numberToUnblock} has been unblocked successfully.`,
                 }, { quoted: mek });
             } catch (err) {
                 console.error(err);
