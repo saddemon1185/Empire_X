@@ -378,3 +378,47 @@ cmd({
         reply(`❌ Error: ${e.message}`);
     }
 });
+
+//telegram stickers commands 
+cmd({
+    pattern: "telegramsticker",
+    desc: "Download Telegram Stickers",
+    category: "download",
+    filename: __filename
+}, async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, reply }) => {
+    try {
+        // Check for query
+        if (!q) {
+            return reply(`Please send the Telegram Sticker URL. Usage Example:\n*${config.prefix}telegramsticker https://t.me/addstickers/stickerpackname*`);
+        }
+
+        // Validate if the provided URL is a valid Telegram Sticker URL
+        if (!/^https?:\/\/t\.me\/addstickers/.test(q)) {
+            return reply("❌ Please enter a valid Telegram Sticker URL starting with https://t.me/addstickers/");
+        }
+
+        // Encode the Sticker URL for the API request
+        const stickerUrl = encodeURIComponent(q.trim());
+
+        // Send the API request to fetch the download URL for the Telegram sticker
+        let response = await axios.get(`https://api.giftedtech.my.id/api/download/tgs?apikey=gifted&url=${stickerUrl}`);
+        
+        // Extract the download URL for the sticker
+        const stickerDownloadUrl = response.data.result.download_url;
+
+        // If the sticker URL is not found, send an error message
+        if (!stickerDownloadUrl) {
+            return reply("❌ Sorry, I couldn't fetch the sticker. Please check the URL and try again.");
+        }
+
+        // Send the sticker to the user
+        await conn.sendMessage(from, {
+            sticker: { url: stickerDownloadUrl }
+        }, { quoted: mek });
+
+        await m.react("✅");
+    } catch (e) {
+        console.error(e);
+        reply(`❌ An error occurred: ${e.message}`);
+    }
+});
