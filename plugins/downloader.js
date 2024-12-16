@@ -422,3 +422,48 @@ cmd({
         reply(`❌ An error occurred: ${e.message}`);
     }
 });
+
+//Pinterest commands
+cmd({
+    pattern: "pinterest",
+    alias: ["pinterestdownload"],
+    desc: "Download Pinterest images",
+    category: "download",
+    react: "📌",
+    filename: __filename
+}, async (conn, mek, m, { from, quoted, body, args, q, reply }) => {
+    try {
+        // Check for query
+        if (!q) {
+            return reply(`Please Enter a Pinterest URL. Usage Example:\n*${config.prefix}downloadpinterest https://www.pinterest.com/pin/1234567890123456789/*`);
+        }
+
+        // If a Pinterest link is provided
+        if (q.startsWith("https://www.pinterest.com")) {
+            let downloadUrl;
+            try {
+                // Send the API request to fetch the download URL for the provided Pinterest link
+                let response = await axios.get(`https://api.giftedtech.my.id/api/download/pinterestdl?apikey=gifted&url=${encodeURIComponent(q)}`);
+                downloadUrl = response.data.result.download_url;
+
+                // Download the image
+                const buffer = await axios.get(downloadUrl, { responseType: 'arraybuffer' });
+
+                // Send the image to the user
+                await conn.sendMessage(from, { image: buffer.data, mimetype: "image/jpeg" }, { quoted: mek });
+                await m.react("✅");
+                return;
+            } catch (err) {
+                console.error("Error fetching download URL:", err);
+                return reply("❌ Unable to fetch download URL. Please try again later.");
+            }
+        }
+
+        // If no valid Pinterest link, send usage instructions
+        return reply(`❌ Invalid URL! Please provide a valid Pinterest link. Usage Example:\n*${config.prefix}downloadpinterest https://www.pinterest.com/pin/1234567890123456789/*`);
+
+    } catch (e) {
+        console.error("Error in Pinterest image download command:", e);
+        reply(`❌ Error: ${e.message}`);
+    }
+});
