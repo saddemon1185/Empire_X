@@ -16,7 +16,7 @@ cmd({
     try {
         // Check for query
         if (!q) {
-            return reply(`Please Enter a Search Query or YouTube link. Usage Example:\n*${config.prefix}play Spectre*\n*${config.prefix}play https://youtu.be/aGjXa18XCRY?si=-rNZHD-trThO1x4Y*`);
+            return reply(`Please Enter a Search Query or YouTube link. Usage Example:\n*${config.PREFIX}play Spectre*\n*${config.prefix}play https://youtu.be/aGjXa18XCRY?si=-rNZHD-trThO1x4Y*`);
         }
 
         // If a YouTube link is provided
@@ -121,7 +121,7 @@ cmd({
     try {
         // Check for query
         if (!q) {
-            return reply(`Please Enter a Search Query or YouTube link. Usage Example:\n*${config.prefix}downloadvideo Spectre*\n*${config.prefix}downloadvideo https://youtu.be/aGjXa18XCRY?si=-rNZHD-trThO1x4Y*`);
+            return reply(`Please Enter a Search Query or YouTube link. Usage Example:\n*${config.prefix}downloadvideo Spectre*\n*${config.PREFIX}downloadvideo https://youtu.be/aGjXa18XCRY?si=-rNZHD-trThO1x4Y*`);
         }
 
         // If a YouTube link is provided
@@ -223,7 +223,7 @@ cmd({
     try {
         // Check for query
         if (!q) {
-            return reply(`Please enter a TikTok URL. Usage Example:\n*${config.prefix}tiktok https://www.tiktok.com/@user/video/1234567890123456789*`);
+            return reply(`Please enter a TikTok URL. Usage Example:\n*${cconfig.PREFIX}tiktok https://www.tiktok.com/@user/video/1234567890123456789*`);
         }
 
         // Validate if the provided URL is a valid TikTok URL
@@ -347,7 +347,7 @@ cmd({
     try {
         // Check for query
         if (!q) {
-            return reply(`Please Enter a Spotify Song Link. Usage Example:\n*${config.prefix}spotify https://open.spotify.com/track/5n1lXmNIN4pgsYki9kVg1D*`);
+            return reply(`Please Enter a Spotify Song Link. Usage Example:\n*${config.PREFIX}spotify https://open.spotify.com/track/5n1lXmNIN4pgsYki9kVg1D*`);
         }
 
         // If a Spotify link is provided
@@ -372,7 +372,7 @@ cmd({
         }
 
         // If the query is not a Spotify URL, reply with instructions
-        return reply(`❌ Invalid Spotify URL. Please use a valid Spotify track link. Example:\n*${config.prefix}spotify https://open.spotify.com/track/5n1lXmNIN4pgsYki9kVg1D*`);
+        return reply(`❌ Invalid Spotify URL. Please use a valid Spotify track link. Example:\n*${config.PREFIX}spotify https://open.spotify.com/track/5n1lXmNIN4pgsYki9kVg1D*`);
     } catch (e) {
         console.error("Error in Spotify download command:", e);
         reply(`❌ Error: ${e.message}`);
@@ -389,7 +389,7 @@ cmd({
     try {
         // Check for query
         if (!q) {
-            return reply(`Please send the Telegram Sticker URL. Usage Example:\n*${config.prefix}telegramsticker https://t.me/addstickers/stickerpackname*`);
+            return reply(`Please send the Telegram Sticker URL. Usage Example:\n*${config.PREFIX}telegramsticker https://t.me/addstickers/stickerpackname*`);
         }
 
         // Validate if the provided URL is a valid Telegram Sticker URL
@@ -435,7 +435,7 @@ cmd({
     try {
         // Check for query
         if (!q) {
-            return reply(`Please Enter a Pinterest URL. Usage Example:\n*${config.prefix}downloadpinterest https://www.pinterest.com/pin/1234567890123456789/*`);
+            return reply(`Please Enter a Pinterest URL. Usage Example:\n*${config.PREFIX}downloadpinterest https://www.pinterest.com/pin/1234567890123456789/*`);
         }
 
         // If a Pinterest link is provided
@@ -460,7 +460,7 @@ cmd({
         }
 
         // If no valid Pinterest link, send usage instructions
-        return reply(`❌ Invalid URL! Please provide a valid Pinterest link. Usage Example:\n*${config.prefix}downloadpinterest https://www.pinterest.com/pin/1234567890123456789/*`);
+        return reply(`❌ Invalid URL! Please provide a valid Pinterest link. Usage Example:\n*${config.PREFIX}downloadpinterest https://www.pinterest.com/pin/1234567890123456789/*`);
 
     } catch (e) {
         console.error("Error in Pinterest image download command:", e);
@@ -480,7 +480,7 @@ cmd({
     try {
         // Check for query
         if (!q) {
-            return reply(`Please Enter a MediaFire URL. Usage Example:\n*${config.prefix}downloadmediafire https://www.mediafire.com/file/examplefile*`);
+            return reply(`Please Enter a MediaFire URL. Usage Example:\n*${config.PREFIX}downloadmediafire https://www.mediafire.com/file/examplefile*`);
         }
 
         // If a MediaFire link is provided
@@ -522,7 +522,7 @@ cmd({
         }
 
         // If no valid MediaFire link, send usage instructions
-        return reply(`❌ Invalid URL! Please provide a valid MediaFire link. Usage Example:\n*${config.prefix}downloadmediafire https://www.mediafire.com/file/examplefile*`);
+        return reply(`❌ Invalid URL! Please provide a valid MediaFire link. Usage Example:\n*${config.PREFIX}downloadmediafire https://www.mediafire.com/file/examplefile*`);
 
     } catch (e) {
         console.error("Error in MediaFire file download command:", e);
@@ -542,7 +542,7 @@ cmd({
     try {
         // Check for query
         if (!q) {
-            return reply(`Please Enter a TeraBox URL. Usage Example:\n*${config.prefix}downloadterabox https://www.terabox.com/file/examplefile*`);
+            return reply(`Please Enter a TeraBox URL. Usage Example:\n*${config.PREFIX}downloadterabox https://www.terabox.com/file/examplefile*`);
         }
 
         // If a TeraBox link is provided
@@ -584,10 +584,70 @@ cmd({
         }
 
         // If no valid TeraBox link, send usage instructions
-        return reply(`❌ Invalid URL! Please provide a valid TeraBox link. Usage Example:\n*${config.prefix}downloadterabox https://www.terabox.com/file/examplefile*`);
+        return reply(`❌ Invalid URL! Please provide a valid TeraBox link. Usage Example:\n*${config.PREFIX}downloadterabox https://www.terabox.com/file/examplefile*`);
 
     } catch (e) {
         console.error("Error in TeraBox file download command:", e);
+        reply(`❌ Error: ${e.message}`);
+    }
+});
+
+//Twitter commands
+cmd({
+    pattern: "twitter",
+    alias: ["twitterdownload"],
+    desc: "Download Twitter media",
+    category: "download",
+    react: "🐦",
+    filename: __filename
+}, async (conn, mek, m, { from, quoted, body, args, q, reply }) => {
+    try {
+        // Check for query
+        if (!q) {
+            return reply(`Please Enter a Twitter URL. Usage Example:\n*${config.PREFIX}twitter https://twitter.com/user/status/1234567890*`);
+        }
+
+        // If a Twitter link is provided
+        if (q.startsWith("https://twitter.com")) {
+            let downloadUrl;
+            try {
+                // Send the API request to fetch the download URL for the provided Twitter link
+                let response = await axios.get(`https://api.giftedtech.my.id/api/download/twitter?apikey=gifted&url=${encodeURIComponent(q)}`);
+                downloadUrl = response.data.result.download_url;
+
+                // Check the file extension to determine MIME type
+                const fileExtension = downloadUrl.split('.').pop().toLowerCase();
+                let mimeType = 'application/octet-stream'; // default MIME type
+
+                // Set MIME type based on the file extension
+                if (fileExtension === 'jpg' || fileExtension === 'jpeg') {
+                    mimeType = 'image/jpeg';
+                } else if (fileExtension === 'png') {
+                    mimeType = 'image/png';
+                } else if (fileExtension === 'mp4') {
+                    mimeType = 'video/mp4';
+                } else if (fileExtension === 'gif') {
+                    mimeType = 'image/gif';
+                } // Add more types as needed
+
+                // Download the media file
+                const buffer = await axios.get(downloadUrl, { responseType: 'arraybuffer' });
+
+                // Send the file to the user
+                await conn.sendMessage(from, { document: buffer.data, mimetype: mimeType, fileName: "downloaded_media" }, { quoted: mek });
+                await m.react("✅");
+                return;
+            } catch (err) {
+                console.error("Error fetching download URL:", err);
+                return reply("❌ Unable to fetch download URL. Please try again later.");
+            }
+        }
+
+        // If no valid Twitter link, send usage instructions
+        return reply(`❌ Invalid URL! Please provide a valid Twitter link. Usage Example:\n*${config.PREFIX}twitter https://twitter.com/user/status/1234567890*`);
+
+    } catch (e) {
+        console.error("Error in Twitter media download command:", e);
         reply(`❌ Error: ${e.message}`);
     }
 });
