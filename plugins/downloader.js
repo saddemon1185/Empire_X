@@ -651,3 +651,48 @@ cmd({
         reply(`❌ Error: ${e.message}`);
     }
 });
+
+//Facebook command's 
+cmd({
+    pattern: "facebook",
+    alias: ["downloadfb"],
+    desc: "Download Facebook videos",
+    category: "download",
+    react: "🎥",
+    filename: __filename
+}, async (conn, mek, m, { from, quoted, body, args, q, reply }) => {
+    try {
+        // Check for query
+        if (!q) {
+            return reply(`Please Enter a Facebook video URL. Usage Example:\n*${config.PREFIX}downloadfacebook https://www.facebook.com/video_url*`);
+        }
+
+        // If a Facebook link is provided
+        if (q.startsWith("https://www.facebook.com")) {
+            let downloadUrl;
+            try {
+                // Send the API request to fetch the download URL for the provided Facebook video link
+                let response = await axios.get(`https://api.giftedtech.my.id/api/download/facebook?apikey=gifted&url=${encodeURIComponent(q)}`);
+                downloadUrl = response.data.result.download_url;
+
+                // Download the video
+                const buffer = await axios.get(downloadUrl, { responseType: 'arraybuffer' });
+
+                // Send the video to the user
+                await conn.sendMessage(from, { video: buffer.data, mimetype: "video/mp4" }, { quoted: mek });
+                await m.react("✅");
+                return;
+            } catch (err) {
+                console.error("Error fetching download URL:", err);
+                return reply("❌ Unable to fetch download URL. Please try again later.");
+            }
+        }
+
+        // If no valid Facebook link, send usage instructions
+        return reply(`❌ Invalid URL! Please provide a valid Facebook video URL. Usage Example:\n*${config.PREFIX}downloadfacebook https://www.facebook.com/video_url*`);
+
+    } catch (e) {
+        console.error("Error in Facebook video download command:", e);
+        reply(`❌ Error: ${e.message}`);
+    }
+});
