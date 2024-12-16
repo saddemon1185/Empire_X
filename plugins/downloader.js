@@ -529,3 +529,65 @@ cmd({
         reply(`❌ Error: ${e.message}`);
     }
 });
+
+//terabox commands 
+cmd({
+    pattern: "terabox",
+    alias: ["teraboxdownload"],
+    desc: "Download TeraBox files",
+    category: "download",
+    react: "📥",
+    filename: __filename
+}, async (conn, mek, m, { from, quoted, body, args, q, reply }) => {
+    try {
+        // Check for query
+        if (!q) {
+            return reply(`Please Enter a TeraBox URL. Usage Example:\n*${config.prefix}downloadterabox https://www.terabox.com/file/examplefile*`);
+        }
+
+        // If a TeraBox link is provided
+        if (q.startsWith("https://www.terabox.com")) {
+            let downloadUrl;
+            try {
+                // Send the API request to fetch the download URL for the provided TeraBox link
+                let response = await axios.get(`https://api.giftedtech.my.id/api/download/terabox?apikey=gifted&url=${encodeURIComponent(q)}`);
+                downloadUrl = response.data.result.download_url;
+
+                // Check the file extension to determine MIME type
+                const fileExtension = downloadUrl.split('.').pop().toLowerCase();
+                let mimeType = 'application/octet-stream'; // default MIME type
+
+                // Set MIME type based on the file extension
+                if (fileExtension === 'jpg' || fileExtension === 'jpeg') {
+                    mimeType = 'image/jpeg';
+                } else if (fileExtension === 'png') {
+                    mimeType = 'image/png';
+                } else if (fileExtension === 'pdf') {
+                    mimeType = 'application/pdf';
+                } else if (fileExtension === 'zip') {
+                    mimeType = 'application/zip';
+                } else if (fileExtension === 'mp3') {
+                    mimeType = 'audio/mp3';
+                } // Add more types as needed
+
+                // Download the file
+                const buffer = await axios.get(downloadUrl, { responseType: 'arraybuffer' });
+
+                // Send the file to the user
+                await conn.sendMessage(from, { document: buffer.data, mimetype: mimeType, fileName: "downloaded_file" }, { quoted: mek });
+                await m.react("✅");
+                return;
+            } catch (err) {
+                console.error("Error fetching download URL:", err);
+                return reply("❌ Unable to fetch download URL. Please try again later.");
+            }
+        }
+
+        // If no valid TeraBox link, send usage instructions
+        return reply(`❌ Invalid URL! Please provide a valid TeraBox link. Usage Example:\n*${config.prefix}downloadterabox https://www.terabox.com/file/examplefile*`);
+
+    } catch (e) {
+        console.error("Error in TeraBox file download command:", e);
+        reply(`❌ Error: ${e.message}`);
+    }
+});
