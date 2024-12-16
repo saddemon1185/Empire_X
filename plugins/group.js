@@ -118,7 +118,7 @@ cmd({
 }, async (conn, mek, m, { from, quoted, body, args, q, isGroup, sender, reply }) => {
     try {
         // Ensure this is being used in a group
-        if (!isGroup) return reply("This command can only be used in a group.");
+        if (!isGroup) return reply("📛 𝗧𝗵𝗶𝘀 𝗰𝗼𝗺𝗺𝗮𝗻𝗱 𝗰𝗮𝗻 𝗼𝗻𝗹𝘆 𝗯𝗲 𝘂𝘀𝗲𝗱 𝗶𝗻 𝗮 𝗴𝗿𝗼𝘂𝗽");
 
         // Get the sender's number
         const senderNumber = sender.split('@')[0];
@@ -178,11 +178,11 @@ cmd({
     reply
 }) => {
     try {
-        if (!isGroup) return reply("📛 *This command can only be used in a group.*");
+        if (!isGroup) return reply("📛 𝗧𝗵𝗶𝘀 𝗰𝗼𝗺𝗺𝗮𝗻𝗱 𝗰𝗮𝗻 𝗼𝗻𝗹𝘆 𝗯𝗲 𝘂𝘀𝗲𝗱 𝗶𝗻 𝗮 𝗴𝗿𝗼𝘂𝗽");
 
         // If no message is provided, prompt the user to use the correct format
         if (args.length === 0) {
-            return reply(`📜 *Use the command like this:* \n\n${prefix}hidetag <your message>`);
+            return reply(`📜 *Use:* \n\n${prefix}hidetag <your message>`);
         }
 
         // Fetch group metadata to ensure participants are up-to-date
