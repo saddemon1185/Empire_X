@@ -311,3 +311,59 @@ cmd({
         reply(`An error occurred: ${error.message || "Unknown error"}`);
     }
 });
+
+// Promote commands
+cmd({
+    pattern: "promote",
+    category: "group",
+    desc: "Promotes a user to admin.",
+    filename: __filename,
+}, async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber, pushname, groupMetadata, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
+    try {
+        if (!isGroup) return reply("𝐓𝐡𝐢𝐬 𝐅𝐞𝐚𝐭𝐮𝐫𝐞 𝐈𝐬 𝐎𝐧𝐥𝐲 𝐅𝐨𝐫 𝐆𝐫𝐨𝐮𝐩❗");
+
+        // Check if sender is an admin
+        if (!isAdmins) return reply("You must be an admin to promote someone.");
+
+        // Check if a user is mentioned
+        const mentioned = m.mentionedJid[0];
+        if (!mentioned) return reply("Please mention a user to promote.");
+
+        // Promote the user to admin
+        await conn.groupParticipantsUpdate(from, [mentioned], 'promote');
+
+        reply("User promoted to admin successfully!");
+
+    } catch (e) {
+        console.log(e);
+        reply("An error occurred while trying to promote the user.");
+    }
+});
+
+// Demote commands 
+cmd({
+    pattern: "demote",
+    category: "group",
+    desc: "Demotes a user from admin.",
+    filename: __filename,
+}, async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber, pushname, groupMetadata, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
+    try {
+        if (!isGroup) return reply("𝐓𝐡𝐢𝐬 𝐅𝐞𝐚𝐭𝐮𝐫𝐞 𝐈𝐬 𝐎𝐧𝐥𝐲 𝐅𝐨𝐫 𝐆𝐫𝐨𝐮𝐩❗");
+
+        // Check if sender is an admin
+        if (!isAdmins) return reply("You must be an admin to demote someone.");
+
+        // Check if a user is mentioned
+        const mentioned = m.mentionedJid[0];
+        if (!mentioned) return reply("Please mention a user to demote.");
+
+        // Demote the user from admin
+        await conn.groupParticipantsUpdate(from, [mentioned], 'demote');
+
+        reply("User demoted from admin successfully!");
+
+    } catch (e) {
+        console.log(e);
+        reply("An error occurred while trying to demote the user.");
+    }
+});
