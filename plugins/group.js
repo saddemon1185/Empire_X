@@ -190,3 +190,78 @@ cmd({
         reply("🚨 *An error occurred while trying to tag all members.*");
     }
 });
+
+//mute and unmute commands
+cmd({
+    pattern: "mute",
+    alias: [],
+    desc: "Mute all participants in the group.",
+    category: "group",
+    filename: __filename,
+}, async (conn, mek, m, { from, quoted, body, args, q, isGroup, sender, reply }) => {
+    try {
+        // Ensure this is being used in a group
+        if (!isGroup) return reply("𝐓𝐡𝐢𝐬 𝐅𝐞𝐚𝐭𝐮𝐫𝐞 𝐈𝐬 𝐎𝐧𝐥𝐲 𝐅𝐨𝐫 𝐆𝐫𝐨𝐮𝐩❗");
+
+        // Get the sender's number
+        const senderNumber = sender.split('@')[0];
+        const botNumber = conn.user.id.split(':')[0];
+
+        // Get group metadata and admins
+        const groupMetadata = await conn.groupMetadata(from);
+        const groupAdmins = groupMetadata.participants.filter(member => member.admin);
+        const isBotAdmins = groupAdmins.some(admin => admin.id === botNumber + '@s.whatsapp.net');
+
+        // Check if bot is admin
+        if (!isBotAdmins) return reply("𝐏𝐥𝐞𝐚𝐬𝐞 𝐏𝐫𝐨𝐯𝐢𝐝𝐞 𝐌𝐞 𝐀𝐝𝐦𝐢𝐧 𝐑𝐨𝐥𝐞 ❗");
+
+        // Check if sender is an admin
+        const isAdmins = groupAdmins.some(admin => admin.id === sender);
+        if (!isAdmins) return reply("𝐏𝐫𝐨𝐯𝐢𝐝𝐞 𝐌𝐞 𝐀𝐝𝐦𝐢𝐧 𝐑𝐨𝐥𝐞 ❗");
+
+        // Mute all participants
+        await conn.groupParticipantsUpdate(from, groupMetadata.participants.map(member => member.id), 'remove');
+        reply("All participants have been muted!");
+
+    } catch (error) {
+        console.error("Error in mute command:", error);
+        reply(`An error occurred: ${error.message || "Unknown error"}`);
+    }
+});
+
+cmd({
+    pattern: "unmute",
+    alias: [],
+    desc: "Unmute all participants in the group.",
+    category: "group",
+    filename: __filename,
+}, async (conn, mek, m, { from, quoted, body, args, q, isGroup, sender, reply }) => {
+    try {
+        // Ensure this is being used in a group
+        if (!isGroup) return reply("𝐓𝐡𝐢𝐬 𝐅𝐞𝐚𝐭𝐮𝐫𝐞 𝐈𝐬 𝐎𝐧𝐥𝐲 𝐅𝐨𝐫 𝐆𝐫𝐨𝐮𝐩❗");
+
+        // Get the sender's number
+        const senderNumber = sender.split('@')[0];
+        const botNumber = conn.user.id.split(':')[0];
+
+        // Get group metadata and admins
+        const groupMetadata = await conn.groupMetadata(from);
+        const groupAdmins = groupMetadata.participants.filter(member => member.admin);
+        const isBotAdmins = groupAdmins.some(admin => admin.id === botNumber + '@s.whatsapp.net');
+
+        // Check if bot is admin
+        if (!isBotAdmins) return reply("𝐏𝐥𝐞𝐚𝐬𝐞 𝐏𝐫𝐨𝐯𝐢𝐝𝐞 𝐌𝐞 𝐀𝐝𝐦𝐢𝐧 𝐑𝐨𝐥𝐞 ❗");
+
+        // Check if sender is an admin
+        const isAdmins = groupAdmins.some(admin => admin.id === sender);
+        if (!isAdmins) return reply("𝐏𝐫𝐨𝐯𝐢𝐝𝐞 𝐌𝐞 𝐀𝐝𝐦𝐢𝐧 𝐑𝐨𝐥𝐞 ❗");
+
+        // Unmute all participants
+        await conn.groupParticipantsUpdate(from, groupMetadata.participants.map(member => member.id), 'add');
+        reply("All participants have been unmuted!");
+
+    } catch (error) {
+        console.error("Error in unmute command:", error);
+        reply(`An error occurred: ${error.message || "Unknown error"}`);
+    }
+});
