@@ -98,6 +98,7 @@ async (conn, mek, m, { from, quoted, pushname, reply }) => {
 
 cmd({
     pattern: "requestbug",
+    alias: ["report"],
     category: "system",  // Changed category to "system"
     react: "🤕",
     desc: "Allows users to report a bug with a description.",
