@@ -3,34 +3,6 @@ const config = require('../config');
 
 const prefix = config.PREFIX; // Get the prefix from the config
 
-// Kick command
-cmd({
-    pattern: "kick",
-    category: "group",
-    desc: "Kicks a user from the group.",
-    filename: __filename,
-}, async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber, pushname, groupMetadata, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
-    try {
-        if (!isGroup) return reply("𝐓𝐡𝐢𝐬 𝐅𝐞𝐚𝐭𝐮𝐫𝐞 𝐈𝐬 𝐎𝐧𝐥𝐲 𝐅𝐨𝐫 𝐆𝐫𝐨𝐮𝐩❗");
-
-        // Check if sender is an admin
-        if (!isAdmins) return reply("You must be an admin to kick someone.");
-
-        // Check if a user is mentioned or replied to
-        let mentioned = m.mentionedJid[0] || (quoted && quoted.sender);
-        if (!mentioned) return reply("Please mention a user or reply to their message to kick them.");
-
-        // Kick the user from the group
-        await conn.groupParticipantsUpdate(from, [mentioned], 'remove');
-
-        reply("User has been kicked from the group successfully!");
-
-    } catch (error) {
-        console.error("Error in kick command:", error);
-        reply(`An error occurred while trying to kick the user: ${error.message || "Unknown error"}`);
-    }
-});
-
 //gid commands 
 cmd({
     pattern: "gjid",
