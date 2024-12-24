@@ -14,4 +14,5 @@ module.exports = {
     AUTO_REACT: process.env.AUTO_REACT || "false",
     OWNER_NAME: process.env.OWNER_NAME || "𝐎𝐧𝐥𝐲_𝐨𝐧𝐞_🥇𝐞𝐦𝐩𝐢𝐫𝐞",
     BOT_NAME: process.env.BOT_NAME || "Empire_X",
+    CAPTION: process.env.CAPTION || "Made By 𝐎𝐧𝐥𝐲_𝐨𝐧𝐞_🥇𝐞𝐦𝐩𝐢𝐫𝐞",
 };
