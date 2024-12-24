@@ -168,6 +168,7 @@ cmd({
 cmd({
     pattern: "aza",
     react: "💵",
+    alias: ["donate"],
     desc: "Get owner details",
     category: "owner",
     filename: __filename
