@@ -280,41 +280,6 @@ cmd({
 //add commands 
 cmd({
     pattern: "add",
-    desc: "Add members to Group.",
-    category: "group",
-    filename: __filename,
-}, async (conn, mek, m, { from, isGroup, sender, reply, args, q }) => {
-    try {
-        if (!isGroup) return reply("This feature is only available in groups.");
-
-        // Get the sender's number and bot's number
-        const senderNumber = sender.split('@')[0];
-        const botNumber = conn.user.id.split(':')[0];
-
-        // Check if the bot is an admin
-        const groupMetadata = isGroup ? await conn.groupMetadata(from) : '';
-        const groupAdmins = groupMetadata ? groupMetadata.participants.filter(member => member.admin) : [];
-        const isBotAdmins = groupAdmins.some(admin => admin.id === botNumber + '@s.whatsapp.net');
-        if (!isBotAdmins) return reply("𝐏𝐥𝐞𝐚𝐬𝐞 𝐏𝐫𝐨𝐯𝐢𝐝𝐞 𝐌𝐞 𝐀𝐝𝐦𝐢𝐧 𝐑𝐨𝐥𝐞 ❗");
-
-        // Check if the sender is an admin
-        const isAdmins = groupAdmins.some(admin => admin.id === sender);
-        if (!isAdmins) return reply("𝐏𝐥𝐞𝐚𝐬𝐞 𝐏𝐫𝐨𝐯𝐢𝐝𝐞 𝐌𝐞 𝐀𝐝𝐦𝐢𝐧 𝐑𝐨𝐥𝐞 ❗");
-
-        const userToAdd = args[0];
-        if (!userToAdd) return reply("Please provide the user you want to add to the group.");
-
-        await conn.groupAdd(from, [userToAdd]);  // Add the user
-        reply(`Successfully added ${userToAdd}`);
-    } catch (error) {
-        console.error(error);
-        reply(`An error occurred: ${error.message || "Unknown error"}`);
-    }
-});
-
-//add commands 
-cmd({
-    pattern: "add",
     desc: "Add a person to the group using their phone number.",
     category: "group", // Already group
     filename: __filename,
