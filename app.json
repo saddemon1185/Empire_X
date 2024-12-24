@@ -51,8 +51,8 @@
       "required": true
     },
     "CAPTION": {
-      "description": "URL for the alive image.",
-      "value": "Made By Only_one_🥇Empire",
+      "description": "do not change.",
+      "value": "Made By 𝐎𝐧𝐥𝐲_𝐨𝐧𝐞_🥇𝐞𝐦𝐩𝐢𝐫𝐞",
       "required": false
     },
     "ALIVE_MSG": {
