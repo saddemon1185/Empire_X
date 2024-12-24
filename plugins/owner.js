@@ -173,17 +173,23 @@ cmd({
     filename: __filename
 }, async (conn, mek, m, { from, quoted }) => {
     try {
-        let madeMenu = `╭═══ Account Details ═══⊷
-┃❃╭──────────────
-┃❃│ Name : Efeurhobo Bullish
-┃❃│ Acc  : 8078582627
-┃❃│ Bank : Opay
-┃❃│ Note!: Send screenshot after payment 💸
-┃❃╰───────────────
-╰═════════════════⊷`;
-await conn.sendMessage(
+        let madeMenu = `
+╭━━━〔 Empire_X 〕━━━⬤
+┃𖠄│ Name: Efeurhobo Bullish
+┃𖠄│ Acc: 8078582627
+┃𖠄│ Bank: Opay
+┃𖠄│ Note: Send a screenshot after payment 💸
+┃𖠄╰──────────────⬤
+╰━━━━━━━━━━━━━━━⬤`;
+
+        await conn.sendMessage(
             from,
-            { image: { url: config.ALIVE_IMG }, caption: madeMenu },
+            { 
+                image: { 
+                    url: "https://raw.githubusercontent.com/efeurhobo/Empire_X/main/lib/assets/donate.jpg" // Raw image URL
+                }, 
+                caption: madeMenu 
+            },
             { quoted: mek }
         );
     } catch (e) {
