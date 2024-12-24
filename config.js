@@ -4,7 +4,7 @@ if (fs.existsSync('config.env')) require('dotenv').config({ path: './config.env'
 
 module.exports = {
     OWNER_NUMBER: process.env.OWNER_NUMBER || "2348078582627",
-    SESSION_ID: process.env.SESSION_ID || "SUUgkIYT#hBJgcn_M-jqollGGwldEimVkOI88KIx9Zio7a-n51ew",
+    SESSION_ID: process.env.SESSION_ID || "CYswGLzL#VDYQwSbCNEaOCaAGwc1nIvmzX6BpKQXJ0nQOcPIGR6k",
     AUTO_READ_STATUS: process.env.AUTO_READ_STATUS || "false",
     MODE: process.env.MODE || "private",
     ALIVE_IMG: process.env.ALIVE_IMG || "https://raw.githubusercontent.com/efeurhobo/Empire_X/main/lib/assets/empire.jpg",
