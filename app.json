@@ -50,6 +50,11 @@
       "value": "https://raw.githubusercontent.com/efeurhobo/Empire_X/main/lib/assets/empire.jpg",
       "required": true
     },
+    "CAPTION": {
+      "description": "URL for the alive image.",
+      "value": "Made By Only_one_🥇Empire",
+      "required": false
+    },
     "ALIVE_MSG": {
       "description": "Message displayed when the bot is online.",
       "value": "HI DEAR EMPIRE_V1 IS ONLINE",
