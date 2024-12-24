@@ -55,6 +55,52 @@ cmd({
     }
 });
 
+//tag admin commands 
+
+cmd({
+    pattern: "tagadmin",
+    category: "group", // Already group
+    desc: "Tags every admin in the group.",
+    filename: __filename,
+}, async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber, pushname, groupMetadata, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
+    try {
+        if (!isGroup) return reply("𝐓𝐡𝐢𝐬 𝐅𝐞𝐚𝐭𝐮𝐫𝐞 𝐈𝐬 𝐎𝐧𝐥𝐲 𝐅𝐨𝐫 𝐆𝐫𝐨𝐮𝐩❗");
+
+        // Fetch group metadata to get participants
+        groupMetadata = await conn.groupMetadata(from);
+        participants = groupMetadata.participants;
+
+        // Filter out non-admins
+        let adminParticipants = participants.filter(mem => groupAdmins.includes(mem.id));
+
+        if (adminParticipants.length === 0) {
+            return reply("No admins found to tag.");
+        }
+
+        let textt = `
+◐╤╤✪〘 *Tag All Admins* 〙✪╤╤◑
+
+➲ *Message:* ${args.join(' ') || "blank"}\n\n
+➲ *Author:* ${pushname}
+        `;
+
+        // Loop through admin participants and tag each admin
+        for (let mem of adminParticipants) {
+            textt += `📌 @${mem.id.split('@')[0]}\n`;
+        }
+
+        // Send the tagged message
+        await conn.sendMessage(from, {
+            text: textt,
+            mentions: adminParticipants.map(a => a.id),
+        }, { quoted: mek });
+
+    } catch (e) {
+        console.log(e);
+        reply("An error occurred while trying to tag the admins.");
+    }
+});
+
 // Join a group
 cmd({
     pattern: "join",                // Command pattern
