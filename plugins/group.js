@@ -327,3 +327,38 @@ cmd({
         reply(`An error occurred: ${error.message || "Unknown error"}`);
     }
 });
+
+//group info
+cmd({
+    pattern: "groupinfo",
+    alias: ["ginfo"],
+    desc: "Get group information.",
+    category: "group", // Group related command
+    filename: __filename,
+}, async (conn, mek, m, { from, quoted, body, args, q, isGroup, sender, reply }) => {
+    try {
+        // Ensure this is being used in a group
+        if (!isGroup) return reply("𝐓𝐡𝐢𝐬 𝐅𝐞𝐚𝐭𝐮𝐫𝐞 𝐈𝐬 𝐎𝐧𝐥𝐲 𝐅𝐨𝐫 𝐆𝐫𝐨𝐮𝐩❗");
+
+        // Get group metadata
+        const groupMetadata = await conn.groupMetadata(from);
+        const groupName = groupMetadata.subject;
+        const groupAdmins = groupMetadata.participants.filter(member => member.admin);
+        const memberCount = groupMetadata.participants.length;
+
+        // Get group information
+        const groupInfo = `
+        *Group Name:* ${groupName}
+        *Group ID:* ${from}
+        *Total Members:* ${memberCount}
+        *Group Admins:* ${groupAdmins.map(admin => admin.id.split('@')[0]).join(", ") || "No admins"} 
+        `;
+
+        // Send the group information
+        return reply(groupInfo);
+
+    } catch (error) {
+        console.error("Error in groupinfo command:", error);
+        reply(`An error occurred: ${error.message || "Unknown error"}`);
+    }
+});
