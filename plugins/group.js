@@ -266,133 +266,76 @@ cmd({
     }
 });
 
-//mute and unmute commands
+//kick commands 
 cmd({
-    pattern: "mute",
-    alias: [],
-    desc: "Mute all participants in the group.",
+    pattern: "kick",
+    desc: "Remove members from Group.",
     category: "group",
     filename: __filename,
-}, async (conn, mek, m, { from, quoted, body, args, q, isGroup, sender, reply }) => {
+}, async (conn, mek, m, { from, isGroup, sender, reply, args, q }) => {
     try {
-        // Ensure this is being used in a group
-        if (!isGroup) return reply("𝐓𝐡𝐢𝐬 𝐅𝐞𝐚𝐭𝐮𝐫𝐞 𝐈𝐬 𝐎𝐧𝐥𝐲 𝐅𝐨𝐫 𝐆𝐫𝐨𝐮𝐩❗");
+        if (!isGroup) return reply("This feature is only available in groups.");
 
-        // Get the sender's number
+        // Get the sender's number and bot's number
         const senderNumber = sender.split('@')[0];
         const botNumber = conn.user.id.split(':')[0];
 
-        // Get group metadata and admins
-        const groupMetadata = await conn.groupMetadata(from);
-        const groupAdmins = groupMetadata.participants.filter(member => member.admin);
+        // Check if the bot is an admin
+        const groupMetadata = isGroup ? await conn.groupMetadata(from) : '';
+        const groupAdmins = groupMetadata ? groupMetadata.participants.filter(member => member.admin) : [];
         const isBotAdmins = groupAdmins.some(admin => admin.id === botNumber + '@s.whatsapp.net');
-
-        // Check if bot is admin
         if (!isBotAdmins) return reply("𝐏𝐥𝐞𝐚𝐬𝐞 𝐏𝐫𝐨𝐯𝐢𝐝𝐞 𝐌𝐞 𝐀𝐝𝐦𝐢𝐧 𝐑𝐨𝐥𝐞 ❗");
 
-        // Check if sender is an admin
+        // Check if the sender is an admin
         const isAdmins = groupAdmins.some(admin => admin.id === sender);
-        if (!isAdmins) return reply("𝐏𝐫𝐨𝐯𝐢𝐝𝐞 𝐌𝐞 𝐀𝐝𝐦𝐢𝐧 𝐑𝐨𝐥𝐞 ❗");
+        if (!isAdmins) return reply("𝐏𝐥𝐞𝐚𝐬𝐞 𝐏𝐫𝐨𝐯𝐢𝐝𝐞 𝐌𝐞 𝐀𝐝𝐦𝐢𝐧 𝐑𝐨𝐥𝐞 ❗");
 
-        // Mute all participants
-        await conn.groupParticipantsUpdate(from, groupMetadata.participants.map(member => member.id), 'remove');
-        reply("All participants have been muted!");
+        let user = args[0] || m.mention[0];
+        if (!user) return reply("Please mention the user or provide their number to kick.");
 
+        // Check if the user is an admin
+        const isUserAdmin = groupAdmins.some(admin => admin.id === user);
+        if (isUserAdmin) return reply("You cannot kick an admin.");
+        
+        await conn.groupRemove(from, [user]);  // Kick the user
+        reply(`Successfully kicked ${user}`);
     } catch (error) {
-        console.error("Error in mute command:", error);
+        console.error(error);
         reply(`An error occurred: ${error.message || "Unknown error"}`);
     }
 });
 
+//add commands 
 cmd({
-    pattern: "unmute",
-    alias: [],
-    desc: "Unmute all participants in the group.",
+    pattern: "add",
+    desc: "Add members to Group.",
     category: "group",
     filename: __filename,
-}, async (conn, mek, m, { from, quoted, body, args, q, isGroup, sender, reply }) => {
+}, async (conn, mek, m, { from, isGroup, sender, reply, args, q }) => {
     try {
-        // Ensure this is being used in a group
-        if (!isGroup) return reply("𝐓𝐡𝐢𝐬 𝐅𝐞𝐚𝐭𝐮𝐫𝐞 𝐈𝐬 𝐎𝐧𝐥𝐲 𝐅𝐨𝐫 𝐆𝐫𝐨𝐮𝐩❗");
+        if (!isGroup) return reply("This feature is only available in groups.");
 
-        // Get the sender's number
+        // Get the sender's number and bot's number
         const senderNumber = sender.split('@')[0];
         const botNumber = conn.user.id.split(':')[0];
 
-        // Get group metadata and admins
-        const groupMetadata = await conn.groupMetadata(from);
-        const groupAdmins = groupMetadata.participants.filter(member => member.admin);
+        // Check if the bot is an admin
+        const groupMetadata = isGroup ? await conn.groupMetadata(from) : '';
+        const groupAdmins = groupMetadata ? groupMetadata.participants.filter(member => member.admin) : [];
         const isBotAdmins = groupAdmins.some(admin => admin.id === botNumber + '@s.whatsapp.net');
-
-        // Check if bot is admin
         if (!isBotAdmins) return reply("𝐏𝐥𝐞𝐚𝐬𝐞 𝐏𝐫𝐨𝐯𝐢𝐝𝐞 𝐌𝐞 𝐀𝐝𝐦𝐢𝐧 𝐑𝐨𝐥𝐞 ❗");
 
-        // Check if sender is an admin
+        // Check if the sender is an admin
         const isAdmins = groupAdmins.some(admin => admin.id === sender);
-        if (!isAdmins) return reply("𝐏𝐫𝐨𝐯𝐢𝐝𝐞 𝐌𝐞 𝐀𝐝𝐦𝐢𝐧 𝐑𝐨𝐥𝐞 ❗");
+        if (!isAdmins) return reply("𝐏𝐥𝐞𝐚𝐬𝐞 𝐏𝐫𝐨𝐯𝐢𝐝𝐞 𝐌𝐞 𝐀𝐝𝐦𝐢𝐧 𝐑𝐨𝐥𝐞 ❗");
 
-        // Unmute all participants
-        await conn.groupParticipantsUpdate(from, groupMetadata.participants.map(member => member.id), 'add');
-        reply("All participants have been unmuted!");
+        const userToAdd = args[0];
+        if (!userToAdd) return reply("Please provide the user you want to add to the group.");
 
+        await conn.groupAdd(from, [userToAdd]);  // Add the user
+        reply(`Successfully added ${userToAdd}`);
     } catch (error) {
-        console.error("Error in unmute command:", error);
+        console.error(error);
         reply(`An error occurred: ${error.message || "Unknown error"}`);
-    }
-});
-
-// Promote commands
-cmd({
-    pattern: "promote",
-    category: "group",
-    desc: "Promotes a user to admin.",
-    filename: __filename,
-}, async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber, pushname, groupMetadata, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
-    try {
-        if (!isGroup) return reply("𝐓𝐡𝐢𝐬 𝐅𝐞𝐚𝐭𝐮𝐫𝐞 𝐈𝐬 𝐎𝐧𝐥𝐲 𝐅𝐨𝐫 𝐆𝐫𝐨𝐮𝐩❗");
-
-        // Check if sender is an admin
-        if (!isAdmins) return reply("You must be an admin to promote someone.");
-
-        // Check if a user is mentioned
-        const mentioned = m.mentionedJid[0];
-        if (!mentioned) return reply("Please mention a user to promote.");
-
-        // Promote the user to admin
-        await conn.groupParticipantsUpdate(from, [mentioned], 'promote');
-
-        reply("User promoted to admin successfully!");
-
-    } catch (e) {
-        console.log(e);
-        reply("An error occurred while trying to promote the user.");
-    }
-});
-
-// Demote commands 
-cmd({
-    pattern: "demote",
-    category: "group",
-    desc: "Demotes a user from admin.",
-    filename: __filename,
-}, async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber, pushname, groupMetadata, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
-    try {
-        if (!isGroup) return reply("𝐓𝐡𝐢𝐬 𝐅𝐞𝐚𝐭𝐮𝐫𝐞 𝐈𝐬 𝐎𝐧𝐥𝐲 𝐅𝐨𝐫 𝐆𝐫𝐨𝐮𝐩❗");
-
-        // Check if sender is an admin
-        if (!isAdmins) return reply("You must be an admin to demote someone.");
-
-        // Check if a user is mentioned
-        const mentioned = m.mentionedJid[0];
-        if (!mentioned) return reply("Please mention a user to demote.");
-
-        // Demote the user from admin
-        await conn.groupParticipantsUpdate(from, [mentioned], 'demote');
-
-        reply("User demoted from admin successfully!");
-
-    } catch (e) {
-        console.log(e);
-        reply("An error occurred while trying to demote the user.");
     }
 });
