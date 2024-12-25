@@ -64,37 +64,38 @@ async (conn, mek, m, { from, quoted, reply }) => {
 ┃𖠄│ Memory: *${memoryUsage}MB*
 ┃𖠄│ Plugins: *${pluginCount}*
 ┃𖠄│ Commands: *${totalCommands}*
-┃𖠄╰──────────────⬤
-╰━━━━━━━━━━━━━━━⬤
+┃𖠄╰─────────────⬤
+╰━━━━━━━━━━━━━━⬤
 
-╭━━━〔 AI COMMANDS* 〕━━━⬤
+╭━━〔 AI 〕━━⬤
 ${menu.ai || '┃𖠄│ None'}
 ╰━━━━━━━━━━━━━⬤
 
-╭━━━〔 *DOWNLOAD COMMANDS* 〕━━⬤
+╭━━〔 DOWNLOAD 〕━━⬤
 ${menu.download || '┃𖠄│ None'}
 ╰━━━━━━━━━━━━━⬤
 
-╭━━━〔 *FUN COMMANDS* 〕━━⬤
+╭━━━〔 FUN 〕━━⬤
 ${menu.fun || '┃𖠄│ None'}
 ╰━━━━━━━━━━━━━⬤
 
-╭━━━〔 *GROUP COMMANDS* 〕━━⬤
+╭━━━〔 GROUP 〕━━⬤
 ${menu.group || '┃𖠄│ None'}
 ╰━━━━━━━━━━━━━⬤
 
-╭━━━〔 *OWNER COMMANDS* 〕━━━⬤
+╭━━━〔 OWNER 〕━━⬤
 ${menu.owner || '┃𖠄│ None'}
 ╰━━━━━━━━━━━━━⬤
 
-╭━━━〔 *SEARCH COMMANDS* 〕━━⬤
+╭━━━〔 SEARCH 〕━━⬤
 ${menu.search || '┃𖠄│ None'}
 ╰━━━━━━━━━━━━━⬤
 
-╭━━━〔 *SYSTEM COMMANDS* 〕━━━⬤
+╭━━━〔 SYSTEM 〕━━⬤
 ${menu.system || '┃𖠄│ None'}
 ╰━━━━━━━━━━━━━⬤
 `;
+
         // Send the constructed menu
         await conn.sendMessage(from, {
             image: { url: config.ALIVE_IMG },
