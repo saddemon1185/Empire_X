@@ -245,41 +245,37 @@ cmd({
     desc: "Kick a member from the group.",
     category: "group",
     filename: __filename,
-}, async (conn, mek, m, { from, quoted, body, args, q, isGroup, sender, reply }) => {
+}, async (conn, mek, m, { from, args, reply }) => {
     try {
-        // Ensure this is being used in a group
+        const isGroup = from.endsWith('@g.us');
         if (!isGroup) return reply("𝐓𝐡𝐢𝐬 𝐅𝐞𝐚𝐭𝐮𝐫𝐞 𝐈𝐬 𝐎𝐧𝐥𝐲 𝐅𝐨𝐫 𝐆𝐫𝐨𝐮𝐩❗");
 
-        // Get the sender's number
-        const senderNumber = sender.split('@')[0];
-        const botNumber = conn.user.id.split(':')[0];
-
-        // Check if the bot is an admin
-        const groupMetadata = isGroup ? await conn.groupMetadata(from) : '';
-        const groupAdmins = groupMetadata ? groupMetadata.participants.filter(member => member.admin) : [];
-        const isBotAdmins = isGroup ? groupAdmins.some(admin => admin.id === botNumber + '@s.whatsapp.net') : false;
+        const sender = mek.key.fromMe
+            ? conn.user.id.split(':')[0] + '@s.whatsapp.net'
+            : mek.key.participant || mek.key.remoteJid;
+        const botNumber = conn.user.id.split(':')[0] + '@s.whatsapp.net';
+        const groupMetadata = await conn.groupMetadata(from).catch(() => {});
+        const participants = groupMetadata ? groupMetadata.participants : [];
+        const groupAdmins = participants.filter(member => member.admin).map(admin => admin.id);
+        const isBotAdmins = groupAdmins.includes(botNumber);
+        const isAdmins = groupAdmins.includes(sender);
 
         if (!isBotAdmins) return reply("𝐏𝐥𝐞𝐚𝐬𝐞 𝐏𝐫𝐨𝐯𝐢𝐝𝐞 𝐌𝐞 𝐀𝐝𝐦𝐢𝐧 𝐑𝐨𝐥𝐞 ❗");
+        if (!isAdmins) return reply("𝐘𝐨𝐮 𝐍𝐞𝐞𝐝 𝐓𝐨 𝐁𝐞 𝐀𝐧 𝐀𝐝𝐦𝐢𝐧 𝐓𝐨 𝐔𝐬𝐞 𝐓𝐡𝐢𝐬 𝐂𝐨𝐦𝐦𝐚𝐧𝐝❗");
 
-        // Check if the sender is an admin
-        const isAdmins = isGroup ? groupAdmins.some(admin => admin.id === sender) : false;
-        if (!isAdmins) return reply("𝐏𝐥𝐞𝐚𝐬𝐞 𝐏𝐫𝐨𝐯𝐢𝐝𝐞 𝐌𝐞 𝐀𝐝𝐦𝐢𝐧 𝐑𝐨𝐥𝐞 ❗");
+        if (!args[0] || isNaN(args[0])) return reply("𝐏𝐥𝐞𝐚𝐬𝐞 𝐏𝐫𝐨𝐯𝐢𝐝𝐞 𝐀 𝐕𝐚𝐥𝐢𝐝 𝐏𝐡𝐨𝐧𝐞 𝐍𝐮𝐦𝐛𝐞𝐫 𝐓𝐨 𝐊𝐢𝐜𝐤.");
 
-        // Ensure a valid number is provided
-        if (!args[0] || isNaN(args[0])) return reply("Please provide a valid phone number to kick.");
-
-        // Convert the phone number to the correct format
         const numberToKick = `${args[0]}@s.whatsapp.net`;
+        const userExists = participants.some(member => member.id === numberToKick);
 
-        // Remove the user from the group
-        await conn.groupRemove(from, [numberToKick]);
+        if (!userExists) return reply("𝐓𝐡𝐞 𝐔𝐬𝐞𝐫 𝐈𝐬 𝐍𝐨𝐭 𝐈𝐧 𝐓𝐡𝐢𝐬 𝐆𝐫𝐨𝐮𝐩.");
 
-        // Reply with success message
-        return reply(`Successfully kicked the member with number: ${args[0]}`);
-
+        // Use Baileys method to remove participant
+        await conn.groupParticipantsUpdate(from, [numberToKick], "remove");
+        return reply(`𝐒𝐮𝐜𝐜𝐞𝐬𝐬𝐟𝐮𝐥𝐥𝐲 𝐑𝐞𝐦𝐨𝐯𝐞𝐝 𝐓𝐡𝐞 𝐔𝐬𝐞𝐫: ${args[0]}`);
     } catch (error) {
         console.error("Error in kick command:", error);
-        reply(`An error occurred: ${error.message || "Unknown error"}`);
+        reply(`𝐀𝐧 𝐄𝐫𝐫𝐨𝐫 𝐎𝐜𝐜𝐮𝐫𝐫𝐞𝐝: ${error.message || "𝐔𝐧𝐤𝐧𝐨𝐰𝐧 𝐄𝐫𝐫𝐨𝐫"}`);
     }
 });
 
