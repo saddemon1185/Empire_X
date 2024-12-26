@@ -400,3 +400,140 @@ cmd({
         reply(`An error occurred: ${error.message || "Unknown error"}`);
     }
 });
+
+//poll commands 
+cmd({
+    pattern: "poll",
+    alias: ["survey"],
+    desc: "Create a poll in the group.",
+    category: "group", // Already group
+    filename: __filename,
+}, async (conn, mek, m, { from, quoted, body, args, q, isGroup, sender, reply }) => {
+    try {
+        // Ensure this is being used in a group
+        if (!isGroup) return reply("𝐓𝐡𝐢𝐬 𝐅𝐞𝐚𝐭𝐮𝐫𝐞 𝐈𝐬 𝐎𝐧𝐥𝐲 𝐅𝐨𝐫 𝐆𝐫𝐨𝐮𝐩❗");
+
+        // Get the sender's number
+        const senderNumber = sender.split('@')[0];
+
+        // Check if the sender has provided a question and options
+        if (args.length < 2) return reply("Please provide a question and at least two options. Example: `/poll Do you like pizza? Yes No`");
+
+        // Extract the question and options
+        const question = args[0]; // The first word will be the question
+        const options = args.slice(1).join(' ').split('|'); // Separate options by "|"
+
+        // Ensure there are at least two options
+        if (options.length < 2) return reply("Please provide at least two options.");
+
+        // Format the poll message
+        let pollMessage = `Poll: ${question}\n\n`;
+        options.forEach((option, index) => {
+            pollMessage += `${index + 1}. ${option}\n`;
+        });
+
+        // Send the poll message to the group
+        const poll = await conn.sendMessage(from, { text: pollMessage }, { quoted: mek });
+
+        // Add reactions for voting
+        const reactions = ['👍', '👎', '❤️', '😂', '😮']; // You can add more reaction emojis
+        options.forEach((_, index) => {
+            const reaction = reactions[index] || '👍'; // Default to '👍' if more options than emojis
+            conn.sendMessage(from, { react: { text: reaction, key: poll.key } });
+        });
+
+        return reply("Poll created successfully. Members can vote by reacting to the poll message.");
+
+    } catch (error) {
+        console.error("Error in poll command:", error);
+        reply(`An error occurred: ${error.message || "Unknown error"}`);
+    }
+});
+
+//promote commands 
+cmd({
+    pattern: "promote",
+    alias: ["addadmin"],
+    desc: "Promote a member to admin.",
+    category: "group", // Already group
+    filename: __filename,
+}, async (conn, mek, m, { from, quoted, body, args, q, isGroup, sender, reply }) => {
+    try {
+        // Ensure this is being used in a group
+        if (!isGroup) return reply("𝐓𝐡𝐢𝐬 𝐅𝐞𝐚𝐭𝐮𝐫𝐞 𝐈𝐬 𝐎𝐧𝐥𝐲 𝐅𝐨𝐫 𝐆𝐫𝐨𝐮𝐩❗");
+
+        // Get the sender's number
+        const senderNumber = sender.split('@')[0];
+        const botNumber = conn.user.id.split(':')[0];
+
+        // Check if the bot is an admin
+        const groupMetadata = isGroup ? await conn.groupMetadata(from) : '';
+        const groupAdmins = groupMetadata ? groupMetadata.participants.filter(member => member.admin) : [];
+        const isBotAdmins = isGroup ? groupAdmins.some(admin => admin.id === botNumber + '@s.whatsapp.net') : false;
+
+        if (!isBotAdmins) return reply("𝐏𝐥𝐞𝐚𝐬𝐞 𝐏𝐫𝐨𝐯𝐢𝐝𝐞 𝐌𝐞 𝐀𝐝𝐦𝐢𝐧 𝐑𝐨𝐥𝐞 ❗");
+
+        // Check if the sender is an admin
+        const isAdmins = isGroup ? groupAdmins.some(admin => admin.id === sender) : false;
+        if (!isAdmins) return reply("𝐏𝐥𝐞𝐚𝐬𝐞 𝐏𝐫𝐨𝐯𝐢𝐝𝐞 𝐌𝐞 𝐀𝐝𝐦𝐢𝐧 𝐑𝐨𝐥𝐞 ❗");
+
+        // Ensure a valid member is specified
+        const mentioned = quoted ? [quoted.sender] : args.length > 0 ? args[0] : null;
+        if (!mentioned || mentioned.length < 1) return reply("Please mention a member to promote.");
+
+        // Promote the member to admin
+        await conn.groupParticipantsUpdate(from, [mentioned], 'promote');
+
+        // Send confirmation reply
+        return reply(`Successfully promoted the member.`);
+
+    } catch (error) {
+        console.error("Error in promote command:", error);
+        reply(`An error occurred: ${error.message || "Unknown error"}`);
+    }
+});
+
+//demote commands 
+cmd({
+    pattern: "demote",
+    alias: ["removeadmin"],
+    desc: "Demote a member from admin.",
+    category: "group", // Already group
+    filename: __filename,
+}, async (conn, mek, m, { from, quoted, body, args, q, isGroup, sender, reply }) => {
+    try {
+        // Ensure this is being used in a group
+        if (!isGroup) return reply("𝐓𝐡𝐢𝐬 𝐅𝐞𝐚𝐭𝐮𝐫𝐞 𝐈𝐬 𝐎𝐧𝐥𝐲 𝐅𝐨𝐫 𝐆𝐫𝐨𝐮𝐩❗");
+
+        // Get the sender's number
+        const senderNumber = sender.split('@')[0];
+        const botNumber = conn.user.id.split(':')[0];
+
+        // Check if the bot is an admin
+        const groupMetadata = isGroup ? await conn.groupMetadata(from) : '';
+        const groupAdmins = groupMetadata ? groupMetadata.participants.filter(member => member.admin) : [];
+        const isBotAdmins = isGroup ? groupAdmins.some(admin => admin.id === botNumber + '@s.whatsapp.net') : false;
+
+        if (!isBotAdmins) return reply("𝐏𝐥𝐞𝐚𝐬𝐞 𝐏𝐫𝐨𝐯𝐢𝐝𝐞 𝐌𝐞 𝐀𝐝𝐦𝐢𝐧 𝐑𝐨𝐥𝐞 ❗");
+
+        // Check if the sender is an admin
+        const isAdmins = isGroup ? groupAdmins.some(admin => admin.id === sender) : false;
+        if (!isAdmins) return reply("𝐏𝐥𝐞𝐚𝐬𝐞 𝐏𝐫𝐨𝐯𝐢𝐝𝐞 𝐌𝐞 𝐀𝐝𝐦𝐢𝐧 𝐑𝐨𝐥𝐞 ❗");
+
+        // Ensure a valid member is specified
+        const mentioned = quoted ? [quoted.sender] : args.length > 0 ? args[0] : null;
+        if (!mentioned || mentioned.length < 1) return reply("Please mention a member to demote.");
+
+        // Demote the member from admin
+        await conn.groupParticipantsUpdate(from, [mentioned], 'demote');
+
+        // Send confirmation reply
+        return reply(`Successfully demoted the member.`);
+
+    } catch (error) {
+        console.error("Error in demote command:", error);
+        reply(`An error occurred: ${error.message || "Unknown error"}`);
+    }
+});
+
+//
