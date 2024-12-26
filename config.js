@@ -1,10 +1,13 @@
 const fs = require('fs');
-
 if (fs.existsSync('config.env')) require('dotenv').config({ path: './config.env' });
 
+function convertToBool(text, fault = 'true') {
+    return text === fault ? true : false;
+}
+
 module.exports = {
-    OWNER_NUMBER: process.env.OWNER_NUMBER || "2348078582627",
     SESSION_ID: process.env.SESSION_ID || "rEFUzYQJ#Qj7TtPE5Q0wJZWbF7826oJ4lYKUlhoed2Cb_qdtFaGE",
+    OWNER_NUMBER: process.env.OWNER_NUMBER || "2348078582627",
     AUTO_READ_STATUS: process.env.AUTO_READ_STATUS || "false",
     MODE: process.env.MODE || "private",
     ALIVE_IMG: process.env.ALIVE_IMG || "https://raw.githubusercontent.com/efeurhobo/Empire_X/main/lib/assets/empire.jpg",
