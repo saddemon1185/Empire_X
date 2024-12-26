@@ -247,32 +247,38 @@ cmd({
     filename: __filename,
 }, async (conn, mek, m, { from, args, reply }) => {
     try {
-        const isGroup = from.endsWith('@g.us');
-        if (!isGroup) return reply("𝐓𝐡𝐢𝐬 𝐅𝐞𝐚𝐭𝐮𝐫𝐞 𝐈𝐬 𝐎𝐧𝐥𝐲 𝐅𝐨𝐫 𝐆𝐫𝐨𝐮𝐩❗");
+        // Ensure the command is used in a group
+        if (!from.endsWith('@g.us')) return reply("𝐓𝐡𝐢𝐬 𝐅𝐞𝐚𝐭𝐮𝐫𝐞 𝐈𝐬 𝐎𝐧𝐥𝐲 𝐅𝐨𝐫 𝐆𝐫𝐨𝐮𝐩𝐬❗");
 
+        // Fetch group metadata
+        const groupMetadata = await conn.groupMetadata(from);
+        const participants = groupMetadata.participants;
+        const botNumber = conn.user.id.split(':')[0] + '@s.whatsapp.net';
+        const groupAdmins = participants.filter(member => member.admin).map(admin => admin.id);
         const sender = mek.key.fromMe
             ? conn.user.id.split(':')[0] + '@s.whatsapp.net'
             : mek.key.participant || mek.key.remoteJid;
-        const botNumber = conn.user.id.split(':')[0] + '@s.whatsapp.net';
-        const groupMetadata = await conn.groupMetadata(from).catch(() => {});
-        const participants = groupMetadata ? groupMetadata.participants : [];
-        const groupAdmins = participants.filter(member => member.admin).map(admin => admin.id);
-        const isBotAdmins = groupAdmins.includes(botNumber);
-        const isAdmins = groupAdmins.includes(sender);
 
-        if (!isBotAdmins) return reply("𝐏𝐥𝐞𝐚𝐬𝐞 𝐏𝐫𝐨𝐯𝐢𝐝𝐞 𝐌𝐞 𝐀𝐝𝐦𝐢𝐧 𝐑𝐨𝐥𝐞 ❗");
-        if (!isAdmins) return reply("𝐘𝐨𝐮 𝐍𝐞𝐞𝐝 𝐓𝐨 𝐁𝐞 𝐀𝐧 𝐀𝐝𝐦𝐢𝐧 𝐓𝐨 𝐔𝐬𝐞 𝐓𝐡𝐢𝐬 𝐂𝐨𝐦𝐦𝐚𝐧𝐝❗");
+        // Check if bot is an admin
+        if (!groupAdmins.includes(botNumber)) return reply("𝐏𝐥𝐞𝐚𝐬𝐞 𝐏𝐫𝐨𝐯𝐢𝐝𝐞 𝐌𝐞 𝐀𝐝𝐦𝐢𝐧 𝐑𝐨𝐥𝐞❗");
 
+        // Check if the sender is an admin
+        if (!groupAdmins.includes(sender)) return reply("𝐘𝐨𝐮 𝐍𝐞𝐞𝐝 𝐓𝐨 𝐁𝐞 𝐀𝐧 𝐀𝐝𝐦𝐢𝐧 𝐓𝐨 𝐔𝐬𝐞 𝐓𝐡𝐢𝐬 𝐂𝐨𝐦𝐦𝐚𝐧𝐝❗");
+
+        // Ensure a valid number is provided
         if (!args[0] || isNaN(args[0])) return reply("𝐏𝐥𝐞𝐚𝐬𝐞 𝐏𝐫𝐨𝐯𝐢𝐝𝐞 𝐀 𝐕𝐚𝐥𝐢𝐝 𝐏𝐡𝐨𝐧𝐞 𝐍𝐮𝐦𝐛𝐞𝐫 𝐓𝐨 𝐊𝐢𝐜𝐤.");
 
+        // Format the phone number
         const numberToKick = `${args[0]}@s.whatsapp.net`;
-        const userExists = participants.some(member => member.id === numberToKick);
 
-        if (!userExists) return reply("𝐓𝐡𝐞 𝐔𝐬𝐞𝐫 𝐈𝐬 𝐍𝐨𝐭 𝐈𝐧 𝐓𝐡𝐢𝐬 𝐆𝐫𝐨𝐮𝐩.");
+        // Check if the user is in the group
+        if (!participants.some(participant => participant.id === numberToKick)) {
+            return reply("𝐓𝐡𝐞 𝐔𝐬𝐞𝐫 𝐈𝐬 𝐍𝐨𝐭 𝐈𝐧 𝐓𝐡𝐞 𝐆𝐫𝐨𝐮𝐩❗");
+        }
 
-        // Use Baileys method to remove participant
+        // Attempt to kick the user
         await conn.groupParticipantsUpdate(from, [numberToKick], "remove");
-        return reply(`𝐒𝐮𝐜𝐜𝐞𝐬𝐬𝐟𝐮𝐥𝐥𝐲 𝐑𝐞𝐦𝐨𝐯𝐞𝐝 𝐓𝐡𝐞 𝐔𝐬𝐞𝐫: ${args[0]}`);
+        reply(`𝐒𝐮𝐜𝐜𝐞𝐬𝐬𝐟𝐮𝐥𝐥𝐲 𝐑𝐞𝐦𝐨𝐯𝐞𝐝 𝐔𝐬𝐞𝐫: ${args[0]}`);
     } catch (error) {
         console.error("Error in kick command:", error);
         reply(`𝐀𝐧 𝐄𝐫𝐫𝐨𝐫 𝐎𝐜𝐜𝐮𝐫𝐫𝐞𝐝: ${error.message || "𝐔𝐧𝐤𝐧𝐨𝐰𝐧 𝐄𝐫𝐫𝐨𝐫"}`);
@@ -282,44 +288,41 @@ cmd({
 //add commands 
 cmd({
     pattern: "add",
-    alias: ["invite"],
     desc: "Add a member to the group.",
     category: "group",
     filename: __filename,
 }, async (conn, mek, m, { from, args, reply }) => {
     try {
-        const isGroup = from.endsWith('@g.us');
-        if (!isGroup) return reply("𝐓𝐡𝐢𝐬 𝐅𝐞𝐚𝐭𝐮𝐫𝐞 𝐈𝐬 𝐎𝐧𝐥𝐲 𝐅𝐨𝐫 𝐆𝐫𝐨𝐮𝐩𝐬❗");
+        // Ensure the command is used in a group
+        if (!from.endsWith('@g.us')) return reply("𝐓𝐡𝐢𝐬 𝐅𝐞𝐚𝐭𝐮𝐫𝐞 𝐈𝐬 𝐎𝐧𝐥𝐲 𝐅𝐨𝐫 𝐆𝐫𝐨𝐮𝐩𝐬❗");
 
-        const sender = mek.key.fromMe
-            ? conn.user.id.split(':')[0] + '@s.whatsapp.net'
-            : mek.key.participant || mek.key.remoteJid;
-        const botNumber = conn.user.id.split(':')[0] + '@s.whatsapp.net';
+        // Check if the bot is an admin
         const groupMetadata = await conn.groupMetadata(from);
         const participants = groupMetadata.participants;
+        const botNumber = conn.user.id.split(':')[0] + '@s.whatsapp.net';
         const groupAdmins = participants.filter(member => member.admin).map(admin => admin.id);
-        const isBotAdmins = groupAdmins.includes(botNumber);
-        const isAdmins = groupAdmins.includes(sender);
+        if (!groupAdmins.includes(botNumber)) return reply("𝐏𝐥𝐞𝐚𝐬𝐞 𝐏𝐫𝐨𝐯𝐢𝐝𝐞 𝐌𝐞 𝐀𝐝𝐦𝐢𝐧 𝐑𝐨𝐥𝐞❗");
 
-        if (!isBotAdmins) return reply("𝐏𝐥𝐞𝐚𝐬𝐞 𝐏𝐫𝐨𝐯𝐢𝐝𝐞 𝐌𝐞 𝐀𝐝𝐦𝐢𝐧 𝐑𝐨𝐥𝐞❗");
-        if (!isAdmins) return reply("𝐘𝐨𝐮 𝐍𝐞𝐞𝐝 𝐓𝐨 𝐁𝐞 𝐀𝐧 𝐀𝐝𝐦𝐢𝐧 𝐓𝐨 𝐔𝐬𝐞 𝐓𝐡𝐢𝐬 𝐂𝐨𝐦𝐦𝐚𝐧𝐝❗");
-
+        // Ensure an argument (phone number) is provided
         if (!args[0] || isNaN(args[0])) return reply("𝐏𝐥𝐞𝐚𝐬𝐞 𝐏𝐫𝐨𝐯𝐢𝐝𝐞 𝐀 𝐕𝐚𝐥𝐢𝐝 𝐏𝐡𝐨𝐧𝐞 𝐍𝐮𝐦𝐛𝐞𝐫 𝐓𝐨 𝐀𝐝𝐝.");
 
+        // Format the phone number
         const numberToAdd = `${args[0]}@s.whatsapp.net`;
 
-        // Check if user is already in the group
-        const userExists = participants.some(member => member.id === numberToAdd);
-        if (userExists) return reply("𝐓𝐡𝐞 𝐔𝐬𝐞𝐫 𝐈𝐬 𝐀𝐥𝐫𝐞𝐚𝐝𝐲 𝐈𝐧 𝐓𝐡𝐞 𝐆𝐫𝐨𝐮𝐩❗");
+        // Check if the user is already in the group
+        if (participants.some(participant => participant.id === numberToAdd)) {
+            return reply("𝐓𝐡𝐞 𝐔𝐬𝐞𝐫 𝐈𝐬 𝐀𝐥𝐫𝐞𝐚𝐝𝐲 𝐈𝐧 𝐓𝐡𝐞 𝐆𝐫𝐨𝐮𝐩❗");
+        }
 
-        // Adding user to the group
+        // Add the user to the group
         await conn.groupParticipantsUpdate(from, [numberToAdd], "add");
-        return reply(`𝐒𝐮𝐜𝐜𝐞𝐬𝐬𝐟𝐮𝐥𝐥𝐲 𝐀𝐝𝐝𝐞𝐝 𝐔𝐬𝐞𝐫: ${args[0]}`);
+        reply(`𝐒𝐮𝐜𝐜𝐞𝐬𝐬𝐟𝐮𝐥𝐥𝐲 𝐀𝐝𝐝𝐞𝐝 𝐔𝐬𝐞𝐫: ${args[0]}`);
     } catch (error) {
         console.error("Error in add command:", error);
         reply(`𝐀𝐧 𝐄𝐫𝐫𝐨𝐫 𝐎𝐜𝐜𝐮𝐫𝐫𝐞𝐝: ${error.message || "𝐔𝐧𝐤𝐧𝐨𝐰𝐧 𝐄𝐫𝐫𝐨𝐫"}`);
     }
 });
+
 //mute commands 
 cmd({
     pattern: "mute",
@@ -348,12 +351,7 @@ cmd({
         if (!isAdmins) return reply("𝐏𝐥𝐞𝐚𝐬𝐞 𝐏𝐫𝐨𝐯𝐢𝐝𝐞 𝐌𝐞 𝐀𝐝𝐦𝐢𝐧 𝐑𝐨𝐥𝐞 ❗");
 
         // Mute all participants
-        const participants = groupMetadata ? groupMetadata.participants : [];
-        for (let participant of participants) {
-            if (participant.id !== botNumber + '@s.whatsapp.net' && !participant.admin) {
-                await conn.updateParticipant(from, participant.id, 'mute');
-            }
-        }
+        await conn.groupSettingUpdate(from, 'announcement');  // This mutes the group (only admins can send messages)
 
         // Send confirmation reply
         return reply("All members have been muted successfully.");
@@ -392,12 +390,7 @@ cmd({
         if (!isAdmins) return reply("𝐏𝐥𝐞𝐚𝐬𝐞 𝐏𝐫𝐨𝐯𝐢𝐝𝐞 𝐌𝐞 𝐀𝐝𝐦𝐢𝐧 𝐑𝐨𝐥𝐞 ❗");
 
         // Unmute all participants
-        const participants = groupMetadata ? groupMetadata.participants : [];
-        for (let participant of participants) {
-            if (participant.id !== botNumber + '@s.whatsapp.net' && !participant.admin) {
-                await conn.updateParticipant(from, participant.id, 'unmute');
-            }
-        }
+        await conn.groupSettingUpdate(from, 'not_announcement');  // This unmutes the group (everyone can send messages)
 
         // Send confirmation reply
         return reply("All members have been unmuted successfully.");
