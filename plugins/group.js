@@ -282,80 +282,41 @@ cmd({
 //add commands 
 cmd({
     pattern: "add",
-    desc: "Add a person to the group using their phone number.",
-    category: "group", // Already group
+    alias: ["invite"],
+    desc: "Add a member to the group.",
+    category: "group",
     filename: __filename,
-}, async (conn, mek, m, { from, quoted, body, args, q, isGroup, sender, reply }) => {
+}, async (conn, mek, m, { from, args, reply }) => {
     try {
-        // Ensure this is being used in a group
+        const isGroup = from.endsWith('@g.us');
         if (!isGroup) return reply("𝐓𝐡𝐢𝐬 𝐅𝐞𝐚𝐭𝐮𝐫𝐞 𝐈𝐬 𝐎𝐧𝐥𝐲 𝐅𝐨𝐫 𝐆𝐫𝐨𝐮𝐩❗");
 
-        // Get the sender's number
-        const senderNumber = sender.split('@')[0];
-        const botNumber = conn.user.id.split(':')[0];
-
-        // Check if the bot is an admin
-        const groupMetadata = isGroup ? await conn.groupMetadata(from) : '';
-        const groupAdmins = groupMetadata ? groupMetadata.participants.filter(member => member.admin) : [];
-        const isBotAdmins = isGroup ? groupAdmins.some(admin => admin.id === botNumber + '@s.whatsapp.net') : false;
+        const sender = mek.key.fromMe
+            ? conn.user.id.split(':')[0] + '@s.whatsapp.net'
+            : mek.key.participant || mek.key.remoteJid;
+        const botNumber = conn.user.id.split(':')[0] + '@s.whatsapp.net';
+        const groupMetadata = await conn.groupMetadata(from).catch(() => {});
+        const participants = groupMetadata ? groupMetadata.participants : [];
+        const groupAdmins = participants.filter(member => member.admin).map(admin => admin.id);
+        const isBotAdmins = groupAdmins.includes(botNumber);
+        const isAdmins = groupAdmins.includes(sender);
 
         if (!isBotAdmins) return reply("𝐏𝐥𝐞𝐚𝐬𝐞 𝐏𝐫𝐨𝐯𝐢𝐝𝐞 𝐌𝐞 𝐀𝐝𝐦𝐢𝐧 𝐑𝐨𝐥𝐞 ❗");
+        if (!isAdmins) return reply("𝐘𝐨𝐮 𝐍𝐞𝐞𝐝 𝐓𝐨 𝐁𝐞 𝐀𝐧 𝐀𝐝𝐦𝐢𝐧 𝐓𝐨 𝐔𝐬𝐞 𝐓𝐡𝐢𝐬 𝐂𝐨𝐦𝐦𝐚𝐧𝐝❗");
 
-        // Check if the sender is an admin
-        const isAdmins = isGroup ? groupAdmins.some(admin => admin.id === sender) : false;
-        if (!isAdmins) return reply("𝐏𝐥𝐞𝐚𝐬𝐞 𝐏𝐫𝐨𝐯𝐢𝐝𝐞 𝐌𝐞 𝐀𝐝𝐦𝐢𝐧 𝐑𝐨𝐥𝐞 ❗");
+        if (!args[0] || isNaN(args[0])) return reply("𝐏𝐥𝐞𝐚𝐬𝐞 𝐏𝐫𝐨𝐯𝐢𝐝𝐞 𝐀 𝐕𝐚𝐥𝐢𝐝 𝐏𝐡𝐨𝐧𝐞 𝐍𝐮𝐦𝐛𝐞𝐫 𝐓𝐨 𝐀𝐝𝐝.");
 
-        // Ensure a phone number is provided
-        const phoneNumber = args[0];
-        if (!phoneNumber) return reply("Please provide a phone number to add. Example: *add 2348078582627*");
+        const numberToAdd = `${args[0]}@s.whatsapp.net`;
+        const userExists = participants.some(member => member.id === numberToAdd);
 
-        // Add the person to the group using their phone number
-        try {
-            await conn.groupParticipantsAdd(from, [`${phoneNumber}@s.whatsapp.net`]);
-            return reply(`Successfully added *${phoneNumber}* to the group!`);
-        } catch (error) {
-            console.error("Error adding participant:", error);
-            return reply(`Failed to add the participant. Error: ${error.message}`);
-        }
+        if (userExists) return reply("𝐓𝐡𝐞 𝐔𝐬𝐞𝐫 𝐈𝐬 𝐀𝐥𝐫𝐞𝐚𝐝𝐲 𝐈𝐧 𝐓𝐡𝐢𝐬 𝐆𝐫𝐨𝐮𝐩.");
 
+        // Use Baileys method to add participant
+        await conn.groupParticipantsUpdate(from, [numberToAdd], "add");
+        return reply(`𝐒𝐮𝐜𝐜𝐞𝐬𝐬𝐟𝐮𝐥𝐥𝐲 𝐀𝐝𝐝𝐞𝐝 𝐓𝐡𝐞 𝐔𝐬𝐞𝐫: ${args[0]}`);
     } catch (error) {
         console.error("Error in add command:", error);
-        reply(`An error occurred: ${error.message || "Unknown error"}`);
-    }
-});
-
-//group info
-cmd({
-    pattern: "groupinfo",
-    alias: ["ginfo"],
-    desc: "Get group information.",
-    category: "group", // Group related command
-    filename: __filename,
-}, async (conn, mek, m, { from, quoted, body, args, q, isGroup, sender, reply }) => {
-    try {
-        // Ensure this is being used in a group
-        if (!isGroup) return reply("𝐓𝐡𝐢𝐬 𝐅𝐞𝐚𝐭𝐮𝐫𝐞 𝐈𝐬 𝐎𝐧𝐥𝐲 𝐅𝐨𝐫 𝐆𝐫𝐨𝐮𝐩❗");
-
-        // Get group metadata
-        const groupMetadata = await conn.groupMetadata(from);
-        const groupName = groupMetadata.subject;
-        const groupAdmins = groupMetadata.participants.filter(member => member.admin);
-        const memberCount = groupMetadata.participants.length;
-
-        // Get group information
-        const groupInfo = `
-        *Group Name:* ${groupName}
-        *Group ID:* ${from}
-        *Total Members:* ${memberCount}
-        *Group Admins:* ${groupAdmins.map(admin => admin.id.split('@')[0]).join(", ") || "No admins"} 
-        `;
-
-        // Send the group information
-        return reply(groupInfo);
-
-    } catch (error) {
-        console.error("Error in groupinfo command:", error);
-        reply(`An error occurred: ${error.message || "Unknown error"}`);
+        reply(`𝐀𝐧 𝐄𝐫𝐫𝐨𝐫 𝐎𝐜𝐜𝐮𝐫𝐫𝐞𝐝: ${error.message || "𝐔𝐧𝐤𝐧𝐨𝐰𝐧 𝐄𝐫𝐫𝐨𝐫"}`);
     }
 });
 
