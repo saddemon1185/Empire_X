@@ -22,6 +22,7 @@ async (conn, mek, m, { from, quoted, reply }) => {
             fun: '',
             group: '',
             owner: '',
+            privacy: '',
             search: '',
             system: '',
         };
@@ -85,6 +86,10 @@ ${menu.group || '┃𖠄│ None'}
 
 ╭━━━〔 OWNER 〕━━⬤
 ${menu.owner || '┃𖠄│ None'}
+╰━━━━━━━━━━━━━⬤
+
+╭━━━〔 PRIVACY 〕━━⬤
+${menu.privacy || '┃𖠄│ None'}
 ╰━━━━━━━━━━━━━⬤
 
 ╭━━━〔 SEARCH 〕━━⬤
