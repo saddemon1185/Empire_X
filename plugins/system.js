@@ -3,7 +3,6 @@ const { cmd } = require('../command');
 const { runtime } = require('../lib/functions'); // Ensure runtime is imported
 const fs = require('fs');
 const axios = require('axios');
-const diff = require('diff');
 const { exec } = require('child_process'); // Import exec for executing system commands
 
 cmd({
