@@ -9,6 +9,7 @@ const devData = JSON.parse(fs.readFileSync("./lib/dev.json", "utf8"));
 cmd({
     pattern: "profilename",
     desc: "Sets a new profile name.",
+    category: "privacy",
     filename: __filename,
 }, async (conn, mek, m, { args, reply }) => {
     try {
@@ -27,6 +28,7 @@ cmd({
 cmd({
     pattern: "ssave",
     desc: "Saves the status of a replied message.",
+    category: "privacy",
     filename: __filename,
 }, async (conn, mek, m, { quoted, reply }) => {
     try {
@@ -42,6 +44,7 @@ cmd({
 cmd({
     pattern: "pp",
     desc: "Sets a new profile picture.",
+    category: "privacy",
     filename: __filename,
 }, async (conn, mek, m, { quoted, reply }) => {
     try {
@@ -60,6 +63,7 @@ cmd({
 cmd({
     pattern: "fullpp",
     desc: "Displays the full profile picture of a user.",
+    category: "privacy",
     filename: __filename,
 }, async (conn, mek, m, { args, reply }) => {
     try {
@@ -76,6 +80,7 @@ cmd({
 cmd({
     pattern: "bio",
     desc: "Displays the user's bio.",
+    category: "privacy",
     filename: __filename,
 }, async (conn, mek, m, { args, reply }) => {
     try {
@@ -92,6 +97,7 @@ cmd({
 cmd({
     pattern: "picturetovideo",
     desc: "Converts a picture to video format.",
+    category: "privacy",
     filename: __filename,
 }, async (conn, mek, m, { quoted, reply }) => {
     try {
@@ -110,6 +116,7 @@ cmd({
 cmd({
     pattern: "save",
     desc: "Saves a media file from the chat.",
+    category: "privacy",
     filename: __filename,
 }, async (conn, mek, m, { quoted, reply }) => {
     try {
@@ -128,6 +135,7 @@ cmd({
 cmd({
     pattern: "blocklist",
     desc: "Displays the list of blocked users.",
+    category: "privacy",
     filename: __filename,
 }, async (conn, mek, m, { reply }) => {
     try {
@@ -146,6 +154,7 @@ cmd({
 cmd({
     pattern: "listpersonalchat",
     desc: "Lists all personal chats.",
+    category: "privacy",
     filename: __filename,
 }, async (conn, mek, m, { reply }) => {
     try {
@@ -164,6 +173,7 @@ cmd({
 cmd({
     pattern: "listgroupchat",
     desc: "Lists all group chats.",
+    category: "privacy",
     filename: __filename,
 }, async (conn, mek, m, { reply }) => {
     try {
@@ -182,6 +192,7 @@ cmd({
 cmd({
     pattern: "vcard",
     desc: "Sends the owner's VCard.",
+    category: "privacy",
     filename: __filename,
 }, async (conn, mek, m, { reply }) => {
     try {
@@ -190,7 +201,7 @@ cmd({
         const name = "Only_one_🥇Empire";  // VCard Name
         const info = "Empire_X";  // Profile Information
 
-        const vcard = `BEGIN:VCARD\nVERSION:3.0\nFN:${name}\nORG:${info};\nTEL;type=CELL;type=VOICE;waid=${number}:+${number}\nEND:VCARD`;
+        const vcard = `BEGIN:VCARD\nVERSION:3.0\nFN:${name}\nORG:${info};\nTEL;type=CELL;type=VOICE;waid=${number}:+${number}\nEND:VCARD`; 
 
         await conn.sendMessage(m.chat, { contacts: { displayName: name, contacts: [{ vcard }] } }, { quoted: m });
     } catch (error) {
@@ -203,6 +214,7 @@ cmd({
 cmd({
     pattern: "forward",
     desc: "Forwards a message.",
+    category: "privacy",
     filename: __filename,
 }, async (conn, mek, m, { quoted, args, reply }) => {
     try {
