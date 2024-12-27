@@ -261,9 +261,9 @@ async (conn, mek, m, { from, isOwner, reply }) => {
     if (!isOwner) return reply("❌ You are not the owner!");
 
     try {
-        // Ensure that the bot has connected and chats are loaded
+        // Ensure that chats are loaded
         if (!conn.chats || Object.keys(conn.chats).length === 0) {
-            return reply("❌ No chats found or chats are not loaded yet.");
+            return reply("❌ No chats found. Ensure the bot has received messages.");
         }
 
         // Get all chats
@@ -281,5 +281,39 @@ async (conn, mek, m, { from, isOwner, reply }) => {
         reply("🧹 All chats cleared successfully!");
     } catch (error) {
         reply(`❌ Error clearing chats: ${error.message}`);
+    }
+});
+
+// Listen for chat updates to ensure that chats are loaded before trying to clear them
+conn.on('chat-update', async (chatUpdate) => {
+    if (!chatUpdate.hasNewMessage) return; // Skip if no new message
+
+    const m = chatUpdate.messages.all()[0];
+    const { from, isOwner, reply } = m;
+
+    // If 'clearchats' message is received and sender is the owner, clear all chats
+    if (m.body === 'clearchats' && isOwner) {
+        try {
+            // Ensure that chats are loaded
+            if (!conn.chats || Object.keys(conn.chats).length === 0) {
+                return reply("❌ No chats found. Ensure the bot has received messages.");
+            }
+
+            // Get all chats
+            const chats = await conn.chats.all();
+
+            if (chats.length === 0) {
+                return reply("❌ No chats available to clear.");
+            }
+
+            // Loop through all chats and delete them
+            for (const chat of chats) {
+                await conn.chatDelete(chat.jid); // Use `chatDelete` to remove the chat from the list
+            }
+
+            reply("🧹 All chats cleared successfully!");
+        } catch (error) {
+            reply(`❌ Error clearing chats: ${error.message}`);
+        }
     }
 });
