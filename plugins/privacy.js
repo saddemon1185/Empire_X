@@ -1,6 +1,7 @@
 const fs = require("fs");
 const config = require("../config");
 const { cmd, commands } = require("../command");
+const path = require('path');
 
 // Load dev.json to get the contact number
 const devData = JSON.parse(fs.readFileSync("./lib/dev.json", "utf8"));
@@ -114,23 +115,50 @@ cmd({
 
 // Save Media Command
 cmd({
-    pattern: "save",
-    desc: "Saves a media file from the chat.",
-    category: "privacy",
+    pattern: "privacy",
+    react: "📁",
+    alias: ["store"],
+    desc: "Save and send back a media file (image, video, or audio).",
+    category: "privacy,
     filename: __filename,
-}, async (conn, mek, m, { quoted, reply }) => {
+},
+async (conn, mek, m, { quoted, q, reply }) => {
     try {
-        if (!quoted) return reply("Reply to a media message to save.");
+        if (!quoted) {
+            return reply("❌ Reply to a media message (video, image, or audio) with the `.save` command.");
+        }
 
-        const media = await conn.downloadMediaMessage(quoted);
-        fs.writeFileSync("./savedMedia", media);
-        return reply("Media saved.");
+        const messageType = quoted.mtype;
+        let mediaType;
+
+        // Determine the type of media
+        if (/video/.test(messageType)) {
+            mediaType = "video";
+        } else if (/image/.test(messageType)) {
+            mediaType = "image";
+        } else if (/audio/.test(messageType)) {
+            mediaType = "audio";
+        } else {
+            return reply("❌ Only video, image, or audio messages are supported.");
+        }
+
+        // Download and save the media file
+        const mediaPath = await conn.downloadAndSaveMediaMessage(quoted);
+        const filePath = path.resolve(mediaPath);
+
+        // Send the saved media back
+        const mediaMessage = {
+            caption: q || '',
+        };
+        mediaMessage[mediaType] = { url: `file://${filePath}` };
+
+        await conn.sendMessage(m.sender, mediaMessage, { quoted: mek });
+        await reply("✅ Successfully saved and sent the media file.");
     } catch (error) {
-        console.error("Error in save command:", error);
-        reply("An error occurred while saving.");
+        console.error(error);
+        reply("❌ Failed to save and send the media. Please try again.");
     }
 });
-
 // Block List Command
 cmd({
     pattern: "blocklist",
