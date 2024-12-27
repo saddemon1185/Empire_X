@@ -259,11 +259,20 @@ cmd({
 },
 async (conn, mek, m, { from, isOwner, reply }) => {
     if (!isOwner) return reply("❌ You are not the owner!");
+
     try {
-        const chats = conn.chats.all();
-        for (const chat of chats) {
-            await conn.modifyChat(chat.jid, 'delete');
+        // Ensure conn.chats exists
+        if (!conn.chats || !conn.chats.all) {
+            return reply("❌ No chats found or unable to access chat list.");
         }
+
+        const chats = await conn.chats.all();
+
+        // Loop through all chats and delete them
+        for (const chat of chats) {
+            await conn.chatDelete(chat.jid); // Use `chatDelete` to remove the chat from the list
+        }
+
         reply("🧹 All chats cleared successfully!");
     } catch (error) {
         reply(`❌ Error clearing chats: ${error.message}`);
