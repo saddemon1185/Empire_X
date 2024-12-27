@@ -6,18 +6,35 @@ const prefix = config.PREFIX; // Get the prefix from the config
 //gid commands 
 cmd({
     pattern: "gjid",
-    desc: "Get the list of JIDs for all groups the bot is part of.",
-    category: "group", // Changed to group
+    desc: "Get the list of JIDs and names for all groups the bot is part of.",
+    category: "group",
     react: "📝",
-    filename: __filename
-},
-async (conn, mek, m, { from, isOwner, reply }) => {
+    filename: __filename,
+}, async (conn, mek, m, { from, isOwner, reply }) => {
     if (!isOwner) return reply("𝐓𝐡𝐢𝐬 𝐂𝐨𝐦𝐦𝐚𝐧𝐝 𝐈𝐬 𝐎𝐧𝐥𝐲 𝐅𝐨𝐫 𝐌𝐲 𝐎𝐰𝐧𝐞𝐫 ⚠️");
-    const groups = await conn.groupFetchAllParticipating();
-    const groupJids = Object.keys(groups).join('\n');
-    reply(`📝 *Group JIDs:*\n\n${groupJids}`);
-});
 
+    try {
+        // Fetch all groups the bot is part of
+        const groups = await conn.groupFetchAllParticipating();
+
+        if (!Object.keys(groups).length) {
+            return reply("I am not part of any groups yet.");
+        }
+
+        // Prepare the list of groups with names and JIDs
+        let groupList = "📝 *Group Names and JIDs:*\n\n";
+        for (const jid in groups) {
+            const group = groups[jid];
+            groupList += `📌 *Name:* ${group.subject}\n🆔 *JID:* ${jid}\n\n`;
+        }
+
+        // Send the formatted group list
+        reply(groupList);
+    } catch (err) {
+        console.error(err);
+        reply("An error occurred while fetching group information.");
+    }
+});
 // Tag All
 cmd({
     pattern: "tagall",
