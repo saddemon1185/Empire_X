@@ -1,5 +1,9 @@
 const config = require('../config');
 const { cmd, commands } = require('../command');
+const { proto, downloadContentFromMessage } = require('@whiskeysockets/baileys');
+const { sms } = require('../lib/msg');
+const fs = require('fs');
+
 
 const prefix = config.PREFIX; // Get the prefix from the config
 const exampleNumber = '2348078582627'; // Updated example number to exclude from being blocked/unblocked
@@ -196,5 +200,51 @@ cmd({
     } catch (e) {
         console.log(e);
         await conn.sendMessage(from, { text: `${e}` }, { quoted: mek });
+    }
+});
+
+//vv commands 
+cmd({
+    pattern: "vv",
+    desc: "Resend view-once media as normal media.",
+    category: "owner",
+    react: "📸",
+    filename: __filename,
+}, async (conn, mek, m, { isReply, quoted, reply }) => {
+    try {
+        // Check if the command is a reply to a message
+        if (!isReply || !quoted || !quoted.message) {
+            return reply("Please reply to a view-once media message.");
+        }
+
+        // Ensure the replied message is a view-once message
+        const quotedMsg = quoted.message;
+        if (quotedMsg.viewOnceMessage) {
+            const mediaType = quotedMsg.viewOnceMessage.message.imageMessage 
+                ? "image" 
+                : quotedMsg.viewOnceMessage.message.videoMessage 
+                ? "video" 
+                : null;
+
+            if (!mediaType) {
+                return reply("Unsupported view-once media type.");
+            }
+
+            // Download the view-once media
+            const mediaBuffer = await quoted.download();
+            const caption = "Here is the view-once media!";
+
+            // Resend the media based on its type
+            if (mediaType === "image") {
+                await conn.sendMessage(m.chat, { image: mediaBuffer, caption }, { quoted: mek });
+            } else if (mediaType === "video") {
+                await conn.sendMessage(m.chat, { video: mediaBuffer, caption }, { quoted: mek });
+            }
+        } else {
+            reply("The replied message is not a view-once media.");
+        }
+    } catch (err) {
+        console.error(err);
+        reply("Failed to resend the view-once media.");
     }
 });
