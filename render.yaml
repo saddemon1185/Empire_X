@@ -23,7 +23,7 @@ services:
       - key: AUTO_REACT
         value: "false"  # Enable auto reactions if required
       - key: OWNER_REACT
-        value: "true"  # Enable owner-specific reactions if needed
+        value: "false"  # Enable owner-specific reactions if needed
       - key: ALIVE_IMG
         value: "https://raw.githubusercontent.com/efeurhobo/Empire_X/main/lib/assets/empire.jpg"  # Replace with owner
       - key: AIVE_MSG
