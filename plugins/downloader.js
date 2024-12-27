@@ -10,7 +10,7 @@ const prefix = config.PREFIX; // Get the prefix from the config
 // Song Downloader Command
 cmd({
     pattern: "play",
-    alias: ["music", "ytmp3", "audio"],
+    alias: ["audio"],
     desc: "Download songs",
     category: "download",
     react: "🎶",
@@ -382,320 +382,36 @@ cmd({
     }
 });
 
-//telegram stickers commands 
-cmd({
-    pattern: "telegramsticker",
-    desc: "Download Telegram Stickers",
-    category: "download",
-    filename: __filename
-}, async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, reply }) => {
-    try {
-        // Check for query
-        if (!q) {
-            return reply(`Please send the Telegram Sticker URL. Usage Example:\n*${config.PREFIX}telegramsticker https://t.me/addstickers/stickerpackname*`);
-        }
-
-        // Validate if the provided URL is a valid Telegram Sticker URL
-        if (!/^https?:\/\/t\.me\/addstickers/.test(q)) {
-            return reply("❌ Please enter a valid Telegram Sticker URL starting with https://t.me/addstickers/");
-        }
-
-        // Encode the Sticker URL for the API request
-        const stickerUrl = encodeURIComponent(q.trim());
-
-        // Send the API request to fetch the download URL for the Telegram sticker
-        let response = await axios.get(`https://api.giftedtech.my.id/api/download/tgs?apikey=gifted&url=${stickerUrl}`);
-        
-        // Extract the download URL for the sticker
-        const stickerDownloadUrl = response.data.result.download_url;
-
-        // If the sticker URL is not found, send an error message
-        if (!stickerDownloadUrl) {
-            return reply("❌ Sorry, I couldn't fetch the sticker. Please check the URL and try again.");
-        }
-
-        // Send the sticker to the user
-        await conn.sendMessage(from, {
-            sticker: { url: stickerDownloadUrl }
-        }, { quoted: mek });
-
-        await m.react("✅");
-    } catch (e) {
-        console.error(e);
-        reply(`❌ An error occurred: ${e.message}`);
-    }
-});
-
-//Pinterest commands
+// Pinterest commands 
 cmd({
     pattern: "pinterest",
-    alias: ["pinterestdownload"],
-    desc: "Download Pinterest images",
+    desc: "Download media from Pinterest.",
     category: "download",
     react: "📌",
-    filename: __filename
-}, async (conn, mek, m, { from, quoted, body, args, q, reply }) => {
+    filename: __filename,
+}, async (conn, mek, m, { args, reply }) => {
     try {
-        // Check for query
-        if (!q) {
-            return reply(`Please Enter a Pinterest URL. Usage Example:\n*${config.PREFIX}downloadpinterest https://www.pinterest.com/pin/1234567890123456789/*`);
+        const pinterestUrl = args[0];
+        if (!pinterestUrl) {
+            return reply('Please provide the Pinterest media URL.');
         }
 
-        // If a Pinterest link is provided
-        if (q.startsWith("https://www.pinterest.com")) {
-            let downloadUrl;
-            try {
-                // Send the API request to fetch the download URL for the provided Pinterest link
-                let response = await axios.get(`https://api.giftedtech.my.id/api/download/pinterestdl?apikey=gifted&url=${encodeURIComponent(q)}`);
-                downloadUrl = response.data.result.download_url;
+        // Using the provided API for Pinterest downloader
+        const apiKey = 'gifted';
+        const apiUrl = `https://api.giftedtech.my.id/api/download/pinterestdl?apikey=${apiKey}&url=${encodeURIComponent(pinterestUrl)}`;
 
-                // Download the image
-                const buffer = await axios.get(downloadUrl, { responseType: 'arraybuffer' });
-
-                // Send the image to the user
-                await conn.sendMessage(from, { image: buffer.data, mimetype: "image/jpeg" }, { quoted: mek });
-                await m.react("✅");
-                return;
-            } catch (err) {
-                console.error("Error fetching download URL:", err);
-                return reply("❌ Unable to fetch download URL. Please try again later.");
-            }
+        const response = await axios.get(apiUrl);
+        if (!response.data || !response.data.result || !response.data.result.url) {
+            return reply('Unable to fetch the Pinterest media. Please check the URL and try again.');
         }
 
-        // If no valid Pinterest link, send usage instructions
-        return reply(`❌ Invalid URL! Please provide a valid Pinterest link. Usage Example:\n*${config.PREFIX}downloadpinterest https://www.pinterest.com/pin/1234567890123456789/*`);
+        const mediaUrl = response.data.result.url;
 
-    } catch (e) {
-        console.error("Error in Pinterest image download command:", e);
-        reply(`❌ Error: ${e.message}`);
-    }
-});
-
-//MediaFire downloader commands 
-cmd({
-    pattern: "mediafire",
-    alias: ["mediafiredownload"],
-    desc: "Download MediaFire files",
-    category: "download",
-    react: "📥",
-    filename: __filename
-}, async (conn, mek, m, { from, quoted, body, args, q, reply }) => {
-    try {
-        // Check for query
-        if (!q) {
-            return reply(`Please Enter a MediaFire URL. Usage Example:\n*${config.PREFIX}downloadmediafire https://www.mediafire.com/file/examplefile*`);
-        }
-
-        // If a MediaFire link is provided
-        if (q.startsWith("https://www.mediafire.com")) {
-            let downloadUrl;
-            try {
-                // Send the API request to fetch the download URL for the provided MediaFire link
-                let response = await axios.get(`https://api.giftedtech.my.id/api/download/mediafiredl?apikey=gifted&url=${encodeURIComponent(q)}`);
-                downloadUrl = response.data.result.download_url;
-
-                // Check the file extension to determine MIME type
-                const fileExtension = downloadUrl.split('.').pop().toLowerCase();
-                let mimeType = 'application/octet-stream'; // default MIME type
-
-                // Set MIME type based on the file extension
-                if (fileExtension === 'jpg' || fileExtension === 'jpeg') {
-                    mimeType = 'image/jpeg';
-                } else if (fileExtension === 'png') {
-                    mimeType = 'image/png';
-                } else if (fileExtension === 'pdf') {
-                    mimeType = 'application/pdf';
-                } else if (fileExtension === 'zip') {
-                    mimeType = 'application/zip';
-                } else if (fileExtension === 'mp3') {
-                    mimeType = 'audio/mp3';
-                } // Add more types as needed
-
-                // Download the file
-                const buffer = await axios.get(downloadUrl, { responseType: 'arraybuffer' });
-
-                // Send the file to the user
-                await conn.sendMessage(from, { document: buffer.data, mimetype: mimeType, fileName: "downloaded_file" }, { quoted: mek });
-                await m.react("✅");
-                return;
-            } catch (err) {
-                console.error("Error fetching download URL:", err);
-                return reply("❌ Unable to fetch download URL. Please try again later.");
-            }
-        }
-
-        // If no valid MediaFire link, send usage instructions
-        return reply(`❌ Invalid URL! Please provide a valid MediaFire link. Usage Example:\n*${config.PREFIX}downloadmediafire https://www.mediafire.com/file/examplefile*`);
-
-    } catch (e) {
-        console.error("Error in MediaFire file download command:", e);
-        reply(`❌ Error: ${e.message}`);
-    }
-});
-
-//terabox commands 
-cmd({
-    pattern: "terabox",
-    alias: ["teraboxdownload"],
-    desc: "Download TeraBox files",
-    category: "download",
-    react: "📥",
-    filename: __filename
-}, async (conn, mek, m, { from, quoted, body, args, q, reply }) => {
-    try {
-        // Check for query
-        if (!q) {
-            return reply(`Please Enter a TeraBox URL. Usage Example:\n*${config.PREFIX}downloadterabox https://www.terabox.com/file/examplefile*`);
-        }
-
-        // If a TeraBox link is provided
-        if (q.startsWith("https://www.terabox.com")) {
-            let downloadUrl;
-            try {
-                // Send the API request to fetch the download URL for the provided TeraBox link
-                let response = await axios.get(`https://api.giftedtech.my.id/api/download/terabox?apikey=gifted&url=${encodeURIComponent(q)}`);
-                downloadUrl = response.data.result.download_url;
-
-                // Check the file extension to determine MIME type
-                const fileExtension = downloadUrl.split('.').pop().toLowerCase();
-                let mimeType = 'application/octet-stream'; // default MIME type
-
-                // Set MIME type based on the file extension
-                if (fileExtension === 'jpg' || fileExtension === 'jpeg') {
-                    mimeType = 'image/jpeg';
-                } else if (fileExtension === 'png') {
-                    mimeType = 'image/png';
-                } else if (fileExtension === 'pdf') {
-                    mimeType = 'application/pdf';
-                } else if (fileExtension === 'zip') {
-                    mimeType = 'application/zip';
-                } else if (fileExtension === 'mp3') {
-                    mimeType = 'audio/mp3';
-                } // Add more types as needed
-
-                // Download the file
-                const buffer = await axios.get(downloadUrl, { responseType: 'arraybuffer' });
-
-                // Send the file to the user
-                await conn.sendMessage(from, { document: buffer.data, mimetype: mimeType, fileName: "downloaded_file" }, { quoted: mek });
-                await m.react("✅");
-                return;
-            } catch (err) {
-                console.error("Error fetching download URL:", err);
-                return reply("❌ Unable to fetch download URL. Please try again later.");
-            }
-        }
-
-        // If no valid TeraBox link, send usage instructions
-        return reply(`❌ Invalid URL! Please provide a valid TeraBox link. Usage Example:\n*${config.PREFIX}downloadterabox https://www.terabox.com/file/examplefile*`);
-
-    } catch (e) {
-        console.error("Error in TeraBox file download command:", e);
-        reply(`❌ Error: ${e.message}`);
-    }
-});
-
-//Twitter commands
-cmd({
-    pattern: "twitter",
-    alias: ["twitterdownload"],
-    desc: "Download Twitter media",
-    category: "download",
-    react: "🐦",
-    filename: __filename
-}, async (conn, mek, m, { from, quoted, body, args, q, reply }) => {
-    try {
-        // Check for query
-        if (!q) {
-            return reply(`Please Enter a Twitter URL. Usage Example:\n*${config.PREFIX}twitter https://twitter.com/user/status/1234567890*`);
-        }
-
-        // If a Twitter link is provided
-        if (q.startsWith("https://twitter.com")) {
-            let downloadUrl;
-            try {
-                // Send the API request to fetch the download URL for the provided Twitter link
-                let response = await axios.get(`https://api.giftedtech.my.id/api/download/twitter?apikey=gifted&url=${encodeURIComponent(q)}`);
-                downloadUrl = response.data.result.download_url;
-
-                // Check the file extension to determine MIME type
-                const fileExtension = downloadUrl.split('.').pop().toLowerCase();
-                let mimeType = 'application/octet-stream'; // default MIME type
-
-                // Set MIME type based on the file extension
-                if (fileExtension === 'jpg' || fileExtension === 'jpeg') {
-                    mimeType = 'image/jpeg';
-                } else if (fileExtension === 'png') {
-                    mimeType = 'image/png';
-                } else if (fileExtension === 'mp4') {
-                    mimeType = 'video/mp4';
-                } else if (fileExtension === 'gif') {
-                    mimeType = 'image/gif';
-                } // Add more types as needed
-
-                // Download the media file
-                const buffer = await axios.get(downloadUrl, { responseType: 'arraybuffer' });
-
-                // Send the file to the user
-                await conn.sendMessage(from, { document: buffer.data, mimetype: mimeType, fileName: "downloaded_media" }, { quoted: mek });
-                await m.react("✅");
-                return;
-            } catch (err) {
-                console.error("Error fetching download URL:", err);
-                return reply("❌ Unable to fetch download URL. Please try again later.");
-            }
-        }
-
-        // If no valid Twitter link, send usage instructions
-        return reply(`❌ Invalid URL! Please provide a valid Twitter link. Usage Example:\n*${config.PREFIX}twitter https://twitter.com/user/status/1234567890*`);
-
-    } catch (e) {
-        console.error("Error in Twitter media download command:", e);
-        reply(`❌ Error: ${e.message}`);
-    }
-});
-
-//Facebook command's 
-cmd({
-    pattern: "facebook",
-    alias: ["downloadfb"],
-    desc: "Download Facebook videos",
-    category: "download",
-    react: "🎥",
-    filename: __filename
-}, async (conn, mek, m, { from, quoted, body, args, q, reply }) => {
-    try {
-        // Check for query
-        if (!q) {
-            return reply(`Please Enter a Facebook video URL. Usage Example:\n*${config.PREFIX}downloadfacebook https://www.facebook.com/video_url*`);
-        }
-
-        // If a Facebook link is provided
-        if (q.startsWith("https://www.facebook.com")) {
-            let downloadUrl;
-            try {
-                // Send the API request to fetch the download URL for the provided Facebook video link
-                let response = await axios.get(`https://api.giftedtech.my.id/api/download/facebook?apikey=gifted&url=${encodeURIComponent(q)}`);
-                downloadUrl = response.data.result.download_url;
-
-                // Download the video
-                const buffer = await axios.get(downloadUrl, { responseType: 'arraybuffer' });
-
-                // Send the video to the user
-                await conn.sendMessage(from, { video: buffer.data, mimetype: "video/mp4" }, { quoted: mek });
-                await m.react("✅");
-                return;
-            } catch (err) {
-                console.error("Error fetching download URL:", err);
-                return reply("❌ Unable to fetch download URL. Please try again later.");
-            }
-        }
-
-        // If no valid Facebook link, send usage instructions
-        return reply(`❌ Invalid URL! Please provide a valid Facebook video URL. Usage Example:\n*${config.PREFIX}downloadfacebook https://www.facebook.com/video_url*`);
-
-    } catch (e) {
-        console.error("Error in Facebook video download command:", e);
-        reply(`❌ Error: ${e.message}`);
+        await conn.sendMessage(m.from, {
+            image: { url: mediaUrl },
+            caption: 'Downloaded Pinterest Image',
+        });
+    } catch (error) {
+        reply(`Error downloading from Pinterest: ${error.message}`);
     }
 });
