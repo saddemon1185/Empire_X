@@ -189,8 +189,16 @@ cmd({
         // Send a confirmation message before clearing chats
         await conn.sendMessage(from, { text: "Clearing all chats... Please wait..." });
 
-        // Clear chat functionality (you can add more specific actions if needed)
-        await conn.updateMessageReadStatus(from, 'clear');
+        // Fetch all messages in the group and delete them
+        const messages = await conn.loadMessages(from, 500);  // Load the last 500 messages
+        for (let message of messages) {
+            try {
+                await conn.sendMessage(from, { delete: { id: message.id } });
+            } catch (err) {
+                console.error("Failed to delete message:", err);
+            }
+        }
+
         await conn.sendMessage(from, { text: "✅ All chats have been cleared successfully!" });
     } catch (err) {
         console.error(err);
