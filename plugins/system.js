@@ -191,7 +191,7 @@ async (conn, mek, m, { from, isOwner, reply }) => {
 cmd({
   pattern: "updatecmd",
   desc: "Update commands.",
-  category: "owner",
+  category: "system",
   filename: __filename
 },
 async (conn, mek, m, {
