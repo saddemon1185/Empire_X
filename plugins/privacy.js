@@ -119,7 +119,7 @@ cmd({
     react: "📁",
     alias: ["store"],
     desc: "Save and send back a media file (image, video, or audio).",
-    category: "privacy,
+    category: "privacy",
     filename: __filename,
 },
 async (conn, mek, m, { quoted, q, reply }) => {
