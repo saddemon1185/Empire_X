@@ -387,31 +387,174 @@ cmd({
     pattern: "pinterest",
     desc: "Download media from Pinterest.",
     category: "download",
-    react: "📌",
     filename: __filename,
 }, async (conn, mek, m, { args, reply }) => {
     try {
         const pinterestUrl = args[0];
         if (!pinterestUrl) {
-            return reply('Please provide the Pinterest media URL.');
+            return reply("Please provide the Pinterest media URL.");
         }
 
-        // Using the provided API for Pinterest downloader
-        const apiKey = 'gifted';
-        const apiUrl = `https://api.giftedtech.my.id/api/download/pinterestdl?apikey=${apiKey}&url=${encodeURIComponent(pinterestUrl)}`;
+        // Send the API request to fetch the download URL
+        const response = await axios.get(`https://api.giftedtech.my.id/api/download/pinterestdl?apikey=gifted&url=${encodeURIComponent(pinterestUrl)}`);
+        const downloadUrl = response.data.result.url;
 
-        const response = await axios.get(apiUrl);
-        if (!response.data || !response.data.result || !response.data.result.url) {
-            return reply('Unable to fetch the Pinterest media. Please check the URL and try again.');
+        if (!downloadUrl) {
+            return reply("❌ Unable to fetch the Pinterest media. Please check the URL and try again.");
         }
 
-        const mediaUrl = response.data.result.url;
-
+        // Send the media to the user
         await conn.sendMessage(m.from, {
-            image: { url: mediaUrl },
-            caption: 'Downloaded Pinterest Image',
+            image: { url: downloadUrl },
+            caption: "Downloaded Pinterest Image",
         });
-    } catch (error) {
-        reply(`Error downloading from Pinterest: ${error.message}`);
+        await m.react("✅");
+    } catch (err) {
+        console.error("Error fetching Pinterest media URL:", err);
+        return reply("❌ Unable to fetch Pinterest media. Please try again later.");
+    }
+});
+
+//apk commands 
+cmd({
+    pattern: "apk",
+    desc: "Download APK from APKMirror or APKPure.",
+    category: "download",
+    filename: __filename,
+}, async (conn, mek, m, { args, reply }) => {
+    try {
+        const apkName = args[0];
+        if (!apkName) {
+            return reply("Please provide the APK name.");
+        }
+
+        // Send the API request to fetch the download URL
+        const response = await axios.get(`https://api.giftedtech.my.id/api/download/apkdl?apikey=gifted&appName=${encodeURIComponent(apkName)}`);
+        const downloadUrl = response.data.result.url;
+
+        if (!downloadUrl) {
+            return reply("❌ Unable to fetch the APK. Please check the name and try again.");
+        }
+
+        // Send the APK to the user
+        await conn.sendMessage(m.from, {
+            document: { url: downloadUrl },
+            fileName: `${apkName}.apk`,
+            mimetype: "application/vnd.android.package-archive",
+            caption: "Downloaded APK",
+        });
+        await m.react("✅");
+    } catch (err) {
+        console.error("Error fetching APK URL:", err);
+        return reply("❌ Unable to fetch APK. Please try again later.");
+    }
+});
+
+// MediaFire Command
+cmd({
+    pattern: "mediafire",
+    desc: "Download from Mediafire.",
+    category: "download",
+    filename: __filename,
+}, async (conn, mek, m, { args, reply }) => {
+    try {
+        const mediafireUrl = args[0];
+        if (!mediafireUrl) {
+            return reply("Please provide the Mediafire URL.");
+        }
+
+        // Send the API request to fetch the download URL
+        const response = await axios.get(`https://api.giftedtech.my.id/api/download/mediafiredl?apikey=gifted&url=${encodeURIComponent(mediafireUrl)}`);
+        const result = response.data.result;
+
+        if (!result || !result.url) {
+            return reply("❌ Unable to fetch the Mediafire file. Please check the URL and try again.");
+        }
+
+        const downloadUrl = result.url;
+        const fileName = result.filename || "file_from_mediafire";
+
+        // Send the file to the user
+        await conn.sendMessage(m.from, {
+            document: { url: downloadUrl },
+            fileName: fileName,
+            mimetype: "application/octet-stream",
+            caption: `Downloaded File: ${fileName}`,
+        });
+        await m.react("✅");
+    } catch (err) {
+        console.error("Error fetching Mediafire file URL:", err);
+        return reply("❌ Unable to fetch Mediafire file. Please try again later.");
+    }
+});
+// Facebook Command
+cmd({
+    pattern: "facebook",
+    desc: "Download Facebook media.",
+    category: "download",
+    filename: __filename,
+}, async (conn, mek, m, { args, reply }) => {
+    try {
+        const fbUrl = args[0];
+        if (!fbUrl) {
+            return reply("Please provide the Facebook media URL.");
+        }
+
+        // Send the API request to fetch the media URL
+        const response = await axios.get(`https://api.giftedtech.my.id/api/download/facebook?apikey=gifted&url=${encodeURIComponent(fbUrl)}`);
+        const result = response.data.result;
+
+        if (!result || !result.url) {
+            return reply("❌ Unable to fetch the Facebook media. Please check the URL and try again.");
+        }
+
+        const mediaUrl = result.url;
+
+        // Send the video to the user
+        await conn.sendMessage(m.from, {
+            video: { url: mediaUrl },
+            caption: "Downloaded Facebook Video",
+        });
+        await m.react("✅");
+    } catch (err) {
+        console.error("Error fetching Facebook media URL:", err);
+        return reply("❌ Unable to fetch Facebook media. Please try again later.");
+    }
+});
+
+// GitHub Cloner Command
+cmd({
+    pattern: "gitclone",
+    desc: "Clone a GitHub repository.",
+    category: "download",
+    filename: __filename,
+}, async (conn, mek, m, { args, reply }) => {
+    try {
+        const repoUrl = args[0];
+        if (!repoUrl) {
+            return reply("Please provide the GitHub repository URL.");
+        }
+
+        // Send the API request to fetch the download URL for the GitHub repository
+        const response = await axios.get(`https://api.giftedtech.my.id/api/download/gitclone?apikey=gifted&url=${encodeURIComponent(repoUrl)}`);
+        const result = response.data.result;
+
+        if (!result || !result.url) {
+            return reply("❌ Unable to fetch the GitHub repository. Please check the URL and try again.");
+        }
+
+        const downloadUrl = result.url;
+
+        // Send the repository ZIP file to the user
+        await conn.sendMessage(m.from, {
+            document: { url: downloadUrl },
+            fileName: "repository.zip",
+            mimetype: "application/zip",
+            caption: "GitHub Repository Download",
+        });
+        await m.react("✅");
+    } catch (err) {
+        console.error("Error fetching GitHub repository URL:", err);
+        return reply("❌ Unable to fetch GitHub repository. Please try again later.");
     }
 });
