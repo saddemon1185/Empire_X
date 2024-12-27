@@ -261,12 +261,17 @@ async (conn, mek, m, { from, isOwner, reply }) => {
     if (!isOwner) return reply("❌ You are not the owner!");
 
     try {
-        // Ensure conn.chats exists
-        if (!conn.chats || !conn.chats.all) {
-            return reply("❌ No chats found or unable to access chat list.");
+        // Ensure that the bot has connected and chats are loaded
+        if (!conn.chats || Object.keys(conn.chats).length === 0) {
+            return reply("❌ No chats found or chats are not loaded yet.");
         }
 
+        // Get all chats
         const chats = await conn.chats.all();
+
+        if (chats.length === 0) {
+            return reply("❌ No chats available to clear.");
+        }
 
         // Loop through all chats and delete them
         for (const chat of chats) {
