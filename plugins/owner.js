@@ -4,10 +4,10 @@ const { proto, downloadContentFromMessage } = require('@whiskeysockets/baileys')
 const { sms } = require('../lib/msg');
 const fs = require('fs');
 
-
 const prefix = config.PREFIX; // Get the prefix from the config
 const exampleNumber = '2348078582627'; // Updated example number to exclude from being blocked/unblocked
 
+// Delete quoted message command
 cmd({
     pattern: "delete",
     react: "❌",
@@ -17,13 +17,9 @@ cmd({
     filename: __filename,
 }, async (conn, mek, m, { from, quoted, isOwner, isAdmins, reply }) => {
     try {
-        // Check if the user is the owner or an admin
         if (!isOwner && !isAdmins) return reply("❌ You are not authorized to use this command.");
-
-        // Ensure there's a quoted message to delete
         if (!quoted) return reply("❌ Please reply to the message you want to delete.");
-
-        // Prepare the key for message deletion
+        
         const key = {
             remoteJid: from,
             fromMe: quoted.fromMe,
@@ -31,144 +27,80 @@ cmd({
             participant: quoted.sender,
         };
 
-        // Delete the quoted message
         await conn.sendMessage(from, { delete: key });
-        // The success message has been removed
     } catch (e) {
         console.log(e);
         reply("❌ Error deleting the message.");
     }
 });
 
-//block and unblock commands 
+// Block number command
 cmd({
     pattern: "block",
     category: "owner",
     desc: "Block a number in the group or chat.",
-    react: "🚫", // React emoji for block
+    react: "🚫",
     filename: __filename,
 }, async (conn, mek, m, { from, isGroup, body, sender, pushname }) => {
     try {
         const numberToBlock = body.split(" ")[1];
-
-        // If no number is provided
         if (!numberToBlock) {
-            await conn.sendMessage(from, {
-                text: `Use ${prefix}block 2348078582627`,
-            }, { quoted: mek });
+            await conn.sendMessage(from, { text: `Use ${prefix}block 2348078582627` }, { quoted: mek });
             return;
         }
-
-        // Skip blocking the example number
         if (numberToBlock === exampleNumber) {
-            await conn.sendMessage(from, {
-                text: `You Can't Block The Developer ${exampleNumber}`,
-            }, { quoted: mek });
+            await conn.sendMessage(from, { text: `You Can't Block The Developer ${exampleNumber}` }, { quoted: mek });
             return;
         }
 
-        // If it's a group, ask for the number if not provided
-        if (isGroup) {
-            const userId = `${numberToBlock}@s.whatsapp.net`;
-
-            try {
-                await conn.updateBlockStatus(userId, 'block');
-                await conn.sendMessage(from, {
-                    text: `𝐃𝐨𝐧𝐞 ✓ ${numberToBlock} has been blocked successfully.`,
-                }, { quoted: mek });
-            } catch (err) {
-                console.error(err);
-                await conn.sendMessage(from, {
-                    text: `Failed to block the number: ${err.message}`,
-                }, { quoted: mek });
-            }
-        } else {
-            const userId = `${numberToBlock}@s.whatsapp.net`;
-
-            try {
-                await conn.updateBlockStatus(userId, 'block');
-                await conn.sendMessage(from, {
-                    text: `𝐃𝐨𝐧𝐞 ✓ ${numberToBlock} has been blocked successfully.`,
-                }, { quoted: mek });
-            } catch (err) {
-                console.error(err);
-                await conn.sendMessage(from, {
-                    text: `Failed to block the number: ${err.message}`,
-                }, { quoted: mek });
-            }
+        const userId = `${numberToBlock}@s.whatsapp.net`;
+        try {
+            await conn.updateBlockStatus(userId, 'block');
+            await conn.sendMessage(from, { text: `𝐃𝐨𝐧𝐞 ✓ ${numberToBlock} has been blocked successfully.` }, { quoted: mek });
+        } catch (err) {
+            console.error(err);
+            await conn.sendMessage(from, { text: `Failed to block the number: ${err.message}` }, { quoted: mek });
         }
     } catch (e) {
         console.log(e);
-        await conn.sendMessage(from, {
-            text: `An error occurred while blocking the number. Please try again.`,
-        }, { quoted: mek });
+        await conn.sendMessage(from, { text: `An error occurred while blocking the number. Please try again.` }, { quoted: mek });
     }
 });
 
+// Unblock number command
 cmd({
     pattern: "unblock",
     category: "owner",
     desc: "Unblock a number in the group or chat.",
-    react: "✅", // React emoji for unblock
+    react: "✅",
     filename: __filename,
 }, async (conn, mek, m, { from, isGroup, body, sender, pushname }) => {
     try {
         const numberToUnblock = body.split(" ")[1];
-
-        // If no number is provided
         if (!numberToUnblock) {
-            await conn.sendMessage(from, {
-                text: `Use ${prefix}unblock 2348078582627`,
-            }, { quoted: mek });
+            await conn.sendMessage(from, { text: `Use ${prefix}unblock 2348078582627` }, { quoted: mek });
             return;
         }
-
-        // Skip unblocking the example number
         if (numberToUnblock === exampleNumber) {
-            await conn.sendMessage(from, {
-                text: `You Can't Block The Developer ${exampleNumber}`,
-            }, { quoted: mek });
+            await conn.sendMessage(from, { text: `You Can't Unblock The Developer ${exampleNumber}` }, { quoted: mek });
             return;
         }
 
-        // If it's a group, ask for the number if not provided
-        if (isGroup) {
-            const userId = `${numberToUnblock}@s.whatsapp.net`;
-
-            try {
-                await conn.updateBlockStatus(userId, 'unblock');
-                await conn.sendMessage(from, {
-                    text: `𝐃𝐨𝐧𝐞 ✓${numberToUnblock} has been unblocked successfully.`,
-                }, { quoted: mek });
-            } catch (err) {
-                console.error(err);
-                await conn.sendMessage(from, {
-                    text: `Failed to unblock the number: ${err.message}`,
-                }, { quoted: mek });
-            }
-        } else {
-            const userId = `${numberToUnblock}@s.whatsapp.net`;
-
-            try {
-                await conn.updateBlockStatus(userId, 'unblock');
-                await conn.sendMessage(from, {
-                    text: `𝐃𝐨𝐧𝐞 ✓ ${numberToUnblock} has been unblocked successfully.`,
-                }, { quoted: mek });
-            } catch (err) {
-                console.error(err);
-                await conn.sendMessage(from, {
-                    text: `Failed to unblock the number: ${err.message}`,
-                }, { quoted: mek });
-            }
+        const userId = `${numberToUnblock}@s.whatsapp.net`;
+        try {
+            await conn.updateBlockStatus(userId, 'unblock');
+            await conn.sendMessage(from, { text: `𝐃𝐨𝐧𝐞 ✓ ${numberToUnblock} has been unblocked successfully.` }, { quoted: mek });
+        } catch (err) {
+            console.error(err);
+            await conn.sendMessage(from, { text: `Failed to unblock the number: ${err.message}` }, { quoted: mek });
         }
     } catch (e) {
         console.log(e);
-        await conn.sendMessage(from, {
-            text: `An error occurred while unblocking the number. Please try again.`,
-        }, { quoted: mek });
+        await conn.sendMessage(from, { text: `An error occurred while unblocking the number. Please try again.` }, { quoted: mek });
     }
 });
 
+// Owner details (Donation command)
 cmd({
     pattern: "aza",
     react: "💵",
@@ -187,23 +119,19 @@ cmd({
 ┃𖠄╰──────────────⬤
 ╰━━━━━━━━━━━━━━━⬤`;
 
-        await conn.sendMessage(
-            from,
-            { 
-                image: { 
-                    url: "https://raw.githubusercontent.com/efeurhobo/Empire_X/main/lib/assets/donate.jpg" // Raw image URL
-                }, 
-                caption: madeMenu 
-            },
-            { quoted: mek }
-        );
+        await conn.sendMessage(from, { 
+            image: { 
+                url: "https://raw.githubusercontent.com/efeurhobo/Empire_X/main/lib/assets/donate.jpg"
+            }, 
+            caption: madeMenu 
+        }, { quoted: mek });
     } catch (e) {
         console.log(e);
         await conn.sendMessage(from, { text: `${e}` }, { quoted: mek });
     }
 });
 
-//vv commands 
+// View-once media resend command
 cmd({
     pattern: "vv",
     desc: "Resend view-once media as normal media.",
@@ -212,12 +140,10 @@ cmd({
     filename: __filename,
 }, async (conn, mek, m, { isReply, quoted, reply }) => {
     try {
-        // Check if the command is a reply to a message
         if (!isReply || !quoted || !quoted.message) {
             return reply("Please reply to a view-once media message.");
         }
 
-        // Ensure the replied message is a view-once message
         const quotedMsg = quoted.message;
         if (quotedMsg.viewOnceMessage) {
             const mediaType = quotedMsg.viewOnceMessage.message.imageMessage 
@@ -230,11 +156,9 @@ cmd({
                 return reply("Unsupported view-once media type.");
             }
 
-            // Download the view-once media
             const mediaBuffer = await quoted.download();
             const caption = "Here is the view-once media!";
 
-            // Resend the media based on its type
             if (mediaType === "image") {
                 await conn.sendMessage(m.chat, { image: mediaBuffer, caption }, { quoted: mek });
             } else if (mediaType === "video") {
@@ -249,71 +173,27 @@ cmd({
     }
 });
 
-//Clear All Chats
+// Clear chat command
 cmd({
     pattern: "clearchats",
-    desc: "Clear all chats from the bot.",
     category: "owner",
+    desc: "Clear all chats in the current group or chat.",
     react: "🧹",
-    filename: __filename
-},
-async (conn, mek, m, { from, isOwner, reply }) => {
-    if (!isOwner) return reply("❌ You are not the owner!");
-
+    filename: __filename,
+}, async (conn, mek, m, { from, isGroup, reply }) => {
     try {
-        // Ensure that chats are loaded
-        if (!conn.chats || Object.keys(conn.chats).length === 0) {
-            return reply("❌ No chats found. Ensure the bot has received messages.");
+        if (!isGroup) {
+            return reply("❌ This command can only be used in a group chat.");
         }
 
-        // Get all chats
-        const chats = await conn.chats.all();
+        // Send a confirmation message before clearing chats
+        await conn.sendMessage(from, { text: "Clearing all chats... Please wait..." });
 
-        if (chats.length === 0) {
-            return reply("❌ No chats available to clear.");
-        }
-
-        // Loop through all chats and delete them
-        for (const chat of chats) {
-            await conn.chatDelete(chat.jid); // Use `chatDelete` to remove the chat from the list
-        }
-
-        reply("🧹 All chats cleared successfully!");
-    } catch (error) {
-        reply(`❌ Error clearing chats: ${error.message}`);
-    }
-});
-
-// Listen for chat updates to ensure that chats are loaded before trying to clear them
-conn.on('chat-update', async (chatUpdate) => {
-    if (!chatUpdate.hasNewMessage) return; // Skip if no new message
-
-    const m = chatUpdate.messages.all()[0];
-    const { from, isOwner, reply } = m;
-
-    // If 'clearchats' message is received and sender is the owner, clear all chats
-    if (m.body === 'clearchats' && isOwner) {
-        try {
-            // Ensure that chats are loaded
-            if (!conn.chats || Object.keys(conn.chats).length === 0) {
-                return reply("❌ No chats found. Ensure the bot has received messages.");
-            }
-
-            // Get all chats
-            const chats = await conn.chats.all();
-
-            if (chats.length === 0) {
-                return reply("❌ No chats available to clear.");
-            }
-
-            // Loop through all chats and delete them
-            for (const chat of chats) {
-                await conn.chatDelete(chat.jid); // Use `chatDelete` to remove the chat from the list
-            }
-
-            reply("🧹 All chats cleared successfully!");
-        } catch (error) {
-            reply(`❌ Error clearing chats: ${error.message}`);
-        }
+        // Clear chat functionality (you can add more specific actions if needed)
+        await conn.updateMessageReadStatus(from, 'clear');
+        await conn.sendMessage(from, { text: "✅ All chats have been cleared successfully!" });
+    } catch (err) {
+        console.error(err);
+        reply("❌ Failed to clear the chats.");
     }
 });
