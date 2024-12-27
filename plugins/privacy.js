@@ -1,9 +1,15 @@
-// Set Profile Name
+const fs = require("fs");
+const config = require("../config");
+const { cmd, commands } = require("../command");
+
+// Load dev.json to get the contact number
+const devData = JSON.parse(fs.readFileSync("./lib/dev.json", "utf8"));
+
+// Profile Name Command
 cmd({
     pattern: "profilename",
     desc: "Sets a new profile name.",
     filename: __filename,
-    category: 'privacy'
 }, async (conn, mek, m, { args, reply }) => {
     try {
         const newName = args.join(" ");
@@ -17,12 +23,11 @@ cmd({
     }
 });
 
-// Save Status
+// Save Status Command
 cmd({
     pattern: "ssave",
     desc: "Saves the status of a replied message.",
     filename: __filename,
-    category: 'privacy'
 }, async (conn, mek, m, { quoted, reply }) => {
     try {
         if (!quoted) return reply("Reply to a status to save.");
@@ -33,12 +38,11 @@ cmd({
     }
 });
 
-// Set Profile Picture
+// Profile Picture Command
 cmd({
     pattern: "pp",
     desc: "Sets a new profile picture.",
     filename: __filename,
-    category: 'privacy'
 }, async (conn, mek, m, { quoted, reply }) => {
     try {
         if (!quoted || !quoted.message.imageMessage) return reply("Reply to an image to set as profile picture.");
@@ -52,12 +56,11 @@ cmd({
     }
 });
 
-// Full Profile Picture
+// Full Profile Picture Command
 cmd({
     pattern: "fullpp",
     desc: "Displays the full profile picture of a user.",
     filename: __filename,
-    category: 'privacy'
 }, async (conn, mek, m, { args, reply }) => {
     try {
         const jid = args[0] || mek.key.remoteJid;
@@ -69,12 +72,11 @@ cmd({
     }
 });
 
-// User Bio
+// User Bio Command
 cmd({
     pattern: "bio",
     desc: "Displays the user's bio.",
     filename: __filename,
-    category: 'privacy'
 }, async (conn, mek, m, { args, reply }) => {
     try {
         const jid = args[0] || mek.key.remoteJid;
@@ -86,12 +88,11 @@ cmd({
     }
 });
 
-// Picture to Video
+// Picture to Video Command
 cmd({
     pattern: "picturetovideo",
     desc: "Converts a picture to video format.",
     filename: __filename,
-    category: 'privacy'
 }, async (conn, mek, m, { quoted, reply }) => {
     try {
         if (!quoted || !quoted.message.imageMessage) return reply("Reply to an image to convert.");
@@ -105,12 +106,11 @@ cmd({
     }
 });
 
-// Save Media
+// Save Media Command
 cmd({
     pattern: "save",
     desc: "Saves a media file from the chat.",
     filename: __filename,
-    category: 'privacy'
 }, async (conn, mek, m, { quoted, reply }) => {
     try {
         if (!quoted) return reply("Reply to a media message to save.");
@@ -124,12 +124,11 @@ cmd({
     }
 });
 
-// Block List
+// Block List Command
 cmd({
     pattern: "blocklist",
     desc: "Displays the list of blocked users.",
     filename: __filename,
-    category: 'privacy'
 }, async (conn, mek, m, { reply }) => {
     try {
         const blocklist = conn.blocklist;
@@ -143,12 +142,11 @@ cmd({
     }
 });
 
-// List Personal Chats
+// List Personal Chats Command
 cmd({
     pattern: "listpersonalchat",
     desc: "Lists all personal chats.",
     filename: __filename,
-    category: 'privacy'
 }, async (conn, mek, m, { reply }) => {
     try {
         const chats = Object.keys(conn.chats).filter(jid => !jid.endsWith("@g.us"));
@@ -162,12 +160,11 @@ cmd({
     }
 });
 
-// List Group Chats
+// List Group Chats Command
 cmd({
     pattern: "listgroupchat",
     desc: "Lists all group chats.",
     filename: __filename,
-    category: 'privacy'
 }, async (conn, mek, m, { reply }) => {
     try {
         const groups = Object.keys(conn.chats).filter(jid => jid.endsWith("@g.us"));
@@ -181,39 +178,32 @@ cmd({
     }
 });
 
-// VCard
+// VCard Command (from dev.json)
 cmd({
     pattern: "vcard",
     desc: "Sends the owner's VCard.",
     filename: __filename,
-    category: 'privacy'
 }, async (conn, mek, m, { reply }) => {
     try {
-        // Load the owner's number from lib/dev.json
-        const devData = require('./lib/dev.json');
-        const ownerNumber = devData[0]; // Access the number from the array
+        // Load the phone number from dev.json
+        const number = devData[0]; // First number in the dev.json array
+        const name = "Only_one_🥇Empire";  // VCard Name
+        const info = "Empire_X";  // Profile Information
 
-        // Set the owner's name and info
-        const name = "Only_one_🥇Empire";
-        const info = "Empire_X";
+        const vcard = `BEGIN:VCARD\nVERSION:3.0\nFN:${name}\nORG:${info};\nTEL;type=CELL;type=VOICE;waid=${number}:+${number}\nEND:VCARD`;
 
-        // Create the VCard
-        const vcard = `BEGIN:VCARD\nVERSION:3.0\nFN:${name}\nORG:${info};\nTEL;type=CELL;type=VOICE;waid=${ownerNumber}:${ownerNumber}\nEND:VCARD`;
-
-        // Send the VCard
-        return conn.sendMessage(mek.key.remoteJid, { contacts: { displayName: name, contacts: [{ vcard }] } }, { quoted: m });
+        await conn.sendMessage(m.chat, { contacts: { displayName: name, contacts: [{ vcard }] } }, { quoted: m });
     } catch (error) {
         console.error("Error in vcard command:", error);
         reply("An error occurred while sending VCard.");
     }
 });
 
-// Forward Message
+// Forward Message Command
 cmd({
     pattern: "forward",
     desc: "Forwards a message.",
     filename: __filename,
-    category: 'privacy'
 }, async (conn, mek, m, { quoted, args, reply }) => {
     try {
         if (!quoted) return reply("Reply to a message to forward.");
