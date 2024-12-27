@@ -59,41 +59,6 @@ cmd({
   }
 });
 
-// GitHub Cloner Command
-cmd({
-    pattern: "gitclone",
-    desc: "Clone GitHub Repositories",
-    category: "search",
-    filename: __filename
-},
-async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
-    try {
-        if (!q) return reply("Send me the GitHub repository URL");
-        
-        const repoUrl = q;
-        const apiUrl = `https://api.giftedtech.my.id/api/download/gitclone?apikey=gifted&url=${repoUrl}`;
-
-        // Send a message with repository information
-        let desc = `
-🌟 *Empire_X GITHUB CLONER* 🌟
-
-Cloning Repository: ${repoUrl}
-        `;
-        await conn.sendMessage(from, { text: desc }, { quoted: mek });
-
-        // Download and send the cloned repository
-        await conn.sendMessage(from, {
-            document: { url: apiUrl },
-            mimetype: "application/zip",
-            fileName: `${repoUrl.split("/").pop()}.zip`
-        }, { quoted: mek });
-
-    } catch (e) {
-        console.log(e);
-        reply(`${e}`);
-    }
-});
-
 //ss commands 
 cmd({
     pattern: "ss",
