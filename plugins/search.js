@@ -5,7 +5,7 @@ const { cmd, commands } = require('../command');
 const prefix = config.PREFIX; 
 const caption = config.CAPTION; 
 const axios = require('axios');
-const { Buffer } = require('buffer');
+const { getBuffer, getGroupAdmins, getRandom, h2k, isUrl, Json, sleep, fetchJson } = require('../lib/functions');
 
 const GOOGLE_API_KEY = 'AIzaSyDebFT-uY_f82_An6bnE9WvVcgVbzwDKgU'; // Replace with your Google API key
 const GOOGLE_CX = '45b94c5cef39940d1'; // Replace with your Google Custom Search Engine ID
@@ -198,7 +198,7 @@ async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sen
 
  *Enjoy these images! 👾*
 
-> 🌈*PANHWAR MD BOT PLUGINS*🏝️`
+> 🌈*Empire_X`
 }, { quoted: mek });
 }
 
