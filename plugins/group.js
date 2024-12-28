@@ -303,40 +303,40 @@ cmd({
 });
 
 //add commands 
+
 cmd({
     pattern: "add",
-    desc: "Add a member to the group.",
+    react: "➕",
+    desc: "Adds a user to the group.",
     category: "group",
     filename: __filename,
-}, async (conn, mek, m, { from, args, reply }) => {
+    use: '<number>',
+}, async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
     try {
-        // Ensure the command is used in a group
-        if (!from.endsWith('@g.us')) return reply("𝐓𝐡𝐢𝐬 𝐅𝐞𝐚𝐭𝐮𝐫𝐞 𝐈𝐬 𝐎𝐧𝐥𝐲 𝐅𝐨𝐫 𝐆𝐫𝐨𝐮𝐩𝐬❗");
+        // Check if the command is used in a group
+        if (!isGroup) return reply("This command is only for groups.");
 
-        // Check if the bot is an admin
-        const groupMetadata = await conn.groupMetadata(from);
-        const participants = groupMetadata.participants;
-        const botNumber = conn.user.id.split(':')[0] + '@s.whatsapp.net';
-        const groupAdmins = participants.filter(member => member.admin).map(admin => admin.id);
-        if (!groupAdmins.includes(botNumber)) return reply("𝐏𝐥𝐞𝐚𝐬𝐞 𝐏𝐫𝐨𝐯𝐢𝐝𝐞 𝐌𝐞 𝐀𝐝𝐦𝐢𝐧 𝐑𝐨𝐥𝐞❗");
+        // Check if the bot has admin privileges
+        if (!isBotAdmins) return reply("I need admin privileges to add users.");
 
         // Ensure an argument (phone number) is provided
-        if (!args[0] || isNaN(args[0])) return reply("𝐏𝐥𝐞𝐚𝐬𝐞 𝐏𝐫𝐨𝐯𝐢𝐝𝐞 𝐀 𝐕𝐚𝐥𝐢𝐝 𝐏𝐡𝐨𝐧𝐞 𝐍𝐮𝐦𝐛𝐞𝐫 𝐓𝐨 𝐀𝐝𝐝.");
+        if (!q || isNaN(q)) return reply("Please provide a valid phone number to add.");
 
-        // Format the phone number
-        const numberToAdd = `${args[0]}@s.whatsapp.net`;
+        const userToAdd = `${q}@s.whatsapp.net`;  // Format the phone number
 
         // Check if the user is already in the group
-        if (participants.some(participant => participant.id === numberToAdd)) {
-            return reply("𝐓𝐡𝐞 𝐔𝐬𝐞𝐫 𝐈𝐬 𝐀𝐥𝐫𝐞𝐚𝐝𝐲 𝐈𝐧 𝐓𝐡𝐞 𝐆𝐫𝐨𝐮𝐩❗");
+        if (participants.some(participant => participant.id === userToAdd)) {
+            return reply("The user is already in the group.");
         }
 
         // Add the user to the group
-        await conn.groupParticipantsUpdate(from, [numberToAdd], "add");
-        reply(`𝐒𝐮𝐜𝐜𝐞𝐬𝐬𝐟𝐮𝐥𝐥𝐲 𝐀𝐝𝐝𝐞𝐝 𝐔𝐬𝐞𝐫: ${args[0]}`);
-    } catch (error) {
-        console.error("Error in add command:", error);
-        reply(`𝐀𝐧 𝐄𝐫𝐫𝐨𝐫 𝐎𝐜𝐜𝐮𝐫𝐫𝐞𝐝: ${error.message || "𝐔𝐧𝐤𝐧𝐨𝐰𝐧 𝐄𝐫𝐫𝐨𝐫"}`);
+        await conn.groupParticipantsUpdate(from, [userToAdd], "add");
+
+        // Confirm the addition
+        reply(`Successfully added user: ${q}`);
+    } catch (e) {
+        console.error('Error adding user:', e);
+        reply('An error occurred while adding the user. Please make sure the number is correct and they are not already in the group.');
     }
 });
 
