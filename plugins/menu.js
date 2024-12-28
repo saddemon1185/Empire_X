@@ -49,20 +49,12 @@ async (conn, mek, m, { from, quoted, reply }) => {
             const command = commands[i];
             if (command.pattern && !command.dontAddCommandList) {
                 if (menu[command.category] !== undefined) {
-                    menu[command.category] += `┃𖠄│ ${i + 1}. ${prefix}${command.pattern}\n`;
-                } else {
-                    menu[command.category] = `┃𖠄│ ${i + 1}. ${prefix}${command.pattern}\n`;
+                    menu[command.category] += `│ ${i + 1}. ${prefix}${command.pattern}\n`;
                 }
             }
         }
 
-        // Define all categories dynamically to avoid hardcoding
-        const categories = [
-            "ai", "download", "fun", "group",
-            "owner", "privacy", "search", "system",
-        ];
-
-        // Construct menu dynamically
+        // Construct menu with the provided design
         let madeMenu = `
 ╭━━━〔 Empire_X 〕━━━⬤
 ┃𖠄│ Prefix: [ ${prefix} ]
@@ -75,19 +67,39 @@ async (conn, mek, m, { from, quoted, reply }) => {
 ┃𖠄│ Commands: *${totalCommands}*
 ┃𖠄╰─────────────⬤
 ╰━━━━━━━━━━━━━━⬤
-`;
 
-        // Append categories to the menu
-        for (const category of categories) {
-            madeMenu += `
-╭━━〔 ${category.toUpperCase()} 〕━━⬤
-${menu[category] || '┃𖠄│ None'}
+╭━━〔 AI 〕━━⬤
+${menu.ai || '┃𖠄│ None'}
+╰━━━━━━━━━━━━━⬤
+
+╭━━〔 DOWNLOAD 〕━━⬤
+${menu.download || '┃𖠄│ None'}
+╰━━━━━━━━━━━━━⬤
+
+╭━━━〔 FUN 〕━━⬤
+${menu.fun || '┃𖠄│ None'}
+╰━━━━━━━━━━━━━⬤
+
+╭━━━〔 GROUP 〕━━⬤
+${menu.group || '┃𖠄│ None'}
+╰━━━━━━━━━━━━━⬤
+
+╭━━━〔 OWNER 〕━━⬤
+${menu.owner || '┃𖠄│ None'}
+╰━━━━━━━━━━━━━⬤
+
+╭━━━〔 PRIVACY 〕━━⬤
+${menu.privacy || '┃𖠄│ None'}
+╰━━━━━━━━━━━━━⬤
+
+╭━━━〔 SEARCH 〕━━⬤
+${menu.search || '┃𖠄│ None'}
+╰━━━━━━━━━━━━━⬤
+
+╭━━━〔 SYSTEM 〕━━⬤
+${menu.system || '┃𖠄│ None'}
 ╰━━━━━━━━━━━━━⬤
 `;
-        }
-
-        // Add the final closing line for the bottom
-        madeMenu += '╰━━━━━━━━━━━━━⬤';
 
         // Output final menu
         console.log(madeMenu);
