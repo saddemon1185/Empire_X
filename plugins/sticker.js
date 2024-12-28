@@ -7,12 +7,12 @@ const imgmsg = 'Reply to a photo for sticker!'; // Default message when no image
 const descg = 'It converts your replied photo to a sticker.'; // Description of the command.
 
 cmd({
-    pattern: 'sticker',
-    react: '🤹‍♀️',
-    alias: ['s', 'stic'],
+    pattern: "sticker",
+    react: "🤹‍♀️",
+    alias: ["s"]
     desc: descg,
-    category: 'convert',
-    use: '.sticker <Reply to image>',
+    category: "owner",
+    use: ".sticker <Reply to image>",
     filename: __filename
 }, async (conn, mek, m, { from, reply, isCmd, command, args, q, isGroup, pushname }) => {
     try {
@@ -25,13 +25,13 @@ cmd({
             await require('fs').promises.writeFile(nameJpg, imageBuffer);
 
             let sticker = new Sticker(nameJpg, {
-                pack: pushname, // The pack name
-                author: '', // The author name
+                pack: 'Empire_X', // Sticker pack name
+                author: pushname || 'Hacker Only_🥇Empire', // Author name, fallback to 'Hacker Only_🥇Empire'
                 type: q.includes('--crop') || q.includes('-c') ? StickerTypes.CROPPED : StickerTypes.FULL,
-                categories: ['🤩', '🎉'], // The sticker category
-                id: '12345', // The sticker id
-                quality: 75, // The quality of the output file
-                background: 'transparent', // The sticker background color (only for full stickers)
+                categories: ['🤩', '🎉'], // Sticker categories
+                id: '12345', // Sticker id
+                quality: 75, // Quality of the sticker
+                background: 'transparent', // Transparent background for full stickers
             });
 
             const buffer = await sticker.toBuffer();
@@ -42,13 +42,13 @@ cmd({
             await require('fs').promises.writeFile(nameWebp, stickerBuffer);
 
             let sticker = new Sticker(nameWebp, {
-                pack: pushname, // The pack name
-                author: '', // The author name
+                pack: 'Empire_X', // Sticker pack name
+                author: pushname || 'Hacker Only_🥇Empire', // Author name, fallback to 'Hacker Only_🥇Empire'
                 type: q.includes('--crop') || q.includes('-c') ? StickerTypes.CROPPED : StickerTypes.FULL,
-                categories: ['🤩', '🎉'], // The sticker category
-                id: '12345', // The sticker id
-                quality: 75, // The quality of the output file
-                background: 'transparent', // The sticker background color (only for full stickers)
+                categories: ['🤩', '🎉'], // Sticker categories
+                id: '12345', // Sticker id
+                quality: 75, // Quality of the sticker
+                background: 'transparent', // Transparent background for full stickers
             });
 
             const buffer = await sticker.toBuffer();
