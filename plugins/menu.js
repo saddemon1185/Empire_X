@@ -86,6 +86,9 @@ ${menu[category] || '┃𖠄│ None'}
 `;
         }
 
+        // Add the final closing line for the bottom
+        madeMenu += '╰━━━━━━━━━━━━━⬤';
+
         // Output final menu
         console.log(madeMenu);
 
