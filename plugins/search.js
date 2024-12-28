@@ -2,8 +2,13 @@ const axios = require('axios');
 const fg = require('api-dylux');
 const config = require('../config');
 const { cmd, commands } = require('../command');
-const prefix = config.PREFIX; // Get the prefix from the config
-const caption = config.CAPTION; // Get the caption from the config
+const prefix = config.PREFIX; 
+const caption = config.CAPTION; 
+const axios = require('axios');
+const { Buffer } = require('buffer');
+
+const GOOGLE_API_KEY = 'AIzaSyDebFT-uY_f82_An6bnE9WvVcgVbzwDKgU'; // Replace with your Google API key
+const GOOGLE_CX = '45b94c5cef39940d1'; // Replace with your Google Custom Search Engine ID
 
 
 // GitHub Stalker Command
@@ -157,42 +162,51 @@ async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, reply }) => 
 // Image Downloader Command
 cmd({
     pattern: "img",
-    desc: "Download image from Google",
+    desc: "Search and send images from Google.",
+    react: "🖼️",
     category: "search",
     filename: __filename
-}, async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, reply }) => {
+},
+async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
     try {
-        if (!q) return reply("Send me the search term to find an image");
+        if (!q) return reply("Please provide a search query for the image.");
 
-        // Define the search query (e.g., "cat")
-        const query = q;
+        // Fetch image URLs from Google Custom Search API
+        const searchQuery = encodeURIComponent(q);
+        const url = `https://www.googleapis.com/customsearch/v1?q=${searchQuery}&cx=${GOOGLE_CX}&key=${GOOGLE_API_KEY}&searchType=image&num=5`;
+        
+        const response = await axios.get(url);
+        const data = response.data;
 
-        // Construct the search URL for Google Images
-        const searchUrl = `https://api.giftedtech.my.id/api/search/googleimage?apikey=gifted&query=${query}`;
-
-        // Fetch the image from the API
-        const response = await fetch(searchUrl);
-        const data = await response.json();
-
-        // Check if data is available
-        if (data && data.results && data.results.length > 0) {
-            const imageUrl = data.results[0].url; // Get the first image URL
-
-            // Send the image as an 'img' type message
-            await conn.sendMessage(from, {
-                img: { url: imageUrl },
-                caption: `Here is the image you searched for: ${query}`
-            }, { quoted: mek });
-        } else {
-            reply("No images found for your query.");
+        if (!data.items || data.items.length === 0) {
+            return reply("No images found for your query.");
         }
 
+        // Send images
+        for (let i = 0; i < data.items.length; i++) {
+            const imageUrl = data.items[i].link;
+
+            // Download the image
+            const imageResponse = await axios.get(imageUrl, { responseType: 'arraybuffer' });
+            const buffer = Buffer.from(imageResponse.data, 'binary');
+
+            // Send the image with a footer
+            await conn.sendMessage(from, {
+                image: buffer,
+                caption: `
+*💗Image ${i + 1} from your search!💗*
+
+ *Enjoy these images! 👾*
+
+> 🌈*PANHWAR MD BOT PLUGINS*🏝️`
+}, { quoted: mek });
+}
+
     } catch (e) {
-        console.log(e);
+        console.error(e);
         reply(`Error: ${e.message}`);
     }
 });
-
 // Lyrics Downloader Command
 cmd({
     pattern: "lyrics",
