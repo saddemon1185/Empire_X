@@ -118,3 +118,22 @@ cmd({
         reply(`Error: ${e.message}`);
     }
 });
+
+cmd({
+    pattern: "gemini",
+    desc: "AI chat from Gemini AI",
+    category: "ai",
+    filename: __filename
+}, async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
+    try {
+        if (!q) {
+            return reply("Hello! How can I assist you with Gemini AI today?");
+        }
+
+        let data = await fetchJson(`https://api.giftedtech.my.id/api/ai/geminiai?apikey=gifted&q=${encodeURIComponent(q)}`);
+        return reply(`${data.result}`);
+    } catch (e) {
+        console.log(e);
+        reply(`Error: ${e.message}`);
+    }
+});
