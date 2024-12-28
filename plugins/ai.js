@@ -4,24 +4,26 @@ const { fetchJson } = require('../lib/functions');
 
 cmd({
     pattern: "gpt",
-    desc: "ai chat.",
+    desc: "AI chat from ChatGPT",
     category: "ai",
     filename: __filename
-},
-async(conn, mek, m,{from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply}) => {
-try{
-let data = await fetchJson(`https://chatgptforprabath-md.vercel.app/api/gptv1?q=${q}`)
-return reply(`${data.data}`)
-}catch(e){
-console.log(e)
-reply(`${e}`)
-}
-})
+}, async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
+    try {
+        if (!q) {
+            return reply("Hello! How can I assist you today?");
+        }
 
+        let data = await fetchJson(`https://chatgptforprabath-md.vercel.app/api/gptv1?q=${encodeURIComponent(q)}`);
+        return reply(`${data.result}`);
+    } catch (e) {
+        console.log(e);
+        reply(`Error: ${e.message}`);
+    }
+});
 
 cmd({
     pattern: "gpt-4",
-    desc: "ai chat from chat gpt",
+    desc: "ai chat from chat gpt-4",
     category: "ai",
     filename: __filename
 }, async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
