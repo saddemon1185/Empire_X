@@ -1,5 +1,8 @@
 const { cmd, commands } = require('../command');
 const config = require('../config');
+const linkPatterns = [
+    /https:\/\/[^\s]+/  // Match any URL starting with "https://"
+];
 
 const prefix = config.PREFIX; // Get the prefix from the config
 
@@ -553,4 +556,64 @@ cmd({
     }
 });
 
-//
+//antilink commands 
+
+cmd({
+    pattern: "antilink",  // Command trigger
+    desc: "Enable or disable anti-link feature in the group.", // Description of the command
+    category: "group", // Command category
+    filename: __filename,
+}, async (conn, mek, m, { from, body, sender, isGroup, isAdmins, isBotAdmins, reply, args }) => {
+    try {
+        // Check if the command is used in a group
+        if (!isGroup) return reply("This command can only be used in a group.");
+
+        // Check if the sender is an admin
+        if (!isAdmins) return reply("Only admins can use this command.");
+
+        // Check if the bot is an admin
+        if (!isBotAdmins) return reply("I need admin privileges to enable/disable anti-link.");
+
+        // Get the argument (on or off)
+        const action = args[0]?.toLowerCase();
+
+        // Validate the argument
+        if (!action || !['on', 'off'].includes(action)) {
+            return reply("Please use `on` to enable or `off` to disable the anti-link feature.");
+        }
+
+        // Enable or disable the anti-link feature based on the argument
+        if (action === 'on') {
+            config.ANTI_LINK = 'true';
+            reply("Anti-link feature has been enabled in this group.");
+        } else if (action === 'off') {
+            config.ANTI_LINK = 'false';
+            reply("Anti-link feature has been disabled in this group.");
+        }
+
+    } catch (error) {
+        console.error("Error in antilink command:", error);
+        reply("An error occurred while processing your request.");
+    }
+});
+
+cmd({
+    on: "body"
+}, async (conn, mek, m, { from, body, sender, isGroup, isAdmins, isBotAdmins, reply }) => {
+    try {
+        if (!isGroup || isAdmins || !isBotAdmins) return; // Skip if not in group, or sender is admin, or bot is not admin
+
+        // Check if the message contains a link starting with https://
+        const containsLink = linkPatterns.some(pattern => pattern.test(body));
+
+        if (containsLink && config.ANTI_LINK === 'true') {
+            // Delete the message containing the link
+            await conn.sendMessage(from, { delete: mek.key }, { quoted: mek });
+            // Inform the group that the link has been deleted
+            await conn.sendMessage(from, { text: `⚠️ A link was detected and deleted from the message by @${sender.split('@')[0]}. 🚫`, mentions: [sender] }, { quoted: mek });
+        }
+    } catch (error) {
+        console.error(error);
+        reply("An error occurred while processing the message.");
+    }
+});
