@@ -26,7 +26,8 @@
     "util": "^0.12.4",
     "vm": "^0.1.0",
     "yt-search": "2.12.1",
-    "google-tts-api": "2.0.2"
+    "google-tts-api": "2.0.2",
+    "wa-sticker-formatter": "4.4.4"
   },
   "repository": {
     "type": "git",
