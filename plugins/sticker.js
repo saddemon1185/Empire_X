@@ -10,7 +10,7 @@ cmd({
     pattern: "sticker",
     react: "🤹‍♀️",
     alias: ["s"]
-    desc: descg,
+    desc: "change image to sticker",
     category: "owner",
     use: ".sticker <Reply to image>",
     filename: __filename
