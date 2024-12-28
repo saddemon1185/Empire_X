@@ -12,56 +12,51 @@ const GOOGLE_CX = '45b94c5cef39940d1'; // Replace with your Google Custom Search
 
 
 // GitHub Stalker Command
+
 cmd({
-  pattern: "gitstalk",
-  desc: "Fetch detailed GitHub user profile including profile picture.",
-  category: "search",
-  react: "📚",
-  filename: __filename
-}, async (message, chat, pluginData, {
-  from,
-  quoted,
-  body,
-  isCmd,
-  command,
-  args,
-  reply
-}) => {
-  try {
-    const username = args[0];
-    if (!username) {
-      return reply('Please provide a GitHub username.');
-    }
+    pattern: "githubstalk",
+    desc: "Fetch detailed GitHub user profile including profile picture.",
+    category: "search",
+    react: "📚",
+    filename: __filename
+},
+async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
+    try {
+        const username = args[0];
+        if (!username) {
+            return reply("Please provide a GitHub username.");
+        }
 
-    const axios = require('axios'); // Ensure axios is imported
-    const url = `https://api.github.com/users/${username}`;
-    const response = await axios.get(url);
-    const user = response.data;
+        const apiUrl = `https://api.github.com/users/${username}`;
+        const response = await axios.get(apiUrl);
+        const data = response.data;
 
-    const userDetails = `
-*GitHub User Profile*
-🔗 *GitHub URL*: [${user.login}](${user.html_url})
-📝 *Bio*: ${user.bio || 'Not available'}
-🏙️ *Location*: ${user.location || 'Not available'}
-👥 *Followers*: ${user.followers}
-📊 *Public Repos*: ${user.public_repos}
-🔭 *Public Gists*: ${user.public_gists}
-📅 *Created At*: ${new Date(user.created_at).toDateString()}
-👤 *Following*: ${user.following}
+        let userInfo = `     👨‍💻*Empire_X GITSTALK*👨‍💻
+        
+👤 *ᴜꜱᴇʀ ɴᴀᴍᴇ*: ${data.name || data.login}
 
-*Made with ❤️ by Empire_X*
+🔗 *ɢɪᴛʜᴜʙ ᴜʀʟ*:(${data.html_url})
+
+📝 *ʙɪᴏ*: ${data.bio || 'Not available'}
+
+🏙️ *ʟᴏᴄᴀᴛɪᴏɴ*: ${data.location || 'Unknown'}
+
+📊 *ᴘᴜʙʟɪᴄ ʀᴇᴘᴏ*: ${data.public_repos}
+
+👥 *ꜰᴏʟʟᴏᴡᴇʀꜱ*: ${data.followers} | Following: ${data.following}
+
+📅 *ᴄʀᴇᴀᴛʀᴅ ᴅᴀᴛᴇ*: ${new Date(data.created_at).toDateString()}
+
+🔭 *ᴘᴜʙʟɪᴄ ɢɪꜱᴛꜱ*: ${data.public_gists}
+
+*MADE ♥ BY Empire_X*
 `;
 
-    // Send profile picture and details
-    await message.sendMessage({
-      image: { url: user.avatar_url },
-      caption: userDetails
-    }, { quoted });
-
-  } catch (error) {
-    console.error(error);
-    reply('Error fetching data 🤕: ' + (error.response?.data?.message || error.message));
-  }
+        await conn.sendMessage(from, { image: { url: data.avatar_url }, caption: userInfo }, { quoted: mek });
+    } catch (e) {
+        console.log(e);
+        reply(`Error fetching data🤕: ${e.response ? e.response.data.message : e.message}`);
+    }
 });
 
 //ss commands 
