@@ -13,7 +13,7 @@ const GOOGLE_CX = '45b94c5cef39940d1'; // Replace with your Google Custom Search
 // GitHub Stalker Command
 
 cmd({
-    pattern: "githubstalk",
+    pattern: "gitstalk",
     desc: "Fetch detailed GitHub user profile including profile picture.",
     category: "search",
     react: "📚",
