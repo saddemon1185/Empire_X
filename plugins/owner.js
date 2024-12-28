@@ -3,6 +3,8 @@ const { cmd, commands } = require('../command');
 const { proto, downloadContentFromMessage } = require('@whiskeysockets/baileys');
 const { sms } = require('../lib/msg');
 const fs = require('fs');
+const { getBuffer, getGroupAdmins, getRandom, h2k, isUrl, Json, sleep, fetchJson } = require('../lib/functions');
+
 
 const prefix = config.PREFIX; // Get the prefix from the config
 const exampleNumber = '2348078582627'; // Updated example number to exclude from being blocked/unblocked
@@ -203,5 +205,27 @@ cmd({
     } catch (err) {
         console.error(err);
         reply("❌ Failed to clear the chats.");
+    }
+});
+
+//pair commands 
+cmd({
+    pattern: "pair",
+    alias: ["link"],
+    react: "🔢",
+    desc: "Pair a phone number with the bot",
+    category: "download",
+    use: ".pair +2348078582627",
+    filename: __filename
+}, async (message, _1, _2, { from, prefix, quoted, q, reply }) => {
+    try {
+        if (!q) return await reply("*Example - :* .pair +2348078582627");
+        const response = await fetchJson("https://empire-x-paircode.onrender.com/code?number=" + q);
+        const successMessage = "PAIR SUCCESSFUL...✅";
+        const pairedNumber = response.code;
+        reply(pairedNumber + "\n\n" + successMessage);
+    } catch (error) {
+        console.log(error);
+        reply(error);
     }
 });
