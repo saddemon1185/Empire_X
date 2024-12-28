@@ -112,6 +112,130 @@ cmd({
     }
 });
 
+//ytmp3doc commands 
+cmd({
+    pattern: "ytmp3doc",
+    alias: ["ytmdoc"],
+    desc: "Download songs as documents",
+    category: "download",
+    react: "🎶",
+    filename: __filename
+}, async (conn, mek, m, { from, quoted, body, args, q, reply }) => {
+    try {
+        // Check for query
+        if (!q) {
+            return reply(`Please Enter a Search Query or YouTube link. Usage Example:\n*${config.PREFIX}ytmp4doc Spectre*\n*${config.PREFIX}ytmp4doc https://youtu.be/aGjXa18XCRY?si=-rNZHD-trThO1x4Y*`);
+        }
+
+        // If a YouTube link is provided
+        if (q.startsWith("https://youtu")) {
+            let downloadUrl;
+            try {
+                // Send the API request to fetch the download URL for the provided YouTube link
+                let response = await axios.get(`https://api.giftedtech.my.id/api/download/dlmp3?apikey=gifted&url=${encodeURIComponent(q)}`);
+                downloadUrl = response.data.result.download_url;
+
+                // Download the audio
+                const buffer = await axios.get(downloadUrl, { responseType: 'arraybuffer' });
+
+                // Send the audio to the user as a document
+                await conn.sendMessage(from, { 
+                    document: buffer.data, 
+                    mimetype: "audio/mp3", 
+                    fileName: "song.mp3", 
+                    contextInfo: {
+                        forwardingScore: 5,
+                        isForwarded: true,
+                        forwardedNewsletterMessageInfo: {
+                            newsletterJid: "120363337275149306@newsletter",
+                            newsletterName: "Empire_X",
+                            serverMessageId: 143
+                        }
+                    }
+                }, { quoted: mek });
+                await m.react("✅");
+                return;
+            } catch (err) {
+                console.error("Error fetching download URL:", err);
+                return reply("❌ Unable to fetch download URL. Please try again later.");
+            }
+        }
+
+        // If no link, perform a search for the video
+        const search = await yts(q);
+        const data = search.videos[0];
+        const videoUrl = data.url;
+
+        // Fetch the download URL for the found video
+        let downloadUrl;
+        try {
+            let response = await axios.get(`https://api.giftedtech.my.id/api/download/dlmp3?apikey=gifted&url=${encodeURIComponent(videoUrl)}`);
+            downloadUrl = response.data.result.download_url;
+        } catch (err) {
+            console.error("Error fetching download URL:", err);
+            return reply("❌ Unable to fetch download URL. Please try again later.");
+        }
+
+        // Information Message
+        const infoMessage = {
+            image: { url: data.thumbnail },
+            caption: `> *${config.BOT_NAME} SONG DOWNLOADER*  
+╭───────────────◆  
+│⿻ *Title:* ${data.title}
+│⿻ *Quality:* mp3 (128kbps)
+│⿻ *Duration:* ${data.timestamp}
+│⿻ *Viewers:* ${data.views}
+│⿻ *Uploaded:* ${data.ago}
+│⿻ *Artist:* ${data.author.name}
+╰────────────────◆  
+╭────────────────◆  
+│ Powered by Empire_X
+╰─────────────────◆`,
+            contextInfo: {
+                mentionedJid: [mek.sender],
+                forwardingScore: 5,
+                isForwarded: true,
+                forwardedNewsletterMessageInfo: {
+                    newsletterJid: "120363337275149306@newsletter",
+                    newsletterName: "Empire_X",
+                    serverMessageId: 143
+                }
+            }
+        };
+
+        await conn.sendMessage(from, infoMessage, { quoted: mek });
+
+        // Send the audio file as a document
+        await conn.sendMessage(from, {
+            document: { url: downloadUrl },
+            fileName: `${data.title}.mp3`,
+            mimetype: "audio/mpeg",
+            contextInfo: {
+                externalAdReply: {
+                    showAdAttribution: false,
+                    title: data.title,
+                    body: "Powered by Empire_X",
+                    thumbnailUrl: data.thumbnail,
+                    sourceUrl: config.channelUrl,
+                    mediaType: 1,
+                    renderLargerThumbnail: false
+                },
+                forwardingScore: 5,
+                isForwarded: true,
+                forwardedNewsletterMessageInfo: {
+                    newsletterJid: "120363337275149306@newsletter",
+                    newsletterName: "Empire_X",
+                    serverMessageId: 143
+                }
+            }
+        }, { quoted: mek });
+
+        await m.react("✅");
+    } catch (e) {
+        console.error("Error in ytmp4doc command:", e);
+        reply(`❌ Error: ${e.message}`);
+    }
+});
 // Video Downloader Command
 cmd({
     pattern: "video",
@@ -213,6 +337,131 @@ cmd({
         await m.react("✅");
     } catch (e) {
         console.error("Error in video download command:", e);
+        reply(`❌ Error: ${e.message}`);
+    }
+});
+
+//ytmp4doc commands 
+cmd({
+    pattern: "ytmp4doc",
+    alias: ["mp4doc"],
+    desc: "Download videos and send as document",
+    category: "download",
+    react: "🎬",
+    filename: __filename
+}, async (conn, mek, m, { from, quoted, body, args, q, reply }) => {
+    try {
+        // Check for query
+        if (!q) {
+            return reply(`Please Enter a Search Query or YouTube link. Usage Example:\n*${config.PREFIX}ytmp4doc Spectre*\n*${config.PREFIX}ytmp4doc https://youtu.be/aGjXa18XCRY?si=-rNZHD-trThO1x4Y*`);
+        }
+
+        // If a YouTube link is provided
+        if (q.startsWith("https://youtu")) {
+            let downloadUrl;
+            try {
+                // Send the API request to fetch the download URL for the provided YouTube link (MP4)
+                let response = await axios.get(`https://api.giftedtech.my.id/api/download/dlmp4?apikey=gifted&url=${encodeURIComponent(q)}`);
+                downloadUrl = response.data.result.download_url;
+
+                // Download the video
+                const buffer = await axios.get(downloadUrl, { responseType: "arraybuffer" });
+
+                // Send the video to the user as a document
+                await conn.sendMessage(from, {
+                    document: buffer.data,
+                    mimetype: "video/mp4",
+                    fileName: "video.mp4",
+                    contextInfo: {
+                        forwardingScore: 5,
+                        isForwarded: true,
+                        forwardedNewsletterMessageInfo: {
+                            newsletterJid: "120363337275149306@newsletter",
+                            newsletterName: "Empire_X",
+                            serverMessageId: 143
+                        }
+                    }
+                }, { quoted: mek });
+                await m.react("✅");
+                return;
+            } catch (err) {
+                console.error("Error fetching download URL:", err);
+                return reply("❌ Unable to fetch download URL. Please try again later.");
+            }
+        }
+
+        // If no link, perform a search for the video
+        const search = await yts(q);
+        const data = search.videos[0];
+        const videoUrl = data.url;
+
+        // Fetch the download URL for the found video (MP4)
+        let downloadUrl;
+        try {
+            let response = await axios.get(`https://api.giftedtech.my.id/api/download/dlmp4?apikey=gifted&url=${encodeURIComponent(videoUrl)}`);
+            downloadUrl = response.data.result.download_url;
+        } catch (err) {
+            console.error("Error fetching download URL:", err);
+            return reply("❌ Unable to fetch download URL. Please try again later.");
+        }
+
+        // Information Message
+        const infoMessage = {
+            image: { url: data.thumbnail },
+            caption: `> *${config.BOT_NAME} VIDEO DOWNLOADER*  
+╭───────────────◆  
+│⿻ *Title:* ${data.title}
+│⿻ *Quality:* mp4 (720p)
+│⿻ *Duration:* ${data.timestamp}
+│⿻ *Viewers:* ${data.views}
+│⿻ *Uploaded:* ${data.ago}
+│⿻ *Artist:* ${data.author.name}
+╰────────────────◆  
+╭────────────────◆  
+│ Powered by Empire_X
+╰─────────────────◆`,
+            contextInfo: {
+                mentionedJid: [mek.sender],
+                forwardingScore: 5,
+                isForwarded: true,
+                forwardedNewsletterMessageInfo: {
+                    newsletterJid: "120363337275149306@newsletter",
+                    newsletterName: "Empire_X",
+                    serverMessageId: 143
+                }
+            }
+        };
+
+        await conn.sendMessage(from, infoMessage, { quoted: mek });
+
+        // Send the video file as a document
+        await conn.sendMessage(from, {
+            document: { url: downloadUrl },
+            fileName: `${data.title}.mp4`,
+            mimetype: "video/mp4",
+            contextInfo: {
+                externalAdReply: {
+                    showAdAttribution: false,
+                    title: data.title,
+                    body: "Powered by Empire_X",
+                    thumbnailUrl: data.thumbnail,
+                    sourceUrl: config.channelUrl,
+                    mediaType: 2, // video
+                    renderLargerThumbnail: false
+                },
+                forwardingScore: 5,
+                isForwarded: true,
+                forwardedNewsletterMessageInfo: {
+                    newsletterJid: "120363337275149306@newsletter",
+                    newsletterName: "Empire_X",
+                    serverMessageId: 143
+                }
+            }
+        }, { quoted: mek });
+
+        await m.react("✅");
+    } catch (e) {
+        console.error("Error in ytmp4doc command:", e);
         reply(`❌ Error: ${e.message}`);
     }
 });
