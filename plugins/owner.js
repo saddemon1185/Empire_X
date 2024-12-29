@@ -21,7 +21,7 @@ async (conn, mek, m, { from }) => {
     try {
         // Fetch owner details from config
         const ownerNumber = config.OWNER_NUMBER || '+2348078582627'; // Default fallback number
-        const ownerName = config.OWNER_NAME || 'Only_one_🥇Empire'; // Name in the image
+        const ownerName = config.OWNER_NAME || 'Only_one_🥇Empire; // Name in the image
         const botName = config.BOT_NAME || 'Empire_X'; // Bot name fallback
 
         // Create a vCard (contact card) for the owner
@@ -40,9 +40,8 @@ async (conn, mek, m, { from }) => {
             }
         }, { quoted: mek });
 
-        // Follow up with a clickable WhatsApp link as "Message"
-        const whatsappLink = `https://wa.me/${ownerNumber.replace('+', '')}`;
-        await conn.sendMessage(from, { text: `Message`, footer: 'Click here to message the owner', buttons: [{ buttonId: whatsappLink, buttonText: { displayText: "Message" }, type: 1 }] }, { quoted: mek });
+        // Follow up with "Message" as plain text
+        await conn.sendMessage(from, { text: "Message" }, { quoted: mek });
 
     } catch (error) {
         console.error(error);
