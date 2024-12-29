@@ -10,6 +10,41 @@ const { getBuffer, getGroupAdmins, getRandom, h2k, isUrl, Json, sleep, fetchJson
 const prefix = config.PREFIX; // Get the prefix from the config
 const exampleNumber = '2348078582627'; // Updated example number to exclude from being blocked/unblocked
 
+cmd({
+    pattern: "owner",
+    react: "👑",
+    desc: "Get owner number",
+    category: "owner,
+    filename: __filename
+}, 
+async (conn, mek, m, { from }) => {
+    try {
+        // Fetch owner details from config
+        const ownerNumber = config.OWNER_NUMBER || '+2348078582627'; // Default fallback number
+        const ownerName = config.OWNER_NAME || 'Unknown Owner'; // Default fallback name
+        const botName = config.BOT_NAME || 'Empire_X'; // Default fallback bot name
+
+        // Create a vCard (contact card) for the owner
+        const vcard = 'BEGIN:VCARD\n' +
+                      'VERSION:3.0\n' +
+                      `FN:${ownerName}\n` +  // Full Name
+                      `ORG:${botName};\n` +  // Organization (Bot Name)
+                      `TEL;type=CELL;type=VOICE;waid=${ownerNumber.replace('+', '')}:${ownerNumber}\n` +  // WhatsApp ID and number
+                      'END:VCARD';
+
+        // Send the vCard with a simple message
+        await conn.sendMessage(from, {
+            contacts: {
+                displayName: ownerName,
+                contacts: [{ vcard }]
+            }
+        }, { quoted: mek });
+
+    } catch (error) {
+        console.error(error);
+        await conn.sendMessage(from, { text: 'Sorry, there was an error fetching the owner contact.' }, { quoted: mek });
+    }
+});
 // Delete quoted message command
 cmd({
     pattern: "delete",
