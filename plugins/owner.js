@@ -193,38 +193,6 @@ cmd({
     }
 });
 
-// Clear chat command
-cmd({
-    pattern: "clearchats",
-    category: "owner",
-    desc: "Clear all chats in the current group or chat.",
-    react: "🧹",
-    filename: __filename,
-}, async (conn, mek, m, { from, isGroup, reply }) => {
-    try {
-        if (!isGroup) {
-            return reply("❌ This command can only be used in a group chat.");
-        }
-
-        // Send a confirmation message before clearing chats
-        await conn.sendMessage(from, { text: "Clearing all chats... Please wait..." });
-
-        // Fetch all messages in the group and delete them
-        const messages = await conn.loadMessages(from, 500);  // Load the last 500 messages
-        for (let message of messages) {
-            try {
-                await conn.sendMessage(from, { delete: { id: message.id } });
-            } catch (err) {
-                console.error("Failed to delete message:", err);
-            }
-        }
-
-        await conn.sendMessage(from, { text: "✅ All chats have been cleared successfully!" });
-    } catch (err) {
-        console.error(err);
-        reply("❌ Failed to clear the chats.");
-    }
-});
 // clear commands 
 cmd({
     pattern: "clear",
