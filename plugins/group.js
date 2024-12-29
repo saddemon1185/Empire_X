@@ -3,8 +3,6 @@ const config = require('../config');
 
 const prefix = config.PREFIX; // Get the prefix from the config
 
-const { cmd, commands } = require('../command'); // Import custom command handling
-
 const welcomeMessages = {};
 const goodbyeMessages = {};
 
