@@ -27,6 +27,4 @@ services:
       - key: ALIVE_IMG
         value: "https://raw.githubusercontent.com/efeurhobo/Empire_X/main/lib/assets/empire.jpg"  # Replace with owner
       - key: CAPTION
-        value: "Made By 𝐎𝐧𝐥𝐲_𝐨𝐧𝐞_🥇𝐞𝐦𝐩𝐢𝐫𝐞"  # Replace with owner
-      - key: WARN_COUNT
-        value: "3"  # warn count number
+        value: "Made By 𝐎𝐧𝐥𝐲_𝐨𝐧𝐞_🥇𝐞𝐦𝐩𝐢𝐫𝐞"  # do not change 
