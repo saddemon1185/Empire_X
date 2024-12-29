@@ -337,11 +337,20 @@ cmd({
         // Check if the sender is an admin
         if (!groupAdmins.includes(sender)) return reply("𝐘𝐨𝐮 𝐍𝐞𝐞𝐝 𝐓𝐨 𝐁𝐞 𝐀𝐧 𝐀𝐝𝐦𝐢𝐧 𝐓𝐨 𝐔𝐬𝐞 𝐓𝐡𝐢𝐬 𝐂𝐨𝐦𝐦𝐚𝐧𝐝❗");
 
-        // Ensure a valid number is provided
-        if (!args[0] || isNaN(args[0])) return reply("𝐏𝐥𝐞𝐚𝐬𝐞 𝐏𝐫𝐨𝐯𝐢𝐝𝐞 𝐀 𝐕𝐚𝐥𝐢𝐝 𝐏𝐡𝐨𝐧𝐞 𝐍𝐮𝐦𝐛𝐞𝐫 𝐓𝐨 𝐊𝐢𝐜𝐤.");
+        // If no user mentioned or quoted
+        if (!args[0] && !mek.message.extendedTextMessage) {
+            return reply("Please mention or reply to the user you want to kick.");
+        }
 
-        // Format the phone number
-        const numberToKick = `${args[0]}@s.whatsapp.net`;
+        let numberToKick;
+        
+        // If the user provided a phone number
+        if (args[0] && args[0].startsWith('@')) {
+            numberToKick = `${args[0].slice(1)}@s.whatsapp.net`; // Remove '@' and append '@s.whatsapp.net'
+        } else if (mek.message.extendedTextMessage) {
+            // Extract phone number from quoted message
+            numberToKick = mek.message.extendedTextMessage.contextInfo.participant;
+        }
 
         // Check if the user is in the group
         if (!participants.some(participant => participant.id === numberToKick)) {
@@ -350,13 +359,12 @@ cmd({
 
         // Attempt to kick the user
         await conn.groupParticipantsUpdate(from, [numberToKick], "remove");
-        reply(`𝐒𝐮𝐜𝐜𝐞𝐬𝐬𝐟𝐮𝐥𝐥𝐲 𝐑𝐞𝐦𝐨𝐯𝐞𝐝 𝐔𝐬𝐞𝐫: ${args[0]}`);
+        reply(`𝐒𝐮𝐜𝐜𝐞𝐬𝐬𝐟𝐮𝐥𝐥𝐲 𝐑𝐞𝐦𝐨𝐯𝐞𝐝 𝐔𝐬𝐞𝐫: ${args[0] || numberToKick}`);
     } catch (error) {
         console.error("Error in kick command:", error);
         reply(`𝐀𝐧 𝐄𝐫𝐫𝐨𝐫 𝐎𝐜𝐜𝐮𝐫𝐫𝐞𝐝: ${error.message || "𝐔𝐧𝐤𝐧𝐨𝐰𝐧 𝐄𝐫𝐫𝐨𝐫"}`);
     }
 });
-
 //add commands 
 
 cmd({
