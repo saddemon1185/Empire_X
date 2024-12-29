@@ -14,7 +14,7 @@ cmd({
     pattern: "owner",
     react: "👑",
     desc: "Get owner number",
-    category: "owner,
+    category: "owner",
     filename: __filename
 }, 
 async (conn, mek, m, { from }) => {
