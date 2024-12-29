@@ -55,11 +55,6 @@
       "value": "Made By 𝐎𝐧𝐥𝐲_𝐨𝐧𝐞_🥇𝐞𝐦𝐩𝐢𝐫𝐞",
       "required": false
     },
-    "WARN_COUNT": {
-      "description": "warn count time",
-      "value": "3",
-      "required": false
-    },
     "AUTO_READ_STATUS": {
       "description": "Enable auto-read status. TRUE or FALSE.",
       "value": "false",
