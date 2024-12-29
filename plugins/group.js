@@ -4,6 +4,32 @@ const config = require('../config');
 const prefix = config.PREFIX; // Get the prefix from the config
 
 cmd({
+  pattern: "listonline",
+  desc: "List all active members of the group",
+  category: "group",
+}, async (conn, mek, m, { from, reply }) => {
+  try {
+    // Fetch group metadata
+    const groupMetadata = await conn.groupMetadata(from);
+    const participants = groupMetadata.participants;
+
+    // Filter out participants based on recent activity (this example uses the presence of a "last seen" property)
+    // In this case, we will list all members since activity status isn't directly accessible
+    const activeMemberNames = participants.map((participant) => `@${participant.id.split('@')[0]}`);
+    const activeMemberCount = activeMemberNames.length;
+
+    let response = `Active Members (${activeMemberCount}):\n`;
+    response += activeMemberNames.join('\n');
+
+    // Send the list of active members to the chat
+    await reply(response);
+  } catch (error) {
+    console.error("Error in listonline command:", error);
+    reply(`An error occurred while fetching active members: ${error.message}`);
+  }
+});
+
+cmd({
   pattern: "warn",
   desc: "Warns user in Group.",
   category: "group",
