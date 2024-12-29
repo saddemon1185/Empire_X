@@ -3,6 +3,60 @@ const config = require('../config');
 
 const prefix = config.PREFIX; // Get the prefix from the config
 
+cmd({
+  pattern: "warn",
+  desc: "Warns user in Group.",
+  category: "group",
+  filename: __filename,
+  use: "<quote|reply|number>"
+}, async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber, pushname, groupMetadata, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
+  if (!isGroup) {
+    return reply("This command is only for groups.");
+  }
+  
+  if (!isAdmins) {
+    return reply("This command is only for admins.");
+  }
+
+  if (!quoted) {
+    return reply("Please quote a user to warn.");
+  }
+
+  try {
+    const metadata = groupMetadata;  // Get group metadata
+    await new warndb({
+      id: quoted.sender.split("@")[0] + "warn",
+      reason: body,
+      group: metadata.subject,
+      warnedby: pushname,
+    }).save();
+    
+    conn.sendMessage(m.chat, {
+      text: `*----Warn----*\nUser: @${quoted.sender.split("@")[0]}\nWith Reason: ${body}\nWarned by: ${pushname}`,
+      mentions: [quoted.sender]
+    }, {
+      quoted: m
+    });
+
+    let h = await warndb.find({
+      id: quoted.sender.split("@")[0] + "warn"
+    });
+    
+    if (h.length > Config.WARN_COUNT) {
+      let teskd = "Removing User because Warn limit exceeded\n\n*All Warnings.*\n";
+      h.forEach((warn, index) => {
+        teskd += `*${index + 1}*\n╭─────────────◆\n│ *🍁In Group:* ${warn.group}\n`;
+        teskd += `│ *⚠️Warned by:* ${warn.warnedby}\n`;
+        teskd += `│ _📍Reason: ${warn.reason}_\n╰─────────────◆\n\n`;
+      });
+
+      reply(teskd);
+      await conn.groupParticipantsUpdate(m.chat, [quoted.sender], "remove");  // Remove user from group
+    }
+  } catch (e) {
+    console.log(e);
+  }
+});
 
 //gid commands 
 cmd({
