@@ -60,11 +60,12 @@ cmd({
     filename: __filename
 }, async (conn, mek, m, { from, reply }) => {
     try {
-        let data = await get(`https://api.giftedtech.my.id/api/fun/pickupline?apikey=gifted`);
+        let data = await get("https://xstro-api1-e3fa63d29cbe.herokuapp.com/api/rizz");
+        
         return reply(`${data.result}`);
     } catch (e) {
         console.log(e);
-        reply(`Error: ${e.message}`);
+        return reply(`Error: ${e.message}`);
     }
 });
 
