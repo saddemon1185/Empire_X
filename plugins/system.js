@@ -5,7 +5,6 @@ const fs = require('fs');
 const axios = require('axios');
 const { exec } = require('child_process'); // Import exec for executing system commands
 
-
 cmd({
     pattern: "alive",
     desc: "Check bot online or no.",
@@ -18,15 +17,12 @@ async (conn, mek, m, { from, quoted, reply }) => {
 
         const aliveMsg = `> *${config.BOT_NAME} IS RUNNING!!*  
 ╭───────────────◆  
-│⿻ *BOT UPTIME INFO:* 
-│⿻ *Days:* ${botUptime.days}
-│⿻ *Hours:* ${botUptime.hours}
-│⿻ *Minutes:* ${botUptime.minutes}
-│⿻ *Seconds:* ${botUptime.seconds}
-╰────────────────◆  
-╭────────────────◆  
-│ Powered by Empire_X
-╰─────────────────◆`;
+│⿻ *Uptime:* 
+│⿻ (${botUptime.days}) Days 
+│⿻ (${botUptime.hours}) Hours 
+│⿻ (${botUptime.minutes}) Minutes 
+│⿻ (${botUptime.seconds}) Seconds
+╰────────────────◆`;
 
         // Information Message
         const infoMessage = {
