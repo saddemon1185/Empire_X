@@ -24,19 +24,19 @@ async (conn, mek, m, { from, quoted, reply }) => {
                          `┃❍ ${botUptime.seconds} Second(s)\n` +
                          `*╰═════════════════⊷*`;
 
-        // Send the alive message with the newsletter information
+        // Send the alive message without showing as forwarded, using the provided channel URL
         await conn.sendMessage(from, {
             image: { url: config.ALIVE_IMG || 'https://via.placeholder.com/512' },
             caption: aliveMsg,
             contextInfo: {
                 mentionedJid: [mek.sender],
-                forwardingScore: 5,
-                isForwarded: false,
                 forwardedNewsletterMessageInfo: {
                     newsletterJid: '120363337275149306@newsletter',  // Your newsletter JID
                     newsletterName: "Empire_X",                   // Your newsletter name
                     serverMessageId: 143                          // Adjust based on the actual message ID you want to forward
-                }
+                },
+                // Using the provided channel URL for "view channel"
+                sourceUrl: 'https://whatsapp.com/channel/0029VajVvpQIyPtUbYt3Oz0k'
             }
         }, { quoted: mek });
 
