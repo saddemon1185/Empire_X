@@ -218,7 +218,7 @@ cmd({
 
 // VCard Command (from dev.json)
 cmd({
-    pattern: "vcard",
+    pattern: "developer",
     desc: "Sends the owner's VCard.",
     category: "privacy",
     filename: __filename,
