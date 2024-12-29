@@ -24,27 +24,18 @@ async (conn, mek, m, { from, quoted, reply }) => {
                          `┃❍ ${botUptime.seconds} Second(s)\n` +
                          `*╰═════════════════⊷*`;
 
-        // Send the alive message with additional channel and newsletter information
+        // Send the alive message with the newsletter information
         await conn.sendMessage(from, {
             image: { url: config.ALIVE_IMG || 'https://via.placeholder.com/512' },
             caption: aliveMsg,
             contextInfo: {
                 mentionedJid: [mek.sender],
                 forwardingScore: 5,
-                isForwarded: true,
+                isForwarded: false,
                 forwardedNewsletterMessageInfo: {
                     newsletterJid: '120363337275149306@newsletter',  // Your newsletter JID
                     newsletterName: "Empire_X",                   // Your newsletter name
                     serverMessageId: 143                          // Adjust based on the actual message ID you want to forward
-                },
-                externalAdReply: {
-                    showAdAttribution: false,
-                    title: 'Empire_X',
-                    body: 'Bot is online and running!',
-                    thumbnailUrl: config.ALIVE_IMG || 'https://via.placeholder.com/512',
-                    sourceUrl: config.channelUrl,  // Channel URL to view
-                    mediaType: 1,
-                    renderLargerThumbnail: false
                 }
             }
         }, { quoted: mek });
