@@ -5,6 +5,7 @@ const fs = require('fs');
 const axios = require('axios');
 const { exec } = require('child_process'); // Import exec for executing system commands
 
+
 cmd({
     pattern: "alive",
     desc: "Check bot online or no.",
@@ -15,30 +16,36 @@ async (conn, mek, m, { from, quoted, reply }) => {
     try {
         const botUptime = runtime(process.uptime());
 
-        const aliveMsg = `*Empire_X IS RUNNING!!*\n\n` +
-                         `*BOT UPTIME INFO:* \n` +
-                         `*╭═════════════════⊷*\n` +
-                         `┃❍ ${botUptime.days} Day(s)\n` +
-                         `┃❍ ${botUptime.hours} Hour(s)\n` +
-                         `┃❍ ${botUptime.minutes} Minute(s)\n` +
-                         `┃❍ ${botUptime.seconds} Second(s)\n` +
-                         `*╰═════════════════⊷*`;
+        const aliveMsg = `> *${config.BOT_NAME} IS RUNNING!!*  
+╭───────────────◆  
+│⿻ *BOT UPTIME INFO:* 
+│⿻ *Days:* ${botUptime.days}
+│⿻ *Hours:* ${botUptime.hours}
+│⿻ *Minutes:* ${botUptime.minutes}
+│⿻ *Seconds:* ${botUptime.seconds}
+╰────────────────◆  
+╭────────────────◆  
+│ Powered by Empire_X
+╰─────────────────◆`;
 
-        // Send the alive message without showing as forwarded, using the provided channel URL
-        await conn.sendMessage(from, {
-            image: { url: config.ALIVE_IMG || 'https://via.placeholder.com/512' },
+        // Information Message
+        const infoMessage = {
+            image: { url: config.ALIVE_IMG || 'https://via.placeholder.com/512' },  // Use the bot's image or a placeholder
             caption: aliveMsg,
             contextInfo: {
                 mentionedJid: [mek.sender],
+                forwardingScore: 5,
+                isForwarded: true,
                 forwardedNewsletterMessageInfo: {
                     newsletterJid: '120363337275149306@newsletter',  // Your newsletter JID
                     newsletterName: "Empire_X",                   // Your newsletter name
                     serverMessageId: 143                          // Adjust based on the actual message ID you want to forward
-                },
-                // Using the provided channel URL for "view channel"
-                sourceUrl: 'https://whatsapp.com/channel/0029VajVvpQIyPtUbYt3Oz0k'
+                }
             }
-        }, { quoted: mek });
+        };
+
+        // Send the alive message with the formatted information
+        await conn.sendMessage(from, infoMessage, { quoted: mek });
 
     } catch (e) {
         console.log(e);
