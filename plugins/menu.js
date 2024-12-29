@@ -13,7 +13,7 @@ cmd({
     category: "main",
     filename: __filename
 },
-async (conn, mek, m, { from, quoted, reply }) => {
+async(conn, mek, m,{from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply}) => {
     try {
         // Dynamic command categories
         let menu = {
@@ -58,7 +58,7 @@ async (conn, mek, m, { from, quoted, reply }) => {
         let madeMenu = `
 ╭━━━〔 Empire_X 〕━━━⬤
 ┃𖠄│ Prefix: [ ${prefix} ]
-┃𖠄│ User: *${config.OWNER_NAME || "Unknown User"}*
+┃𖠄│ User: *${"pushname"}*
 ┃𖠄│ Mode: *${mode}*
 ┃𖠄│ Platform: *${platform}*
 ┃𖠄│ Uptime: *${uptime}*
