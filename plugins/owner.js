@@ -21,7 +21,7 @@ async (conn, mek, m, { from }) => {
     try {
         // Fetch owner details from config
         const ownerNumber = config.OWNER_NUMBER || '+2348078582627'; // Default fallback number
-        const ownerName = config.OWNER_NAME || 'Only_one_🥇Empire; // Name in the image
+        const ownerName = config.OWNER_NAME || 'Only_one_🥇Empire';
         const botName = config.BOT_NAME || 'Empire_X'; // Bot name fallback
 
         // Create a vCard (contact card) for the owner
