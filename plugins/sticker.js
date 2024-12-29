@@ -8,7 +8,7 @@ const descg = 'It converts your replied photo to a sticker.'; // Description of 
 
 cmd({
     pattern: "sticker",
-    alias: ["s"]
+    alias: ["s"],
     desc: "change image to sticker.",
     category: "owner",
     use: ".sticker <Reply to image>",
