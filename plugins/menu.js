@@ -58,7 +58,7 @@ async(conn, mek, m,{from, quoted, body, isCmd, command, args, q, isGroup, sender
         let madeMenu = `
 ╭━━━〔 Empire_X 〕━━━⬤
 ┃𖠄│ Prefix: [ ${prefix} ]
-┃𖠄│ User: *${"pushname"}*
+┃𖠄│ User: *${pushname}*
 ┃𖠄│ Mode: *${mode}*
 ┃𖠄│ Platform: *${platform}*
 ┃𖠄│ Uptime: *${uptime}*
