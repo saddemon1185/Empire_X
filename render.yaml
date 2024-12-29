@@ -26,8 +26,6 @@ services:
         value: "false"  # Enable owner-specific reactions if needed
       - key: ALIVE_IMG
         value: "https://raw.githubusercontent.com/efeurhobo/Empire_X/main/lib/assets/empire.jpg"  # Replace with owner
-      - key: AIVE_MSG
-        value: "HI DEAR EMPIRE_X IS ACTIVE"  # Replace with owner
       - key: CAPTION
         value: "Made By 𝐎𝐧𝐥𝐲_𝐨𝐧𝐞_🥇𝐞𝐦𝐩𝐢𝐫𝐞"  # Replace with owner
       - key: WARN_COUNT
