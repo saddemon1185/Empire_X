@@ -69,24 +69,26 @@ async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, rep
 });
 
 // Event listener for group participants update (e.g., when someone joins or leaves)
-commands.on('group-participants.update', async (update) => {
+conn.on('group-participants.update', async (update) => {
     const { id, participants, action } = update;
 
+    // Check if the action is 'add' for new members
     if (action === "add" && welcomeMessages[id]) {
         // Send welcome message for new members
         for (const participant of participants) {
             const userJid = participant;
             const welcomeText = welcomeMessages[id].replace('{user}', `@${userJid.split('@')[0]}`);
-            await commands.sendMessage(id, { text: welcomeText, mentions: [userJid] });
+            await conn.sendMessage(id, { text: welcomeText, mentions: [userJid] });
         }
     }
 
+    // Check if the action is 'remove' for leaving members
     if (action === "remove" && goodbyeMessages[id]) {
         // Send goodbye message for members leaving
         for (const participant of participants) {
             const userJid = participant;
             const goodbyeText = goodbyeMessages[id].replace('{user}', `@${userJid.split('@')[0]}`);
-            await commands.sendMessage(id, { text: goodbyeText, mentions: [userJid] });
+            await conn.sendMessage(id, { text: goodbyeText, mentions: [userJid] });
         }
     }
 });
