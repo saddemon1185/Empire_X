@@ -12,40 +12,42 @@ const exampleNumber = '2348078582627'; // Updated example number to exclude from
 
 cmd({
     pattern: "owner",
-    react: "👑",
-    desc: "Get owner number",
+    desc: "Sends the owner's VCard.",
     category: "owner",
-    filename: __filename
-}, 
-async (conn, mek, m, { from }) => {
+    filename: __filename,
+}, async (conn, mek, m, { reply }) => {
     try {
-        // Fetch owner details from config
-        const ownerNumber = config.OWNER_NUMBER || '+2348078582627'; // Default fallback number
-        const ownerName = config.OWNER_NAME || 'Only_one_🥇Empire';
-        const botName = config.BOT_NAME || 'Empire_X'; // Bot name fallback
+        const number = config.OWNER_NUMBER || '+2348078582627';
+        const name = config.OWNER_NAME || "Only_one_🥇Empire";
+        const info = config.BOT_NAME || "Empire_X";
 
-        // Create a vCard (contact card) for the owner
-        const vcard = 'BEGIN:VCARD\n' +
-                      'VERSION:3.0\n' +
-                      `FN:${ownerName}\n` +  // Full Name
-                      `ORG:${botName};\n` +  // Organization (Bot Name)
-                      `TEL;type=CELL;type=VOICE;waid=${ownerNumber.replace('+', '')}:${ownerNumber}\n` +  // WhatsApp ID and number
-                      'END:VCARD';
+        const vcard = `BEGIN:VCARD\nVERSION:3.0\nFN:${name}\nORG:${info};\nTEL;type=CELL;type=VOICE;waid=${number.replace('+', '')}:${number}\nEND:VCARD`;
 
-        // Send the vCard
-        await conn.sendMessage(from, {
-            contacts: {
-                displayName: ownerName,
-                contacts: [{ vcard }]
+        await conn.sendMessage(
+            m.chat, 
+            { 
+                contacts: { 
+                    displayName: name, 
+                    contacts: [{ vcard }] 
+                } 
+            }, 
+            { 
+                quoted: m, 
+                contextInfo: {
+                    externalAdReply: {
+                        title: "Contact",
+                        body: "Message.",
+                        mediaType: 1,
+                        thumbnailUrl: "https://raw.githubusercontent.com/efeurhobo/Empire_X/main/lib/assets/empire.jpg",
+                        mediaUrl: "https://whatsapp.com/channel/0029VajVvpQIyPtUbYt3Oz0k",
+                        renderLargerThumbnail: true
+                    }
+                } 
             }
-        }, { quoted: mek });
-
-        // Follow up with "Message" as plain text
-        await conn.sendMessage(from, { text: "Message" }, { quoted: mek });
-
+        );
     } catch (error) {
-        console.error(error);
-        await conn.sendMessage(from, { text: 'Sorry, there was an error fetching the owner contact.' }, { quoted: mek });
+        console.error("Error in vcard command:", error);
+        reply("An error occurred while sending the VCard.");
     }
 });
 // Delete quoted message command
