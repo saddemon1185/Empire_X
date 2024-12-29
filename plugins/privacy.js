@@ -6,6 +6,27 @@ const path = require('path');
 // Load dev.json to get the contact number
 const devData = JSON.parse(fs.readFileSync("./lib/dev.json", "utf8"));
 
+cmd({
+  pattern: "archive",
+  desc: "Archives a chat to hide it from your chat list",
+  category: "privacy",
+  use: "<reply to a chat>",
+  filename: __filename,
+}, async (conn, mek, m, { from, quoted, reply }) => {
+  if (!quoted) return reply("Please reply to the chat you want to archive.");
+
+  const chatId = quoted.chat;
+
+  try {
+    // Attempt to archive the chat
+    await conn.chatModify({ archive: true }, chatId);
+    reply("Chat successfully archived!");
+  } catch (error) {
+    console.error(error);
+    reply("Failed to archive chat.");
+  }
+});
+
 // Profile Name Command
 cmd({
     pattern: "profilename",
