@@ -148,6 +148,8 @@ cmd({
             return reply("Please reply to a view-once media message.");
         }
 
+        console.log("Quoted Message: ", quoted.message);  // Log the quoted message for debugging
+
         const quotedMsg = quoted.message;
 
         // Check if the quoted message contains view-once media
@@ -190,6 +192,7 @@ cmd({
         reply("Failed to resend the view-once media.");
     }
 });
+
 // Clear chat command
 cmd({
     pattern: "clearchats",
@@ -222,7 +225,40 @@ cmd({
         reply("❌ Failed to clear the chats.");
     }
 });
+// clear commands 
+cmd({
+    pattern: "clear",
+    category: "owner",
+    desc: "Clear all chats in the current group or chat.",
+    react: "🧹",
+    filename: __filename,
+}, async (conn, mek, m, { from, isGroup, reply }) => {
+    try {
+        // Check if it's a group or individual chat
+        if (!isGroup && from !== m.key.remoteJid) {
+            return reply("❌ This command can only be used in a group chat or in an individual chat.");
+        }
 
+        // Send a confirmation message before clearing chats
+        await conn.sendMessage(from, { text: "Clearing all chats... Please wait..." });
+
+        // Fetch all messages in the chat (group or individual) and delete them
+        const messages = await conn.loadMessages(from, 500);  // Load the last 500 messages
+        for (let message of messages) {
+            try {
+                // Deleting message using Baileys format
+                await conn.sendMessage(from, { delete: { remoteJid: from, id: message.id } });
+            } catch (err) {
+                console.error("Failed to delete message:", err);
+            }
+        }
+
+        await conn.sendMessage(from, { text: "✅ All chats have been cleared successfully!" });
+    } catch (err) {
+        console.error("Error clearing chats:", err);
+        reply("❌ Failed to clear the chats.");
+    }
+});
 //pair commands 
 cmd({
     pattern: "pair",
