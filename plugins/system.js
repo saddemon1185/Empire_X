@@ -81,7 +81,7 @@ cmd({
 cmd({
     pattern: "uptime",
     desc: "Check bot's uptime.",
-    category: "system",  // Changed category to "system"
+    category: "system", // Changed category to "system"
     filename: __filename
 },
 async (conn, mek, m, { from, quoted, pushname, reply }) => {
@@ -93,23 +93,38 @@ async (conn, mek, m, { from, quoted, pushname, reply }) => {
             seconds %= 60 * 60;
             const minutes = Math.floor(seconds / 60);
             seconds = Math.floor(seconds % 60);
-            return `${days}d ${hours}h ${minutes}m ${seconds}s`;
+            return `(${days}) Days\n(${hours}) Hours\n(${minutes}) Minutes\n(${seconds}) Seconds`;
         }
 
         const uptime = formatUptime(process.uptime());
 
-        const uptimeMessage = `*📌 Empire_X*\n\n` +
-            `*🕒 Bot Has Been Up For:*\n` +
-            `${uptime}`;
+        const uptimeMessage = `> *${config.BOT_NAME} BOT UPTIME*  
+╭───────────────◆  
+│⿻ *Uptime:*  
+│⿻ ${uptime}  
+╰────────────────◆`;
 
-        await conn.sendMessage(from, { text: uptimeMessage }, { quoted: mek });
+        const infoMessage = {
+            text: uptimeMessage,
+            contextInfo: {
+                mentionedJid: [mek.sender],
+                forwardingScore: 5,
+                isForwarded: true,
+                forwardedNewsletterMessageInfo: {
+                    newsletterJid: '120363337275149306@newsletter', // Your newsletter JID
+                    newsletterName: "Empire_X",                  // Your newsletter name
+                    serverMessageId: 143                         // Adjust based on the actual message ID you want to forward
+                }
+            }
+        };
+
+        await conn.sendMessage(from, infoMessage, { quoted: mek });
 
     } catch (e) {
         console.log(e);
         reply(`An error occurred: ${e.message || e}`);
     }
 });
-
 cmd({
     pattern: "requestbug",
     alias: ["report"],
