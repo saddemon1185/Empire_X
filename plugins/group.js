@@ -476,49 +476,30 @@ cmd({
 //poll commands 
 cmd({
     pattern: "poll",
-    alias: ["survey"],
-    desc: "Create a poll in the group.",
-    category: "group", // Already group
+    desc: "Makes a poll in the group.",
+    category: "group",
     filename: __filename,
-}, async (conn, mek, m, { from, quoted, body, args, q, isGroup, sender, reply }) => {
+    use: `question: option1, option2, option3.....`,
+}, async (conn, mek, m, { from, isOwner, reply }) => {
+    if (!isOwner) return reply("This command is only for the owner.");
+
+    let [poll, opt] = m.body.split(":");
+    if (!poll || !opt) {
+        return reply(`${prefix}poll question: option1, option2, option3.....`);
+    }
+
+    let options = opt.split(',').map(option => option.trim());  // Split options by commas and trim extra spaces
+
     try {
-        // Ensure this is being used in a group
-        if (!isGroup) return reply("𝐓𝐡𝐢𝐬 𝐅𝐞𝐚𝐭𝐮𝐫𝐞 𝐈𝐬 𝐎𝐧𝐥𝐲 𝐅𝐨𝐫 𝐆𝐫𝐨𝐮𝐩❗");
-
-        // Get the sender's number
-        const senderNumber = sender.split('@')[0];
-
-        // Check if the sender has provided a question and options
-        if (args.length < 2) return reply("Please provide a question and at least two options. Example: `/poll Do you like pizza? Yes No`");
-
-        // Extract the question and options
-        const question = args[0]; // The first word will be the question
-        const options = args.slice(1).join(' ').split('|'); // Separate options by "|"
-
-        // Ensure there are at least two options
-        if (options.length < 2) return reply("Please provide at least two options.");
-
-        // Format the poll message
-        let pollMessage = `Poll: ${question}\n\n`;
-        options.forEach((option, index) => {
-            pollMessage += `${index + 1}. ${option}\n`;
+        await conn.sendMessage(m.chat, {
+            poll: {
+                name: poll.trim(),  // Ensure the question is trimmed of extra spaces
+                values: options
+            }
         });
-
-        // Send the poll message to the group
-        const poll = await conn.sendMessage(from, { text: pollMessage }, { quoted: mek });
-
-        // Add reactions for voting
-        const reactions = ['👍', '👎', '❤️', '😂', '😮']; // You can add more reaction emojis
-        options.forEach((_, index) => {
-            const reaction = reactions[index] || '👍'; // Default to '👍' if more options than emojis
-            conn.sendMessage(from, { react: { text: reaction, key: poll.key } });
-        });
-
-        return reply("Poll created successfully. Members can vote by reacting to the poll message.");
-
     } catch (error) {
-        console.error("Error in poll command:", error);
-        reply(`An error occurred: ${error.message || "Unknown error"}`);
+        console.error(error);
+        reply("Error creating poll. Please try again.");
     }
 });
 
