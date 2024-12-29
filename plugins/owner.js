@@ -21,8 +21,8 @@ async (conn, mek, m, { from }) => {
     try {
         // Fetch owner details from config
         const ownerNumber = config.OWNER_NUMBER || '+2348078582627'; // Default fallback number
-        const ownerName = config.OWNER_NAME || 'Unknown Owner'; // Default fallback name
-        const botName = config.BOT_NAME || 'Empire_X'; // Default fallback bot name
+        const ownerName = config.OWNER_NAME || 'Only_one_🥇Empire'; // Name in the image
+        const botName = config.BOT_NAME || 'Empire_X'; // Bot name fallback
 
         // Create a vCard (contact card) for the owner
         const vcard = 'BEGIN:VCARD\n' +
@@ -32,13 +32,17 @@ async (conn, mek, m, { from }) => {
                       `TEL;type=CELL;type=VOICE;waid=${ownerNumber.replace('+', '')}:${ownerNumber}\n` +  // WhatsApp ID and number
                       'END:VCARD';
 
-        // Send the vCard with a simple message
+        // Send the vCard
         await conn.sendMessage(from, {
             contacts: {
                 displayName: ownerName,
                 contacts: [{ vcard }]
             }
         }, { quoted: mek });
+
+        // Follow up with a clickable WhatsApp link as "Message"
+        const whatsappLink = `https://wa.me/${ownerNumber.replace('+', '')}`;
+        await conn.sendMessage(from, { text: `Message`, footer: 'Click here to message the owner', buttons: [{ buttonId: whatsappLink, buttonText: { displayText: "Message" }, type: 1 }] }, { quoted: mek });
 
     } catch (error) {
         console.error(error);
