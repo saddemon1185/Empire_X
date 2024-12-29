@@ -143,39 +143,53 @@ cmd({
     filename: __filename,
 }, async (conn, mek, m, { isReply, quoted, reply }) => {
     try {
+        // Check if the message is a reply to a quoted message
         if (!isReply || !quoted || !quoted.message) {
             return reply("Please reply to a view-once media message.");
         }
 
         const quotedMsg = quoted.message;
+
+        // Check if the quoted message contains view-once media
         if (quotedMsg.viewOnceMessage) {
-            const mediaType = quotedMsg.viewOnceMessage.message.imageMessage 
-                ? "image" 
-                : quotedMsg.viewOnceMessage.message.videoMessage 
-                ? "video" 
-                : null;
+            const viewOnceMessage = quotedMsg.viewOnceMessage.message;
+            let mediaType = null;
+
+            // Check for the type of media (image or video)
+            if (viewOnceMessage.imageMessage) {
+                mediaType = "image";
+            } else if (viewOnceMessage.videoMessage) {
+                mediaType = "video";
+            }
 
             if (!mediaType) {
                 return reply("Unsupported view-once media type.");
             }
 
+            // Download the media buffer
             const mediaBuffer = await quoted.download();
+
+            // Ensure media is not already seen (viewed)
+            if (!mediaBuffer) {
+                return reply("Unable to download the view-once media. It might have already been viewed.");
+            }
+
             const caption = "Here is the view-once media!";
 
+            // Send the appropriate media type (image or video)
             if (mediaType === "image") {
                 await conn.sendMessage(m.chat, { image: mediaBuffer, caption }, { quoted: mek });
             } else if (mediaType === "video") {
                 await conn.sendMessage(m.chat, { video: mediaBuffer, caption }, { quoted: mek });
             }
         } else {
-            reply("The replied message is not a view-once media.");
+            return reply("The replied message is not a view-once media.");
         }
     } catch (err) {
         console.error(err);
         reply("Failed to resend the view-once media.");
     }
 });
-
 // Clear chat command
 cmd({
     pattern: "clearchats",
