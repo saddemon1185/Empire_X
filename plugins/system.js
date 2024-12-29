@@ -93,15 +93,15 @@ async (conn, mek, m, { from, quoted, pushname, reply }) => {
             seconds %= 60 * 60;
             const minutes = Math.floor(seconds / 60);
             seconds = Math.floor(seconds % 60);
-            return `(${days}) Days\n(${hours}) Hours\n(${minutes}) Minutes\n(${seconds}) Seconds`;
+            return `│⿻  (${days}) Days\n│⿻  (${hours}) Hours\n│⿻  (${minutes}) Minutes\n│⿻  (${seconds}) Seconds`;
         }
 
         const uptime = formatUptime(process.uptime());
 
-        const uptimeMessage = `> *${config.BOT_NAME} BOT UPTIME*  
+        const uptimeMessage = `> *Empire_X BOT UPTIME*  
 ╭───────────────◆  
 │⿻ *Uptime:*  
-│⿻ ${uptime}  
+${uptime}  
 ╰────────────────◆`;
 
         const infoMessage = {
@@ -125,6 +125,7 @@ async (conn, mek, m, { from, quoted, pushname, reply }) => {
         reply(`An error occurred: ${e.message || e}`);
     }
 });
+
 cmd({
     pattern: "requestbug",
     alias: ["report"],
