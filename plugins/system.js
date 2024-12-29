@@ -142,41 +142,26 @@ cmd({
 
 cmd({
     pattern: "ping",
-    desc: "To check ping",
+    react: "♻️",
+    alias: ["speed"],
+    desc: "Check bot\'s ping",
     category: "system",
-    filename: __filename,
-}, async (conn, mek, m, { from }) => {
-    try {
-        const initialTime = new Date().getTime();
-
-        // Send the initial message
-        const sentMessage = await conn.sendMessage(from, { text: '```Pinging from server...```' }, { quoted: mek });
-
-        const loadingSteps = [20, 40, 60, 80, 100];
-        for (const step of loadingSteps) {
-            const bar = '█'.repeat(step / 5) + '░'.repeat(20 - step / 5);
-            const updatedMessage = `*Pong*\nLoading: [${bar}] ${step}%`;
-
-            // Wait for 500ms before updating
-            await new Promise(resolve => setTimeout(resolve, 500));
-
-            // Edit the same message with updated progress
-            await conn.sendMessage(from, { text: updatedMessage }, { edit: sentMessage.key });
-        }
-
-        // Calculate the ping value
-        const pingValue = new Date().getTime() - initialTime;
-
-        // Final update with ping result
-        const finalMessage = `*Pong: ${pingValue} ms*`;
-        await conn.sendMessage(from, { text: finalMessage }, { edit: sentMessage.key });
-
-    } catch (error) {
-        console.error("Error in ping command:", error);
-        await conn.sendMessage(from, { text: "❌ An error occurred while checking the ping." }, { quoted: mek });
+    use: '.ping',
+    filename: __filename
+},
+async(conn, mek, m,{from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply}) => {
+try{
+const startTime = Date.now()
+        const message = await conn.sendMessage(from, { text: '*_🪄Pinging..._*' })
+        const endTime = Date.now()
+        const ping = endTime - startTime
+        await conn.sendMessage(from, { text: `*♻️ Speed... : ${ping}ms*`}, { quoted: message })
+    } catch (e) {
+        console.log(e)
+        reply(`${e}`)
     }
-});
-
+})
+// shutdown commands 
 cmd({
     pattern: "shutdown",
     desc: "Shutdown the bot.",
