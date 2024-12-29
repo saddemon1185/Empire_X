@@ -3,6 +3,22 @@ const config = require('../config');
 
 const prefix = config.PREFIX; // Get the prefix from the config
 
+
+cmd({
+  pattern: "exit",
+  desc: "Leaves the current group",
+  category: "group",
+}, async (conn, mek, m, { from, reply }) => {
+  try {
+    // `from` is the group chat ID
+    await conn.groupLeave(from);
+    reply("Successfully left the group🙂.");
+  } catch (error) {
+    console.error(error);
+    reply("Failed to leave the group.🤦🏽‍♂️");
+  }
+});
+
 cmd({
   pattern: "listonline",
   desc: "List all active members of the group",
