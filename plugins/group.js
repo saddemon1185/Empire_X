@@ -552,3 +552,59 @@ cmd({
         reply(`An error occurred: ${error.message || "Unknown error"}`);
     }
 });
+
+cmd({
+    pattern: "goodbye",
+    desc: "Set or disable the goodbye message for the group.",
+    category: "group",
+    react: "👋",
+    filename: __filename
+},
+async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, reply }) => {
+    try {
+        if (!isGroup) return reply('This command can only be used in a group.');
+
+        if (!q) return reply('Please provide a goodbye message or type "off" to disable it.');
+
+        if (q.toLowerCase() === "off") {
+            // Disable goodbye message
+            await conn.sendMessage(from, { text: 'Goodbye message has been turned off.' });
+            return;
+        }
+
+        // Set goodbye message
+        await conn.sendMessage(from, { image: { url: config.ALIVE_IMG }, caption: q });
+        await reply('Goodbye message has been set.');
+    } catch (e) {
+        console.log(e);
+        reply(`${e}`);
+    }
+});
+
+cmd({
+    pattern: "welcome",
+    desc: "Set or disable the welcome message for the group.",
+    category: "group",
+    react: "👋",
+    filename: __filename
+},
+async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, reply }) => {
+    try {
+        if (!isGroup) return reply('This command can only be used in a group.');
+
+        if (!q) return reply('Please provide a welcome message or type "off" to disable it.');
+
+        if (q.toLowerCase() === "off") {
+            // Disable welcome message
+            await conn.sendMessage(from, { text: 'Welcome message has been turned off.' });
+            return;
+        }
+
+        // Set welcome message
+        await conn.sendMessage(from, { image: { url: config.ALIVE_IMG }, caption: q });
+        await reply('Welcome message has been set.');
+    } catch (e) {
+        console.log(e);
+        reply(`${e}`);
+    }
+});
