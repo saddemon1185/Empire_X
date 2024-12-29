@@ -60,11 +60,6 @@
       "value": "3",
       "required": false
     },
-    "ALIVE_MSG": {
-      "description": "Message displayed when the bot is online.",
-      "value": "HI DEAR EMPIRE_V1 IS ONLINE",
-      "required": true
-    },
     "AUTO_READ_STATUS": {
       "description": "Enable auto-read status. TRUE or FALSE.",
       "value": "false",
