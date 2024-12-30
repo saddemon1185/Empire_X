@@ -39,6 +39,7 @@ cmd({
                         body: "Message.",
                         mediaType: 1,
                         thumbnailUrl: "https://raw.githubusercontent.com/efeurhobo/Empire_X/main/lib/assets/empire.jpg",
+                      sourceUrl:"https://instagram.com/reel/blahblah",
                         mediaUrl: "https://whatsapp.com/channel/0029VajVvpQIyPtUbYt3Oz0k",
                         renderLargerThumbnail: true
                     }
