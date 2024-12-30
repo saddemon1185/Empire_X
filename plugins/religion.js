@@ -1,22 +1,24 @@
 const config = require('../config');
 const { cmd, commands } = require('../command');
-const { fetchJson } = require('../lib/functions'); // Assuming fetchJson is a wrapper around axios
+const { fetchJson } = require('../lib/functions'); // Importing fetchJson along with other functions
 
 cmd({
     pattern: "Bible",
     desc: "Fetch a Bible verse",
     category: "ai",
     filename: __filename
-}, async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
+}, async (conn, mek, m, { from, reply }) => {
     try {
+        const q = m.text.split(' ').slice(1).join(' '); // Get the Bible verse query after the command
+
         if (!q) {
             return reply(`Please provide a Bible verse to fetch. Example: ${prefix}Bible John 3:16`);
         }
 
-        // Fetching data from the API using fetchJson
+        // Fetching the Bible verse using fetchJson
         let response = await fetchJson(`https://xstro-api1-e3fa63d29cbe.herokuapp.com/api/bible?verse=${encodeURIComponent(q)}`);
 
-        // Pretty-printing the text from the response
+        // Handling the response
         if (response && response.success) {
             return reply(`Here is your Bible verse:\n\n${response.text.trim()}`);
         } else {
