@@ -1,4 +1,4 @@
-const config = require('../config');
+const config = require('../config');  // Keep the original import for config
 const { cmd, commands } = require('../command');
 const { proto, downloadContentFromMessage } = require('@whiskeysockets/baileys');
 const { sms } = require('../lib/msg');
@@ -6,9 +6,8 @@ const fs = require('fs');
 const path = require('path');
 const { getBuffer, getGroupAdmins, getRandom, h2k, isUrl, Json, sleep, fetchJson } = require('../lib/functions');
 
-
-const prefix = config.PREFIX; // Get the prefix from the config
-const exampleNumber = '2348078582627'; // Updated example number to exclude from being blocked/unblocked
+const prefix = config.PREFIX;  // Get the prefix from the config
+const exampleNumber = '2348078582627';  // Updated example number to exclude from being blocked/unblocked
 
 cmd({
     pattern: "owner",
@@ -19,22 +18,50 @@ cmd({
     try {
         const number = config.OWNER_NUMBER || '+2348078582627';
         const name = config.OWNER_NAME || "Only_one_🥇Empire";
-        const info = config.BOT_NAME || "Empire_X";
+        const img = await getBuffer('https://avatars.githubusercontent.com/u/188756392?v=4');
+        
+        const vcard =
+            'BEGIN:VCARD\n' +
+            'VERSION:3.0\n' +
+            'FN:' +
+            name +
+            '\n' +
+            'ORG:' +
+            config.BOT_NAME.split(';')[0] +
+            '\n' +
+            'TEL;type=CELL;type=VOICE;waid=' +
+            m.sender.split('@')[0] + // Using m.sender to get the user's phone number
+            ':' +
+            m.sender.split('@')[0] +
+            '\n' +
+            'END:VCARD';
 
-        // Define the replyContact function
-        m.replyContact = (name, info, number) => {
-            const vcard = `BEGIN:VCARD\nVERSION:3.0\nFN:${name}\nORG:${info};\nTEL;type=CELL;type=VOICE;waid=${number.replace('+', '')}:${number}\nEND:VCARD`;
-            conn.sendMessage(m.chat, { contacts: { displayName: name, contacts: [{ vcard }] } }, { quoted: m });
-        };
+        await conn.sendMessage(m.chat, {
+            contacts: {
+                displayName: name,
+                contacts: [{ vcard }],
+            },
+            contextInfo: {
+                forwardingScore: 999,
+                isForwarded: true,
+                externalAdReply: {
+                    title: config.BOT_NAME.split(';')[0],
+                    body: config.BOT_NAME.split(';')[1],
+                    mediaType: 1,
+                    thumbnail: img,
+                    sourceUrl: 'https://github.com/AstroX11/Xstro',
+                    renderLargerThumbnail: true,
+                }
+            }
+        });
 
         // Call the replyContact function to send the vCard
-        m.replyContact(name, info, number);
+        m.replyContact(name, config.BOT_NAME, number);
     } catch (error) {
         console.error("Error in owner command:", error);
         reply("An error occurred while sending the owner's VCard.");
     }
 });
-
 // Delete quoted message command
 cmd({
     pattern: "delete",
