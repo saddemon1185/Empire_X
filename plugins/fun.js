@@ -7,14 +7,14 @@ cmd({
     desc: "Get temporary numbers for a given country code",
     category: "fun",
     filename: __filename
-}, async (conn, mek, m, { from, reply, text }) => {
+}, async (conn, mek, m, { from, reply, text, prefix }) => {
     try {
         // Ensure the 'text' (country code) is provided
         if (!text) {
-            return reply("Please provide a country code, e.g., 'tempnumber uk'.");
+            return reply(`Please provide a country code, e.g., '${prefix}tempnumber us'.`);
         }
 
-        let countryCode = text.trim(); // Country code input (e.g., "uk")
+        let countryCode = text.trim().toLowerCase(); // Country code input (e.g., "us")
         
         // Fetching temporary numbers using Axios (GET request)
         const response = await axios.get(`https://api.nexoracle.com/misc/temp-number?apikey=MepwBcqIM0jYN0okD&q=${countryCode}`);
@@ -25,7 +25,7 @@ cmd({
             let numbers = response.data.result.map(item => `${item.phoneNumber} (${item.country})`).join("\n");
             return reply(`Temporary numbers for ${countryCode.toUpperCase()}:\n${numbers}`);
         } else {
-            return reply(`No temporary numbers found for ${countryCode.toUpperCase()}.`);
+            return reply(`No temporary numbers found for ${countryCode.toUpperCase()}. Please try another country code.`);
         }
     } catch (e) {
         console.log(e);
@@ -39,11 +39,11 @@ cmd({
     desc: "Get messages for a specific temporary number",
     category: "fun",
     filename: __filename
-}, async (conn, mek, m, { from, reply, text }) => {
+}, async (conn, mek, m, { from, reply, text, prefix }) => {
     try {
         // Ensure the 'text' (number) is provided
         if (!text) {
-            return reply("Please provide a temporary number, e.g., 'tempnumbermessage +44792938627'.");
+            return reply(`Please provide a temporary number, e.g., '${prefix}tempnumbermessage +44792938627'.`);
         }
 
         let number = text.trim(); // Temporary number input (e.g., "+44792938627")
