@@ -667,30 +667,31 @@ cmd({
 //apk commands 
 cmd({
     pattern: "apk",
-    desc: "Download APK from APKMirror or APKPure.",
+    desc: "Download APK from the specified app.",
     category: "download",
     filename: __filename,
 }, async (conn, mek, m, { args, reply }) => {
     try {
-        const apkName = args[0];
+        const apkName = args.join(" ");
         if (!apkName) {
             return reply("Please provide the APK name.");
         }
 
         // Send the API request to fetch the download URL
         const response = await axios.get(`https://api.giftedtech.my.id/api/download/apkdl?apikey=gifted&appName=${encodeURIComponent(apkName)}`);
-        const downloadUrl = response.data.result.url;
+        
+        const result = response.data.result;
 
-        if (!downloadUrl) {
+        if (!result || !result.download_url) {
             return reply("❌ Unable to fetch the APK. Please check the name and try again.");
         }
 
         // Send the APK to the user
         await conn.sendMessage(m.from, {
-            document: { url: downloadUrl },
-            fileName: `${apkName}.apk`,
+            document: { url: result.download_url },
+            fileName: `${result.appname}.apk`,
             mimetype: "application/vnd.android.package-archive",
-            caption: "Downloaded APK",
+            caption: `Downloaded APK for ${result.appname}`,
         });
         await m.react("✅");
     } catch (err) {
