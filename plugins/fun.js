@@ -6,12 +6,14 @@ const axios = require('axios'); // Import axios
 async function get(url) {
     try {
         const response = await axios.get(url);
+        console.log(response.data); // Log the full response for debugging
         return response.data;
     } catch (error) {
         throw new Error(`HTTP error! status: ${error.response ? error.response.status : error.message}`);
     }
 }
 
+// Insult command
 cmd({
     pattern: "insult",
     desc: "Get a random insult",
@@ -19,10 +21,8 @@ cmd({
     filename: __filename
 }, async (conn, mek, m, { from, reply }) => {
     try {
-        // Fetching random insult using axios
         let data = await get(`https://api.nexoracle.com/misc/insult-lines?apikey=MepwBcqIM0jYN0okD`);
 
-        // Handling the response
         if (data && data.insult) {
             return reply(`${data.insult}`);
         } else {
@@ -34,7 +34,7 @@ cmd({
     }
 });
 
-// rizz command
+// Rizz command
 cmd({
     pattern: "rizz",
     desc: "Get a random flirt line",
@@ -42,10 +42,8 @@ cmd({
     filename: __filename
 }, async (conn, mek, m, { from, reply }) => {
     try {
-        // Fetching random flirt line using axios
         let data = await get(`https://api.nexoracle.com/misc/flirt-lines?apikey=MepwBcqIM0jYN0okD`);
 
-        // Handling the response
         if (data && data.flirt) {
             return reply(`${data.flirt}`);
         } else {
@@ -66,7 +64,12 @@ cmd({
 }, async (conn, mek, m, { from, reply }) => {
     try {
         let data = await get(`https://api.giftedtech.my.id/api/fun/jokes?apikey=gifted`);
-        return reply(`${data.result}`);  // Ensure the result is a string.
+        
+        if (data && data.result) {
+            return reply(`${data.result}`);
+        } else {
+            return reply("Sorry, I couldn't fetch a joke at the moment.");
+        }
     } catch (e) {
         console.log(e);
         reply(`Error: ${e.message}`);
@@ -82,13 +85,19 @@ cmd({
 }, async (conn, mek, m, { from, reply }) => {
     try {
         let data = await get(`https://api.giftedtech.my.id/api/fun/advice?apikey=gifted`);
-        return reply(`${data.result}`);
+
+        if (data && data.result) {
+            return reply(`${data.result}`);
+        } else {
+            return reply("Sorry, I couldn't fetch advice at the moment.");
+        }
     } catch (e) {
         console.log(e);
         reply(`Error: ${e.message}`);
     }
 });
 
+// TempNumber command
 cmd({
     pattern: "tempnumber",
     desc: "Get temporary numbers for a given country code",
@@ -97,12 +106,10 @@ cmd({
 }, async (conn, mek, m, { from, reply, text }) => {
     try {
         let countryCode = text.trim();
-        // Direct axios call to fetch temporary numbers for the specified country code
         const response = await axios.get(`https://api.nexoracle.com/misc/temp-number?apikey=MepwBcqIM0jYN0okD&q=${countryCode}`);
         const data = response.data;
 
         if (data && data.result && data.result.length > 0) {
-            // Extracting phone numbers from the result
             let numbers = data.result.map(item => `${item.phoneNumber} (${item.country})`).join("\n");
             return reply(`Temporary numbers for ${countryCode.toUpperCase()}:\n${numbers}`);
         } else {
@@ -114,7 +121,7 @@ cmd({
     }
 });
 
-
+// TempNumberMessages command
 cmd({
     pattern: "tempnumbermessage",
     desc: "Get messages for a specific temporary number",
@@ -123,7 +130,6 @@ cmd({
 }, async (conn, mek, m, { from, reply, text }) => {
     try {
         let number = text.trim();
-        // Direct axios call to fetch messages for the specified number
         const response = await axios.get(`https://api.nexoracle.com/misc/temp-number-messages?apikey=MepwBcqIM0jYN0okD&number=${number}`);
         const data = response.data;
 
