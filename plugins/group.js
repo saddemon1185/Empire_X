@@ -273,58 +273,45 @@ cmd({
 
 //kick commands 
 cmd({
-    pattern: "kick",
-    alias: ["remove"],
-    desc: "Kick a member from the group.",
-    category: "group",
-    filename: __filename,
-}, async (conn, mek, m, { from, args, reply }) => {
-    try {
-        // Ensure the command is used in a group
-        if (!from.endsWith('@g.us')) return reply("𝐓𝐡𝐢𝐬 𝐅𝐞𝐚𝐭𝐮𝐫𝐞 𝐈𝐬 𝐎𝐧𝐥𝐲 𝐅𝐨𝐫 𝐆𝐫𝐨𝐮𝐩𝐬❗");
+  pattern: "kick",
+  desc: "Kicks replied/quoted user from group.",
+  category: "group",
+  filename: __filename,
+  use: "<quote|reply|number>"
+}, async (conn, mek, m, { 
+  from, quoted, args, isGroup, isBotAdmins, isAdmins, reply 
+}) => {
+  if (!isGroup) {
+    return reply("This command can only be used in groups.");
+  }
+  
+  if (!isAdmins) {
+    return reply("Only group admins can use this command.");
+  }
+  
+  if (!isBotAdmins) {
+    return reply("I need to be an admin to perform this action.");
+  }
 
-        // Fetch group metadata
-        const groupMetadata = await conn.groupMetadata(from);
-        const participants = groupMetadata.participants;
-        const botNumber = conn.user.id.split(':')[0] + '@s.whatsapp.net';
-        const groupAdmins = participants.filter(member => member.admin).map(admin => admin.id);
-        const sender = mek.key.fromMe
-            ? conn.user.id.split(':')[0] + '@s.whatsapp.net'
-            : mek.key.participant || mek.key.remoteJid;
+  try {
+    let users = quoted 
+      ? quoted.sender 
+      : args[0] 
+        ? args[0].includes("@") 
+          ? args[0].replace(/[@]/g, "") + "@s.whatsapp.net" 
+          : args[0] + "@s.whatsapp.net" 
+        : null;
 
-        // Check if bot is an admin
-        if (!groupAdmins.includes(botNumber)) return reply("𝐏𝐥𝐞𝐚𝐬𝐞 𝐏𝐫𝐨𝐯𝐢𝐝𝐞 𝐌𝐞 𝐀𝐝𝐦𝐢𝐧 𝐑𝐨𝐥𝐞❗");
-
-        // Check if the sender is an admin
-        if (!groupAdmins.includes(sender)) return reply("𝐘𝐨𝐮 𝐍𝐞𝐞𝐝 𝐓𝐨 𝐁𝐞 𝐀𝐧 𝐀𝐝𝐦𝐢𝐧 𝐓𝐨 𝐔𝐬𝐞 𝐓𝐡𝐢𝐬 𝐂𝐨𝐦𝐦𝐚𝐧𝐝❗");
-
-        // If no user mentioned or quoted
-        if (!args[0] && !mek.message.extendedTextMessage) {
-            return reply("Please mention or reply to the user you want to kick.");
-        }
-
-        let numberToKick;
-        
-        // If the user provided a phone number
-        if (args[0] && args[0].startsWith('@')) {
-            numberToKick = `${args[0].slice(1)}@s.whatsapp.net`; // Remove '@' and append '@s.whatsapp.net'
-        } else if (mek.message.extendedTextMessage) {
-            // Extract phone number from quoted message
-            numberToKick = mek.message.extendedTextMessage.contextInfo.participant;
-        }
-
-        // Check if the user is in the group
-        if (!participants.some(participant => participant.id === numberToKick)) {
-            return reply("𝐓𝐡𝐞 𝐔𝐬𝐞𝐫 𝐈𝐬 𝐍𝐨𝐭 𝐈𝐧 𝐓𝐡𝐞 𝐆𝐫𝐨𝐮𝐩❗");
-        }
-
-        // Attempt to kick the user
-        await conn.groupParticipantsUpdate(from, [numberToKick], "remove");
-        reply(`𝐒𝐮𝐜𝐜𝐞𝐬𝐬𝐟𝐮𝐥𝐥𝐲 𝐑𝐞𝐦𝐨𝐯𝐞𝐝 𝐔𝐬𝐞𝐫: ${args[0] || numberToKick}`);
-    } catch (error) {
-        console.error("Error in kick command:", error);
-        reply(`𝐀𝐧 𝐄𝐫𝐫𝐨𝐫 𝐎𝐜𝐜𝐮𝐫𝐫𝐞𝐝: ${error.message || "𝐔𝐧𝐤𝐧𝐨𝐰𝐧 𝐄𝐫𝐫𝐨𝐫"}`);
+    if (!users) {
+      return reply("Please reply to a message or provide a valid number.");
     }
+
+    await conn.groupParticipantsUpdate(from, [users], "remove");
+    reply("User has been removed from the group successfully.");
+  } catch (error) {
+    console.error("Error kicking user:", error);
+    reply("Failed to remove the user. Ensure I have the necessary permissions.");
+  }
 });
 //add commands 
 
@@ -474,86 +461,86 @@ cmd({
 
 //promote commands 
 cmd({
-    pattern: "promote",
-    alias: ["addadmin"],
-    desc: "Promote a member to admin.",
-    category: "group", // Already group
-    filename: __filename,
-}, async (conn, mek, m, { from, quoted, body, args, q, isGroup, sender, reply }) => {
-    try {
-        // Ensure this is being used in a group
-        if (!isGroup) return reply("𝐓𝐡𝐢𝐬 𝐅𝐞𝐚𝐭𝐮𝐫𝐞 𝐈𝐬 𝐎𝐧𝐥𝐲 𝐅𝐨𝐫 𝐆𝐫𝐨𝐮𝐩❗");
+  pattern: "promote",
+  desc: "Provides admin role to replied/quoted user",
+  category: "group",
+  filename: __filename,
+  use: "<quote|reply|number>"
+}, async (conn, mek, m, { 
+  from, quoted, args, isGroup, sender, botNumber, groupAdmins, isBotAdmins, isAdmins, reply 
+}) => {
+  if (!isGroup) {
+    return reply("This command can only be used in groups.");
+  }
+  
+  if (!isAdmins) {
+    return reply("Only group admins can use this command.");
+  }
+  
+  if (!isBotAdmins) {
+    return reply("I need to be an admin to perform this action.");
+  }
 
-        // Get the sender's number
-        const senderNumber = sender.split('@')[0];
-        const botNumber = conn.user.id.split(':')[0];
+  try {
+    let users = quoted 
+      ? quoted.sender 
+      : args[0] 
+        ? args[0].includes("@") 
+          ? args[0].replace(/[@]/g, "") + "@s.whatsapp.net" 
+          : args[0] + "@s.whatsapp.net" 
+        : null;
 
-        // Check if the bot is an admin
-        const groupMetadata = isGroup ? await conn.groupMetadata(from) : '';
-        const groupAdmins = groupMetadata ? groupMetadata.participants.filter(member => member.admin) : [];
-        const isBotAdmins = isGroup ? groupAdmins.some(admin => admin.id === botNumber + '@s.whatsapp.net') : false;
-
-        if (!isBotAdmins) return reply("𝐏𝐥𝐞𝐚𝐬𝐞 𝐏𝐫𝐨𝐯𝐢𝐝𝐞 𝐌𝐞 𝐀𝐝𝐦𝐢𝐧 𝐑𝐨𝐥𝐞 ❗");
-
-        // Check if the sender is an admin
-        const isAdmins = isGroup ? groupAdmins.some(admin => admin.id === sender) : false;
-        if (!isAdmins) return reply("𝐏𝐥𝐞𝐚𝐬𝐞 𝐏𝐫𝐨𝐯𝐢𝐝𝐞 𝐌𝐞 𝐀𝐝𝐦𝐢𝐧 𝐑𝐨𝐥𝐞 ❗");
-
-        // Ensure a valid member is specified
-        const mentioned = quoted ? [quoted.sender] : args.length > 0 ? args[0] : null;
-        if (!mentioned || mentioned.length < 1) return reply("Please mention a member to promote.");
-
-        // Promote the member to admin
-        await conn.groupParticipantsUpdate(from, [mentioned], 'promote');
-
-        // Send confirmation reply
-        return reply(`Successfully promoted the member.`);
-
-    } catch (error) {
-        console.error("Error in promote command:", error);
-        reply(`An error occurred: ${error.message || "Unknown error"}`);
+    if (!users) {
+      return reply("Please reply to a message or provide a valid number.");
     }
+
+    await conn.groupParticipantsUpdate(from, [users], "promote");
+    reply("User has been promoted to admin successfully.");
+  } catch (error) {
+    console.error("Error promoting user:", error);
+    reply("Failed to promote the user. Ensure I have the necessary permissions.");
+  }
 });
 
 //demote commands 
 cmd({
-    pattern: "demote",
-    alias: ["removeadmin"],
-    desc: "Demote a member from admin.",
-    category: "group", // Already group
-    filename: __filename,
-}, async (conn, mek, m, { from, quoted, body, args, q, isGroup, sender, reply }) => {
-    try {
-        // Ensure this is being used in a group
-        if (!isGroup) return reply("𝐓𝐡𝐢𝐬 𝐅𝐞𝐚𝐭𝐮𝐫𝐞 𝐈𝐬 𝐎𝐧𝐥𝐲 𝐅𝐨𝐫 𝐆𝐫𝐨𝐮𝐩❗");
+  pattern: "demote",
+  desc: "Demotes replied/quoted user from admin role in the group.",
+  category: "group",
+  filename: __filename,
+  use: "<quote|reply|number>"
+}, async (conn, mek, m, { 
+  from, quoted, args, isGroup, isBotAdmins, isAdmins, reply 
+}) => {
+  if (!isGroup) {
+    return reply("This command can only be used in groups.");
+  }
 
-        // Get the sender's number
-        const senderNumber = sender.split('@')[0];
-        const botNumber = conn.user.id.split(':')[0];
+  if (!isAdmins) {
+    return reply("Only group admins can use this command.");
+  }
 
-        // Check if the bot is an admin
-        const groupMetadata = isGroup ? await conn.groupMetadata(from) : '';
-        const groupAdmins = groupMetadata ? groupMetadata.participants.filter(member => member.admin) : [];
-        const isBotAdmins = isGroup ? groupAdmins.some(admin => admin.id === botNumber + '@s.whatsapp.net') : false;
+  if (!isBotAdmins) {
+    return reply("I need to be an admin to perform this action.");
+  }
 
-        if (!isBotAdmins) return reply("𝐏𝐥𝐞𝐚𝐬𝐞 𝐏𝐫𝐨𝐯𝐢𝐝𝐞 𝐌𝐞 𝐀𝐝𝐦𝐢𝐧 𝐑𝐨𝐥𝐞 ❗");
+  try {
+    let users = quoted 
+      ? quoted.sender 
+      : args[0] 
+        ? args[0].includes("@") 
+          ? args[0].replace(/[@]/g, "") + "@s.whatsapp.net" 
+          : args[0] + "@s.whatsapp.net" 
+        : null;
 
-        // Check if the sender is an admin
-        const isAdmins = isGroup ? groupAdmins.some(admin => admin.id === sender) : false;
-        if (!isAdmins) return reply("𝐏𝐥𝐞𝐚𝐬𝐞 𝐏𝐫𝐨𝐯𝐢𝐝𝐞 𝐌𝐞 𝐀𝐝𝐦𝐢𝐧 𝐑𝐨𝐥𝐞 ❗");
-
-        // Ensure a valid member is specified
-        const mentioned = quoted ? [quoted.sender] : args.length > 0 ? args[0] : null;
-        if (!mentioned || mentioned.length < 1) return reply("Please mention a member to demote.");
-
-        // Demote the member from admin
-        await conn.groupParticipantsUpdate(from, [mentioned], 'demote');
-
-        // Send confirmation reply
-        return reply(`Successfully demoted the member.`);
-
-    } catch (error) {
-        console.error("Error in demote command:", error);
-        reply(`An error occurred: ${error.message || "Unknown error"}`);
+    if (!users) {
+      return reply("Please reply to a message or provide a valid number.");
     }
+
+    await conn.groupParticipantsUpdate(from, [users], "demote");
+    reply("User has been demoted from admin successfully.");
+  } catch (error) {
+    console.error("Error demoting user:", error);
+    reply("Failed to demote the user. Ensure I have the necessary permissions.");
+  }
 });
