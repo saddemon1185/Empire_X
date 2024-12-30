@@ -9,6 +9,11 @@ cmd({
     filename: __filename
 }, async (conn, mek, m, { from, reply, text }) => {
     try {
+        // Ensure the 'text' (country code) is provided
+        if (!text) {
+            return reply("Please provide a country code, e.g., 'tempnumber uk'.");
+        }
+
         let countryCode = text.trim(); // Country code input (e.g., "uk")
         
         // Fetching temporary numbers using Axios (GET request)
@@ -36,6 +41,11 @@ cmd({
     filename: __filename
 }, async (conn, mek, m, { from, reply, text }) => {
     try {
+        // Ensure the 'text' (number) is provided
+        if (!text) {
+            return reply("Please provide a temporary number, e.g., 'tempnumbermessage +44792938627'.");
+        }
+
         let number = text.trim(); // Temporary number input (e.g., "+44792938627")
         
         // Fetching messages for the specified temporary number using Axios (GET request)
