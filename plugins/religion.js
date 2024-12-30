@@ -3,7 +3,7 @@ const { cmd, commands } = require('../command');
 const { fetchJson } = require('../lib/functions'); // Importing fetchJson along with other functions
 
 cmd({
-    pattern: "Bible",
+    pattern: "bible",
     desc: "Fetch a Bible verse",
     category: "ai",
     filename: __filename
