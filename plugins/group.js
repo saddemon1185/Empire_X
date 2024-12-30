@@ -441,7 +441,7 @@ cmd({
 
     let [poll, opt] = m.body.split(":");
     if (!poll || !opt) {
-        return reply(`${prefix}poll question: option1, option2, option3.....`);
+        return reply(`${prefix}poll Do You Love Empire_X: Yes, No, option3.....`);
     }
 
     let options = opt.split(',').map(option => option.trim());  // Split options by commas and trim extra spaces
