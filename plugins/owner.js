@@ -19,7 +19,7 @@ cmd({
         const number = config.OWNER_NUMBER || '+2348078582627';
         const name = config.OWNER_NAME || "Only_one_🥇Empire";
         const img = await getBuffer('https://avatars.githubusercontent.com/u/188756392?v=4');
-        
+
         const vcard =
             'BEGIN:VCARD\n' +
             'VERSION:3.0\n' +
@@ -36,11 +36,13 @@ cmd({
             '\n' +
             'END:VCARD';
 
+        // Send message with the vCard, message, and external ad
         await conn.sendMessage(m.chat, {
             contacts: {
                 displayName: name,
                 contacts: [{ vcard }],
             },
+            text: `Hello, this is the vCard for the owner: ${name}`,
             contextInfo: {
                 forwardingScore: 999,
                 isForwarded: true,
@@ -55,8 +57,6 @@ cmd({
             }
         });
 
-        // Call the replyContact function to send the vCard
-        m.replyContact(name, config.BOT_NAME, number);
     } catch (error) {
         console.error("Error in owner command:", error);
         reply("An error occurred while sending the owner's VCard.");
