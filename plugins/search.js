@@ -10,6 +10,29 @@ const GOOGLE_API_KEY = 'AIzaSyDebFT-uY_f82_An6bnE9WvVcgVbzwDKgU'; // Replace wit
 const GOOGLE_CX = '45b94c5cef39940d1'; // Replace with your Google Custom Search Engine ID
 
 
+cmd({
+    pattern: "tiny",
+    desc: "Makes URL tiny.",
+    category: "converter",
+    use: "<url>",
+    react: "✅",
+    filename: __filename,
+},
+async (conn, mek, m, { from, quoted, isOwner, isAdmins, reply, args }) => {
+    if (!args[0]) return reply("Provide me a link");
+
+    try {
+        const link = args[0];
+        const response = await axios.get(`https://tinyurl.com/api-create.php?url=${link}`);
+        const shortenedUrl = response.data;
+
+        return reply(`*🛡️Your Shortened URL*\n\n${shortenedUrl}`);
+    } catch (e) {
+        console.error(e);
+        return reply("An error occurred while shortening the URL. Please try again.");
+    }
+});
+
 // GitHub Stalker Command
 
 cmd({
