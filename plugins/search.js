@@ -5,6 +5,7 @@ const { cmd, commands } = require('../command');
 const prefix = config.PREFIX; 
 const caption = config.CAPTION; 
 const { getBuffer, getGroupAdmins, getRandom, h2k, isUrl, Json, sleep, fetchJson } = require('../lib/functions');
+const TIMEZONE = "Africa/Lagos";  // Define the timezone constant timezone
 
 const GOOGLE_API_KEY = 'AIzaSyDebFT-uY_f82_An6bnE9WvVcgVbzwDKgU'; // Replace with your Google API key
 const GOOGLE_CX = '45b94c5cef39940d1'; // Replace with your Google Custom Search Engine ID
@@ -262,114 +263,52 @@ cmd({
     }
 });
 
-// iswa and nowa commands 
-cmd({
-    pattern: "iswa",
-    category: "search",
-    desc: "Searches in the given range about a provided number.",
-    use: '23480785826xx',
-    filename: __filename,
-},
-async (conn, mek, m, { from, quoted, reply }) => {
-    try {
-        if (!m.text) return reply('Provide a number without the "+" sign. Example: .iswa 23480785826xx');
-        
-        const inputNumber = m.text.split(" ")[0];
-        if (!inputNumber.includes('x')) {
-            return reply(`*You did not add 'x'*\nExample: iswa 23480785826xx\n${caption}`);
-        }
-
-        reply(`*Searching for WhatsApp account in the given range...*\n${caption}`);
-
-        const countInstances = (str, word) => str.split(word).length - 1;
-        const numberBase = inputNumber.split('x')[0];
-        const numberSuffix = inputNumber.split('x').slice(-1)[0] || '';
-        const randomLength = countInstances(inputNumber, 'x');
-        const range = [10, 100, 1000][randomLength - 1] || 0;
-
-        let resultsText = `*--『 List of WhatsApp Numbers 』--*\n\n`;
-        let noBioText = `\n*Bio:* ||\nHey there! I am using WhatsApp.\n`;
-        let noWhatsAppText = `\n*Numbers with no WhatsApp account within the provided range.*\n`;
-
-        for (let i = 0; i < range; i++) {
-            const randomDigits = Array.from({ length: randomLength }, () => Math.floor(Math.random() * 10)).join('');
-            const currentNumber = `${numberBase}${randomDigits}${numberSuffix}`;
-            
-            try {
-                const waAccount = await conn.onWhatsApp(`${currentNumber}@s.whatsapp.net`);
-                if (waAccount.length) {
-                    const waStatus = await conn.fetchStatus(waAccount[0].jid).catch(() => null);
-                    if (!waStatus || waStatus.status.length === 0) {
-                        noBioText += `wa.me/${waAccount[0].jid.split("@")[0]}\n`;
-                    } else {
-                        resultsText += `🧐 *Number:* wa.me/${waAccount[0].jid.split("@")[0]}\n✨ *Bio:* ${waStatus.status}\n🍁 *Last Update:* ${moment(waStatus.setAt).format('HH:mm:ss DD/MM/YYYY')}\n\n`;
-                    }
-                } else {
-                    noWhatsAppText += ` ≛ ${currentNumber}\n`;
-                }
-            } catch (e) {
-                console.error(`Error checking WhatsApp account for ${currentNumber}:`, e);
-                noWhatsAppText += ` ≛ ${currentNumber}\n`;
-            }
-        }
-
-        return reply(`${resultsText}${noBioText}${noWhatsAppText}${caption}`);
-    } catch (e) {
-        console.error(e);
-        return reply(`Error: ${e.message}`);
-    }
-});
 
 cmd({
-    pattern: "nowa",
-    category: "search",
-    desc: "Searches for WhatsApp accounts in the given range.",
-    use: '23480785826xx',
-    filename: __filename,
-},
-async (conn, mek, m, { from, quoted, reply }) => {
-    try {
-        if (!m.text) return reply('Provide a number without the "+" sign. Example: .nowa 23480785826xx');
-        
-        const inputNumber = m.text.split(" ")[0];
-        if (!inputNumber.includes('x')) {
-            return reply(`*You did not add 'x' in the number.*\nExample: ${prefix}nowa 23480785826xx\n${caption}`);
-        }
+   pattern: "iswa",
+   category: "search",
+   desc: "Searches in given range about given number.",
+   use: "23480785826xx",
+   filename: __filename
+}, async (conn, mek, m, { from, quoted, reply }) => {
+   const text = m.text; // Get the command text from the message
+   const inputnumber = text.split(" ")[0];
+   if (!inputnumber.includes("x")) return reply("You did not add x\nExample: iswa 23480785826xx");
 
-        reply(`*Searching for WhatsApp account in the given range...*\n${caption}`);
+   reply("Searching for WhatsApp account in given range...");
 
-        const countInstances = (str, word) => str.split(word).length - 1;
-        const numberBase = inputNumber.split('x')[0];
-        const numberSuffix = inputNumber.split('x').slice(-1)[0] || '';
-        const randomLength = countInstances(inputNumber, 'x');
-        const range = [10, 100, 1000][randomLength - 1] || 0;
+   const countInstances = (string, word) => string.split(word).length - 1;
+   const [number0, number1] = inputnumber.split("x");
+   const randomLength = countInstances(inputnumber, "x");
 
-        let noBioText = `\n*『 WhatsApp Account With No Bio 』*\n`;
-        let noWhatsAppText = `*『 Numbers With No WhatsApp Account 』*\n\n`;
+   let randomxx;
+   if (randomLength === 1) randomxx = 10;
+   else if (randomLength === 2) randomxx = 100;
+   else if (randomLength === 3) randomxx = 1000;
 
-        for (let i = 0; i < range; i++) {
-            const randomDigits = Array.from({ length: randomLength }, () => Math.floor(Math.random() * 10)).join('');
-            const currentNumber = `${numberBase}${randomDigits}${numberSuffix}`;
+   let textOutput = `*--『 List of Whatsapp Numbers 』--*\n\n`;
+   let noBio = `\n*Bio:* || \nHey there! I am using WhatsApp.\n`;
+   let noWhatsapp = `\n*Numbers with no WhatsApp account within provided range.*\n`;
 
-            try {
-                const waAccount = await conn.onWhatsApp(`${currentNumber}@s.whatsapp.net`);
-                if (waAccount.length) {
-                    const waStatus = await conn.fetchStatus(waAccount[0].jid).catch(() => null);
-                    if (!waStatus || waStatus.status.length === 0) {
-                        noBioText += `wa.me/${waAccount[0].jid.split("@")[0]}\n`;
-                    }
-                } else {
-                    noWhatsAppText += ` ≛ ${currentNumber}\n`;
-                }
-            } catch (e) {
-                console.error(`Error checking WhatsApp account for ${currentNumber}:`, e);
-                noWhatsAppText += ` ≛ ${currentNumber}\n`;
-            }
-        }
+   for (let i = 0; i < randomxx; i++) {
+     const nu = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
+     const status1 = nu[Math.floor(Math.random() * nu.length)];
+     const status2 = nu[Math.floor(Math.random() * nu.length)];
+     const status3 = nu[Math.floor(Math.random() * nu.length)];
+     const random = randomLength === 1 ? `${status1}` : randomLength === 2 ? `${status1}${status2}` : `${status1}${status2}${status3}`;
 
-        return reply(`${noBioText}${noWhatsAppText}${caption}`);
-    } catch (e) {
-        console.error(e);
-        return reply(`Error: ${e.message}`);
-    }
+     const anu = await conn.onWhatsApp(`${number0}${i}${number1}@s.whatsapp.net`);
+     if (anu.length !== 0) {
+       const anu1 = await conn.fetchStatus(anu[0].jid).catch(() => "401");
+       if (anu1 === "401" || !anu1.status) {
+         noBio += `wa.me/${anu[0].jid.split("@")[0]}\n`;
+       } else {
+         textOutput += `🧐 *Number:* wa.me/${anu[0].jid.split("@")[0]}\n ✨*Bio:* ${anu1.status}\n🍁*Last update:* ${moment(anu1.setAt).tz(TIMEZONE).format("HH:mm:ss DD/MM/YYYY")}\n\n`;
+       }
+     } else {
+       noWhatsapp += `${number0}${i}${number1}\n`;
+     }
+   }
+
+   return reply(`${textOutput}${noBio}${noWhatsapp}`);
 });
