@@ -1,5 +1,4 @@
 const { cmd, commands } = require('../command');
-const { fetchJson } = require('../lib/functions');
 const msg = require('../lib/msg');
 const axios = require('axios'); // Import axios
 
@@ -20,8 +19,8 @@ cmd({
     filename: __filename
 }, async (conn, mek, m, { from, reply }) => {
     try {
-        // Fetching random insult using fetchJson
-        let data = await fetchJson(`https://api.nexoracle.com/misc/insult-lines?apikey=MepwBcqIM0jYN0okD`);
+        // Fetching random insult using axios
+        let data = await get(`https://api.nexoracle.com/misc/insult-lines?apikey=MepwBcqIM0jYN0okD`);
 
         // Handling the response
         if (data && data.insult) {
@@ -34,6 +33,7 @@ cmd({
         return reply(`Error: ${e.message}`);
     }
 });
+
 // rizz command
 cmd({
     pattern: "rizz",
@@ -42,8 +42,8 @@ cmd({
     filename: __filename
 }, async (conn, mek, m, { from, reply }) => {
     try {
-        // Fetching random flirt line using fetchJson
-        let data = await fetchJson(`https://api.nexoracle.com/misc/flirt-lines?apikey=MepwBcqIM0jYN0okD`);
+        // Fetching random flirt line using axios
+        let data = await get(`https://api.nexoracle.com/misc/flirt-lines?apikey=MepwBcqIM0jYN0okD`);
 
         // Handling the response
         if (data && data.flirt) {
@@ -56,6 +56,7 @@ cmd({
         return reply(`Error: ${e.message}`);
     }
 });
+
 // Jokes command
 cmd({
     pattern: "jokes",
