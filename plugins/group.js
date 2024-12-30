@@ -435,23 +435,25 @@ cmd({
     desc: "Makes a poll in the group.",
     category: "group",
     filename: __filename,
-    use: `question: option1, option2, option3.....`,
+    use: `question; option1, option2, option3.....`,
 }, async (conn, mek, m, { from, isOwner, reply }) => {
     if (!isOwner) return reply("This command is only for the owner.");
 
-    let [poll, opt] = m.body.split(":");
-    if (!poll || !opt) {
-        return reply(`${prefix}poll Do You Love Empire_X: Yes, No, option3.....`);
+    let [poll, opt] = m.body.split(";");
+    if (m.body.split(";").length < 2) {
+        return await conn.reply(m.chat, `${prefix}poll question; option1, option2, option3.....`, m);
     }
 
-    let options = opt.split(',').map(option => option.trim());  // Split options by commas and trim extra spaces
+    let options = [];
+    for (let i of opt.split(",")) {
+        options.push(i.trim());  // Trim spaces from each option
+    }
 
     try {
         await conn.sendMessage(m.chat, {
             poll: {
                 name: poll.trim(),  // Ensure the question is trimmed of extra spaces
-                values: options,
-                type: 'single'  // Ensure only one option can be selected
+                values: options
             }
         });
     } catch (error) {
