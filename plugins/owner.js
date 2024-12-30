@@ -9,6 +9,42 @@ const { getBuffer, getGroupAdmins, getRandom, h2k, isUrl, Json, sleep, fetchJson
 const prefix = config.PREFIX;  // Get the prefix from the config
 const exampleNumber = '2348078582627';  // Updated example number to exclude from being blocked/unblocked
 
+
+cmd({
+  pattern: "retrive",
+  desc: "Copies and forwards view-once messages.",
+  category: "owner",
+  filename: __filename,
+  use: "<reply to a view-once message.>"
+}, async (conn, mek, m, { from, quoted, reply }) => {
+  if (!quoted) {
+    return reply("Please reply to a view-once image or video message!");
+  }
+
+  let mime = quoted.mtype;
+  if (/viewOnce/.test(mime)) {
+    try {
+      const mtype = Object.keys(quoted.message)[0];
+      delete quoted.message[mtype].viewOnce;
+      const msgs = proto.Message.fromObject({
+        ...quoted.message
+      });
+
+      const prep = generateWAMessageFromContent(from, msgs, { quoted: m });
+      await conn.relayMessage(from, prep.message, {
+        messageId: prep.key.id
+      });
+      await sms(conn, from, "View-once message retrieved successfully!");
+    } catch (err) {
+      console.error("Error processing view-once message:", err);
+      reply("Failed to retrieve the view-once message.");
+    }
+  } else {
+    reply("Please reply to a view-once message!");
+  }
+});
+
+
 cmd({
     pattern: "owner",
     desc: "Sends the owner's VCard.",
