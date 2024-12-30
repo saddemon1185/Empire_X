@@ -99,3 +99,82 @@ async (conn, mek, m, { from, reply, pushname, quoted }) => {
         return reply("An error occurred while processing your request. Please try again.");
     }
 });
+
+
+// Crop Sticker Command
+cmd({
+    pattern: "crop",
+    alias: ["cropsticker"],
+    desc: "Makes sticker of replied image/video.",
+    category: "sticker",
+    filename: __filename,
+    use: "<reply to any image/video>",
+},
+async (conn, mek, m, { from, reply, pushname, quoted }) => {
+    if (!quoted) return reply(`*Reply to any image or video, please.*`);
+
+    try {
+        const mime = quoted.mimetype || "";
+        if (!mime.startsWith("image/") && !mime.startsWith("video/")) {
+            return reply("*Please reply to a valid image or video.*");
+        }
+
+        // Download the media
+        const media = await conn.downloadMediaMessage(quoted);
+
+        // Create the cropped sticker
+        const sticker = new Sticker(media, {
+            pack: "Empire_X", // Pack name
+            author: pushname || "Unknown", // Author name
+            type: StickerTypes.CROPPED, // Cropped sticker type
+            categories: ["🤩", "🎉"], // Sticker categories
+            id: "12345", // Sticker ID
+            quality: 75, // Output quality
+        });
+
+        const buffer = await sticker.toBuffer();
+        await conn.sendMessage(from, { sticker: buffer }, { quoted: m });
+    } catch (e) {
+        console.error(e);
+        return reply("An error occurred while processing your request. Please try again.");
+    }
+});
+
+// Round Sticker Command
+cmd({
+    pattern: "round",
+    alias: ["roundsticker"],
+    desc: "Makes sticker of replied image/video.",
+    category: "sticker",
+    filename: __filename,
+    use: "<reply to any image/video>",
+},
+async (conn, mek, m, { from, reply, pushname, quoted }) => {
+    if (!quoted) return reply(`*Reply to any image or video, please.*`);
+
+    try {
+        const mime = quoted.mimetype || "";
+        if (!mime.startsWith("image/") && !mime.startsWith("video/")) {
+            return reply("*Please reply to a valid image or video.*");
+        }
+
+        // Download the media
+        const media = await conn.downloadMediaMessage(quoted);
+
+        // Create the rounded sticker
+        const sticker = new Sticker(media, {
+            pack: "Empire_X", // Pack name
+            author: pushname || "Unknown", // Author name
+            type: StickerTypes.ROUNDED, // Rounded sticker type
+            categories: ["🤩", "🎉"], // Sticker categories
+            id: "12345", // Sticker ID
+            quality: 75, // Output quality
+        });
+
+        const buffer = await sticker.toBuffer();
+        await conn.sendMessage(from, { sticker: buffer }, { quoted: m });
+    } catch (e) {
+        console.error(e);
+        return reply("An error occurred while processing your request. Please try again.");
+    }
+});
