@@ -34,21 +34,24 @@ cmd({
             { 
                 quoted: m, 
                 contextInfo: {
-				forwardingScore: 999,
-				isForwarded: true,
-				externalAdReply: {
-					title: config.BOT_NAME.split(';')[0],
-					body: config.OWNER_NAME.split(';')[1],
-					mediaType: 1,
-					thumbnail: 'https://avatars.githubusercontent.com/u/188756392?v=4',
-					sourceUrl: 'https://github.com/efeurhobo/Empire_X',
-					renderLargerThumbnail: true,
-				},
-			},
-		});
-	},
-);
-
+                    forwardingScore: 999,
+                    isForwarded: true,
+                    externalAdReply: {
+                        title: config.BOT_NAME.split(';')[0],
+                        body: config.OWNER_NAME.split(';')[1],
+                        mediaType: 1,
+                        thumbnail: 'https://avatars.githubusercontent.com/u/188756392?v=4',
+                        sourceUrl: 'https://github.com/efeurhobo/Empire_X',
+                        renderLargerThumbnail: true,
+                    },
+                },
+            }
+        );
+    } catch (error) {
+        console.error("Error in owner command:", error);
+        reply("An error occurred while sending the owner's VCard.");
+    }
+});
 // Delete quoted message command
 cmd({
     pattern: "delete",
