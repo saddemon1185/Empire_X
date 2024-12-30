@@ -1,5 +1,5 @@
 const { cmd, commands } = require('../command');
-const { sleep } = require('../lib/functions');
+const { sleep, fetchJson } = require('../lib/functions');
 const msg = require('../lib/msg');
 const axios = require('axios'); // Import axios
 
@@ -60,26 +60,18 @@ cmd({
     filename: __filename
 }, async (conn, mek, m, { from, reply }) => {
     try {
-        let data = await get(`https://xstro-api1-e3fa63d29cbe.herokuapp.com/api/rizz`);
+        // Fetching random pickup line using fetchJson
+        let data = await fetchJson(`https://xstro-api1-e3fa63d29cbe.herokuapp.com/api/rizz`);
+
+        // Handling the response
+        if (data && data.result) {
             return reply(`${data.result}`);
+        } else {
+            return reply("Sorry, I couldn't fetch a rizz line at the moment.");
+        }
     } catch (e) {
         console.log(e);
-        reply(`Error: ${e.message}`);
-    }
-});
-// Motivation command
-cmd({
-    pattern: "motivation",
-    desc: "Get a motivational quote",
-    category: "fun",
-    filename: __filename
-}, async (conn, mek, m, { from, reply }) => {
-    try {
-        let data = await get(`https://api.giftedtech.my.id/api/fun/motivation?apikey=gifted`);
-        return reply(`${data.result}`);
-    } catch (e) {
-        console.log(e);
-        reply(`Error: ${e.message}`);
+        return reply(`Error: ${e.message}`);
     }
 });
 
