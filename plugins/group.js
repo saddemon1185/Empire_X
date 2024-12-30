@@ -429,7 +429,7 @@ cmd({
     }
 });
 
-//poll commands 
+// poll commands 
 cmd({
     pattern: "poll",
     desc: "Makes a poll in the group.",
@@ -450,7 +450,8 @@ cmd({
         await conn.sendMessage(m.chat, {
             poll: {
                 name: poll.trim(),  // Ensure the question is trimmed of extra spaces
-                values: options
+                values: options,
+                type: 'single'  // Ensure only one option can be selected
             }
         });
     } catch (error) {
