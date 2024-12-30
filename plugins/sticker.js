@@ -60,3 +60,42 @@ cmd({
         console.error(e);
     }
 });
+
+
+cmd({
+    pattern: "circle",
+    alias: ["cs"],
+    desc: "Makes sticker of replied image/video.",
+    category: "sticker",
+    filename: __filename,
+    use: "<reply to any image>",
+},
+async (conn, mek, m, { from, reply, pushname, quoted }) => {
+    if (!quoted) return reply(`*Reply to an image or sticker, please.*`);
+
+    try {
+        const mime = quoted.mimetype || "";
+        if (!mime.startsWith("image/") && !mime.startsWith("video/")) {
+            return reply("*Please reply to a valid image or video.*");
+        }
+
+        // Download the media
+        const media = await conn.downloadMediaMessage(quoted);
+
+        // Create the sticker
+        const sticker = new Sticker(media, {
+            pack: "Empire_X", // Pack name
+            author: pushname || "Unknown", // Author name
+            type: StickerTypes.CIRCLE, // Circle sticker type
+            categories: ["🤩", "🎉"], // Sticker categories
+            id: "12345", // Sticker ID
+            quality: 75, // Output quality
+        });
+
+        const buffer = await sticker.toBuffer();
+        await conn.sendMessage(from, { sticker: buffer }, { quoted: m });
+    } catch (e) {
+        console.error(e);
+        return reply("An error occurred while processing your request. Please try again.");
+    }
+});
