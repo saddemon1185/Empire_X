@@ -34,23 +34,21 @@ cmd({
             { 
                 quoted: m, 
                 contextInfo: {
-                    externalAdReply: {
-                        title: "Contact",
-                        body: "Message.",
-                        mediaType: 1,
-                        thumbnailUrl: "https://raw.githubusercontent.com/efeurhobo/Empire_X/main/lib/assets/empire.jpg",
-                      sourceUrl:"https://instagram.com/reel/blahblah",
-                        mediaUrl: "https://whatsapp.com/channel/0029VajVvpQIyPtUbYt3Oz0k",
-                        renderLargerThumbnail: true
-                    }
-                } 
-            }
-        );
-    } catch (error) {
-        console.error("Error in vcard command:", error);
-        reply("An error occurred while sending the VCard.");
-    }
-});
+				forwardingScore: 999,
+				isForwarded: true,
+				externalAdReply: {
+					title: config.BOT_NAME.split(';')[0],
+					body: config.OWNER_NAME.split(';')[1],
+					mediaType: 1,
+					thumbnail: 'https://avatars.githubusercontent.com/u/188756392?v=4',
+					sourceUrl: 'https://github.com/efeurhobo/Empire_X',
+					renderLargerThumbnail: true,
+				},
+			},
+		});
+	},
+);
+
 // Delete quoted message command
 cmd({
     pattern: "delete",
