@@ -13,29 +13,49 @@ async function get(url) {
     }
 }
 
-// Rizz command
 cmd({
-    pattern: "rizz",
-    desc: "Get a random pickup line",
+    pattern: "insult",
+    desc: "Get a random insult",
     category: "fun",
     filename: __filename
 }, async (conn, mek, m, { from, reply }) => {
     try {
-        // Fetching random pickup line using fetchJson
-        let data = await fetchJson(`https://xstro-api1-e3fa63d29cbe.herokuapp.com/api/rizz`);
+        // Fetching random insult using fetchJson
+        let data = await fetchJson(`https://api.nexoracle.com/misc/insult-lines?apikey=MepwBcqIM0jYN0okD`);
 
         // Handling the response
-        if (data && data.result) {
-            return reply(`${data.result}`);
+        if (data && data.insult) {
+            return reply(`${data.insult}`);
         } else {
-            return reply("Sorry, I couldn't fetch a rizz line at the moment.");
+            return reply("Sorry, I couldn't fetch an insult at the moment.");
         }
     } catch (e) {
         console.log(e);
         return reply(`Error: ${e.message}`);
     }
 });
+// rizz command
+cmd({
+    pattern: "rizz",
+    desc: "Get a random flirt line",
+    category: "fun",
+    filename: __filename
+}, async (conn, mek, m, { from, reply }) => {
+    try {
+        // Fetching random flirt line using fetchJson
+        let data = await fetchJson(`https://api.nexoracle.com/misc/flirt-lines?apikey=MepwBcqIM0jYN0okD`);
 
+        // Handling the response
+        if (data && data.flirt) {
+            return reply(`${data.flirt}`);
+        } else {
+            return reply("Sorry, I couldn't fetch a flirt line at the moment.");
+        }
+    } catch (e) {
+        console.log(e);
+        return reply(`Error: ${e.message}`);
+    }
+});
 // Jokes command
 cmd({
     pattern: "jokes",
