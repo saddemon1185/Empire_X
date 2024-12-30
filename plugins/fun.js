@@ -129,3 +129,33 @@ cmd({
         reply(`Error: ${e.message}`);
     }
 });
+
+cmd({
+    pattern: "obfuscate",
+    desc: "Obfuscate your code using the given input.",
+    category: "tools",
+    filename: __filename,
+}, async (conn, mek, m, { args, reply }) => {
+    try {
+        // Check if the user provided code to obfuscate
+        const code = args.join(" ");
+        if (!code) {
+            return reply("Please provide the code you want to obfuscate.");
+        }
+
+        // Send the API request to obfuscate the code
+        const response = await axios.get(`https://api.giftedtech.my.id/api/tools/encrypt?apikey=gifted&code=${encodeURIComponent(code)}`);
+        
+        const encryptedCode = response.data.encrypted_code;
+
+        if (!encryptedCode) {
+            return reply("❌ Unable to obfuscate the code. Please try again.");
+        }
+
+        // Send the obfuscated (encrypted) code to the user
+        return reply(`Here is your obfuscated code:\n\`\`\`javascript\n${encryptedCode}\n\`\`\``);
+    } catch (err) {
+        console.error("Error obfuscating the code:", err);
+        return reply("❌ An error occurred while obfuscating the code. Please try again later.");
+    }
+});
