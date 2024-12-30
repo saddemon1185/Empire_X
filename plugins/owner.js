@@ -18,50 +18,26 @@ cmd({
     try {
         const number = config.OWNER_NUMBER || '+2348078582627';
         const name = config.OWNER_NAME || "Only_one_🥇Empire";
-        const img = await getBuffer('https://avatars.githubusercontent.com/u/188756392?v=4');
+        const info = config.BOT_NAME || "Empire_X";
 
-        const vcard =
-            'BEGIN:VCARD\n' +
-            'VERSION:3.0\n' +
-            'FN:' +
-            name +
-            '\n' +
-            'ORG:' +
-            config.BOT_NAME.split(';')[0] +
-            '\n' +
-            'TEL;type=CELL;type=VOICE;waid=' +
-            m.sender.split('@')[0] + // Using m.sender to get the user's phone number
-            ':' +
-            m.sender.split('@')[0] +
-            '\n' +
-            'END:VCARD';
+        const vcard = `BEGIN:VCARD\nVERSION:3.0\nFN:${name}\nORG:${info};\nTEL;type=CELL;type=VOICE;waid=${number.replace('+', '')}:${number}\nEND:VCARD`;
 
-        // Send message with the vCard, message, and external ad
-        await conn.sendMessage(m.chat, {
-            contacts: {
-                displayName: name,
-                contacts: [{ vcard }],
-            },
-            text: `Hello, this is the vCard for the owner: ${name}`,
-            contextInfo: {
-                forwardingScore: 999,
-                isForwarded: true,
-                externalAdReply: {
-                    title: config.BOT_NAME.split(';')[0],
-                    body: config.BOT_NAME.split(';')[1],
-                    mediaType: 1,
-                    thumbnail: img,
-                    sourceUrl: 'https://github.com/AstroX11/Xstro',
-                    renderLargerThumbnail: true,
-                }
+        // Sending only the vCard
+        await conn.sendMessage(
+            m.chat, 
+            { 
+                contacts: { 
+                    displayName: name, 
+                    contacts: [{ vcard }] 
+                } 
             }
-        });
-
+        );
     } catch (error) {
-        console.error("Error in owner command:", error);
-        reply("An error occurred while sending the owner's VCard.");
+        console.error("Error in vcard command:", error);
+        reply("An error occurred while sending the VCard.");
     }
 });
+
 // Delete quoted message command
 cmd({
     pattern: "delete",
