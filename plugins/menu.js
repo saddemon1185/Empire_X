@@ -25,6 +25,7 @@ async(conn, mek, m,{from, quoted, body, isCmd, command, args, q, isGroup, sender
             privacy: '',
             search: '',
             system: '',
+            sticker: '',
         };
 
         // Format uptime function
