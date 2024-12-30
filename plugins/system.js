@@ -15,7 +15,7 @@ async (conn, mek, m, { from, quoted, reply }) => {
     try {
         const botUptime = runtime(process.uptime());
 
-        const aliveMsg = `> *${config.BOT_NAME} IS RUNNING!!*  
+        const aliveMsg = `> *Empire_X IS Active*  
 ╭───────────────◆  
 │⿻ *Uptime:* 
 │⿻ (${botUptime.days}) Days 
@@ -26,19 +26,19 @@ async (conn, mek, m, { from, quoted, reply }) => {
 
         // Information Message
         const infoMessage = {
-            image: { url: config.ALIVE_IMG || 'https://via.placeholder.com/512' },  // Use the bot's image or a placeholder
-            caption: aliveMsg,
-            contextInfo: {
-                mentionedJid: [mek.sender],
-                forwardingScore: 5,
-                isForwarded: true,
-                forwardedNewsletterMessageInfo: {
-                    newsletterJid: '120363337275149306@newsletter',  // Your newsletter JID
-                    newsletterName: "Empire_X",                   // Your newsletter name
-                    serverMessageId: 143                          // Adjust based on the actual message ID you want to forward
-                }
-            }
-        };
+    image: { url: 'https://raw.githubusercontent.com/efeurhobo/Empire_X/main/lib/assets/empire.jpg' },
+    caption: aliveMsg,
+    contextInfo: {
+        mentionedJid: [mek.sender],
+        forwardingScore: 5,
+        isForwarded: true,
+        forwardedNewsletterMessageInfo: {
+            newsletterJid: '120363337275149306@newsletter',
+            newsletterName: "Empire_X",
+            serverMessageId: 143
+        }
+    }
+};
 
         // Send the alive message with the formatted information
         await conn.sendMessage(from, infoMessage, { quoted: mek });
@@ -293,136 +293,5 @@ cmd({
     } catch (error) {
         console.error(error);
         reply(`*Error during update:* ${error.message}`);
-    }
-});
-// List Plugins
-cmd({
-    pattern: "listplugin",
-    desc: "Lists all available plugins.",
-    category: "system",
-    filename: __filename,
-}, async (conn, mek, m, { reply }) => {
-    try {
-        const pluginPath = "./plugins";
-        const files = fs.readdirSync(pluginPath).filter(file => file.endsWith(".js"));
-        if (files.length === 0) return reply("No plugins available.");
-
-        const pluginList = files.map(file => `- ${file.replace(".js", "")}`).join("\n");
-        return reply(`Available Plugins:\n\n${pluginList}`);
-    } catch (error) {
-        console.error("Error in listplugin command:", error);
-        reply(`An error occurred: ${error.message || "Unknown error"}`);
-    }
-});
-
-// Active Plugins
-cmd({
-    pattern: "plugins",
-    desc: "Lists all currently active plugins.",
-    category: "system",
-    filename: __filename,
-}, async (conn, mek, m, { reply }) => {
-    try {
-        const activePlugins = Object.keys(global.plugins || {});
-        if (activePlugins.length === 0) return reply("No active plugins.");
-
-        const pluginList = activePlugins.map(plugin => `- ${plugin}`).join("\n");
-        return reply(`Active Plugins:\n\n${pluginList}`);
-    } catch (error) {
-        console.error("Error in plugins command:", error);
-        reply(`An error occurred: ${error.message || "Unknown error"}`);
-    }
-});
-
-// Remove Plugin
-cmd({
-    pattern: "remove",
-    desc: "Removes a plugin from the bot.",
-    category: "system",
-    filename: __filename,
-}, async (conn, mek, m, { args, reply }) => {
-    try {
-        const pluginPath = `./plugins/${args[0]}.js`;
-
-        if (!fs.existsSync(pluginPath)) return reply(`Plugin "${args[0]}" does not exist.`);
-        fs.unlinkSync(pluginPath);
-
-        delete global.plugins[args[0]];
-        return reply(`Plugin "${args[0]}" has been removed.`);
-    } catch (error) {
-        console.error("Error in remove command:", error);
-        reply(`An error occurred: ${error.message || "Unknown error"}`);
-    }
-});
-
-// Install Plugin
-cmd({
-    pattern: "install",
-    desc: "Installs a plugin to the bot.",
-    category: "system",
-    filename: __filename,
-}, async (conn, mek, m, { args, reply }) => {
-    try {
-        const pluginUrl = args[0];
-        const pluginName = args[1] || "newplugin";
-
-        if (!pluginUrl) return reply("Provide a valid plugin URL.");
-        const response = await axios.get(pluginUrl);
-        const pluginPath = `./plugins/${pluginName}.js`;
-
-        fs.writeFileSync(pluginPath, response.data);
-        return reply(`Plugin "${pluginName}" has been installed.`);
-    } catch (error) {
-        console.error("Error in install command:", error);
-        reply(`An error occurred: ${error.message || "Unknown error"}`);
-    }
-});
-
-// Common Plugins List
-cmd({
-    pattern: "common",
-    desc: "Lists commonly used plugins.",
-    category: "system",
-    filename: __filename,
-}, async (conn, mek, m, { reply }) => {
-    try {
-        const commonPlugins = ["greeting", "moderation", "utility"];
-        const pluginList = commonPlugins.map(plugin => `- ${plugin}`).join("\n");
-
-        return reply(`Commonly Used Plugins:\n\n${pluginList}`);
-    } catch (error) {
-        console.error("Error in common command:", error);
-        reply(`An error occurred: ${error.message || "Unknown error"}`);
-    }
-});
-
-// Difference Between Plugins
-cmd({
-    pattern: "diff",
-    desc: "Displays the difference between two plugins.",
-    category: "system",
-    filename: __filename,
-}, async (conn, mek, m, { args, reply }) => {
-    try {
-        const plugin1Path = `./plugins/${args[0]}.js`;
-        const plugin2Path = `./plugins/${args[1]}.js`;
-
-        if (!fs.existsSync(plugin1Path) || !fs.existsSync(plugin2Path)) {
-            return reply("One or both plugins do not exist.");
-        }
-
-        const plugin1Content = fs.readFileSync(plugin1Path, "utf-8");
-        const plugin2Content = fs.readFileSync(plugin2Path, "utf-8");
-
-        const differences = diff.diffLines(plugin1Content, plugin2Content);
-
-        const diffOutput = differences.map(part =>
-            (part.added ? "+ " : part.removed ? "- " : "  ") + part.value
-        ).join("");
-
-        return reply(`Differences between ${args[0]} and ${args[1]}:\n\n${diffOutput}`);
-    } catch (error) {
-        console.error("Error in diff command:", error);
-        reply(`An error occurred: ${error.message || "Unknown error"}`);
     }
 });
