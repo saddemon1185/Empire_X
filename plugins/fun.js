@@ -88,3 +88,53 @@ cmd({
         reply(`Error: ${e.message}`);
     }
 });
+
+cmd({
+    pattern: "tempnumber",
+    desc: "Get temporary numbers for a given country code",
+    category: "fun",
+    filename: __filename
+}, async (conn, mek, m, { from, reply, text }) => {
+    try {
+        let countryCode = text.trim();
+        // Direct axios call to fetch temporary numbers for the specified country code
+        const response = await axios.get(`https://api.nexoracle.com/misc/temp-number?apikey=MepwBcqIM0jYN0okD&q=${countryCode}`);
+        const data = response.data;
+
+        if (data && data.result && data.result.length > 0) {
+            // Extracting phone numbers from the result
+            let numbers = data.result.map(item => `${item.phoneNumber} (${item.country})`).join("\n");
+            return reply(`Temporary numbers for ${countryCode.toUpperCase()}:\n${numbers}`);
+        } else {
+            return reply(`No temporary numbers found for ${countryCode.toUpperCase()}.`);
+        }
+    } catch (e) {
+        console.log(e);
+        return reply(`Error: ${e.message}`);
+    }
+});
+
+
+cmd({
+    pattern: "tempnumbermessage",
+    desc: "Get messages for a specific temporary number",
+    category: "fun",
+    filename: __filename
+}, async (conn, mek, m, { from, reply, text }) => {
+    try {
+        let number = text.trim();
+        // Direct axios call to fetch messages for the specified number
+        const response = await axios.get(`https://api.nexoracle.com/misc/temp-number-messages?apikey=MepwBcqIM0jYN0okD&number=${number}`);
+        const data = response.data;
+
+        if (data && data.result && data.result.length > 0) {
+            let messages = data.result.map(msg => `[${msg.from}] ${msg.content}`).join("\n\n");
+            return reply(`Messages for ${number}:\n\n${messages}`);
+        } else {
+            return reply(`No messages found for ${number}.`);
+        }
+    } catch (e) {
+        console.log(e);
+        return reply(`Error: ${e.message}`);
+    }
+});
