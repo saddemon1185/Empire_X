@@ -1,6 +1,9 @@
+const config = require('../config');
+const { cmd, commands } = require('../command');
+const { fetchJson } = require('../lib/functions');
 
 cmd({
-    pattern: "bible",
+    pattern: "Bible",
     desc: "Fetch a Bible verse",
     category: "ai",
     filename: __filename
