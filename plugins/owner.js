@@ -21,37 +21,20 @@ cmd({
         const name = config.OWNER_NAME || "Only_one_🥇Empire";
         const info = config.BOT_NAME || "Empire_X";
 
-        const vcard = `BEGIN:VCARD\nVERSION:3.0\nFN:${name}\nORG:${info};\nTEL;type=CELL;type=VOICE;waid=${number.replace('+', '')}:${number}\nEND:VCARD`;
+        // Define the replyContact function
+        m.replyContact = (name, info, number) => {
+            const vcard = `BEGIN:VCARD\nVERSION:3.0\nFN:${name}\nORG:${info};\nTEL;type=CELL;type=VOICE;waid=${number.replace('+', '')}:${number}\nEND:VCARD`;
+            conn.sendMessage(m.chat, { contacts: { displayName: name, contacts: [{ vcard }] } }, { quoted: m });
+        };
 
-        await conn.sendMessage(
-            m.chat, 
-            { 
-                contacts: { 
-                    displayName: name, 
-                    contacts: [{ vcard }] 
-                } 
-            }, 
-            { 
-                quoted: m, 
-                contextInfo: {
-                    forwardingScore: 999,
-                    isForwarded: true,
-                    externalAdReply: {
-                        title: config.BOT_NAME.split(';')[0],
-                        body: config.OWNER_NAME.split(';')[1],
-                        mediaType: 1,
-                        thumbnail: 'https://avatars.githubusercontent.com/u/188756392?v=4',
-                        sourceUrl: 'https://github.com/efeurhobo/Empire_X',
-                        renderLargerThumbnail: true,
-                    },
-                },
-            }
-        );
+        // Call the replyContact function to send the vCard
+        m.replyContact(name, info, number);
     } catch (error) {
         console.error("Error in owner command:", error);
         reply("An error occurred while sending the owner's VCard.");
     }
 });
+
 // Delete quoted message command
 cmd({
     pattern: "delete",
