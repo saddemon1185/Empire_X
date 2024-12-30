@@ -1,18 +1,20 @@
 const config = require('../config');
 const { cmd, commands } = require('../command');
-const { fetchJson } = require('../lib/functions'); // Importing fetchJson along with other functions
+const { fetchJson } = require('../lib/functions'); // Importing fetchJson
 
 cmd({
-    pattern: "bible",
+    pattern: "Bible",
     desc: "Fetch a Bible verse",
     category: "ai",
     filename: __filename
 }, async (conn, mek, m, { from, reply }) => {
     try {
-        const q = m.text.split(' ').slice(1).join(' '); // Get the Bible verse query after the command
+        // Ensure the message text exists and extract the verse query
+        const q = m.text && m.text.split(' ').slice(1).join(' '); // Get the verse query after the command
 
+        // If no verse is provided
         if (!q) {
-            return reply(`Please provide a Bible verse to fetch. Example: ${prefix}Bible John 3:16`);
+            return reply(`Please Use Example: ${prefix}Bible John 3:16`);
         }
 
         // Fetching the Bible verse using fetchJson
