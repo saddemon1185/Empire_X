@@ -1,103 +1,7 @@
-const { cmd, commands } = require('../command');
-const msg = require('../lib/msg');
-const axios = require('axios'); // Import axios
+const { cmd, commands } = require('../command'); 
+const axios = require('axios');  // Importing Axios for HTTP requests
 
-// Helper function to fetch data from the API using axios
-async function get(url) {
-    try {
-        const response = await axios.get(url);
-        console.log(response.data); // Log the full response for debugging
-        return response.data;
-    } catch (error) {
-        throw new Error(`HTTP error! status: ${error.response ? error.response.status : error.message}`);
-    }
-}
-
-// Insult command
-cmd({
-    pattern: "insult",
-    desc: "Get a random insult",
-    category: "fun",
-    filename: __filename
-}, async (conn, mek, m, { from, reply }) => {
-    try {
-        let data = await get(`https://api.nexoracle.com/misc/insult-lines?apikey=MepwBcqIM0jYN0okD`);
-
-        if (data && data.insult) {
-            return reply(`${data.insult}`);
-        } else {
-            return reply("Sorry, I couldn't fetch an insult at the moment.");
-        }
-    } catch (e) {
-        console.log(e);
-        return reply(`Error: ${e.message}`);
-    }
-});
-
-// Rizz command
-cmd({
-    pattern: "rizz",
-    desc: "Get a random flirt line",
-    category: "fun",
-    filename: __filename
-}, async (conn, mek, m, { from, reply }) => {
-    try {
-        let data = await get(`https://api.nexoracle.com/misc/flirt-lines?apikey=MepwBcqIM0jYN0okD`);
-
-        if (data && data.flirt) {
-            return reply(`${data.flirt}`);
-        } else {
-            return reply("Sorry, I couldn't fetch a flirt line at the moment.");
-        }
-    } catch (e) {
-        console.log(e);
-        return reply(`Error: ${e.message}`);
-    }
-});
-
-// Jokes command
-cmd({
-    pattern: "jokes",
-    desc: "Get a random joke",
-    category: "fun",
-    filename: __filename
-}, async (conn, mek, m, { from, reply }) => {
-    try {
-        let data = await get(`https://api.giftedtech.my.id/api/fun/jokes?apikey=gifted`);
-        
-        if (data && data.result) {
-            return reply(`${data.result}`);
-        } else {
-            return reply("Sorry, I couldn't fetch a joke at the moment.");
-        }
-    } catch (e) {
-        console.log(e);
-        reply(`Error: ${e.message}`);
-    }
-});
-
-// Advice command
-cmd({
-    pattern: "advice",
-    desc: "Get a random piece of advice",
-    category: "fun",
-    filename: __filename
-}, async (conn, mek, m, { from, reply }) => {
-    try {
-        let data = await get(`https://api.giftedtech.my.id/api/fun/advice?apikey=gifted`);
-
-        if (data && data.result) {
-            return reply(`${data.result}`);
-        } else {
-            return reply("Sorry, I couldn't fetch advice at the moment.");
-        }
-    } catch (e) {
-        console.log(e);
-        reply(`Error: ${e.message}`);
-    }
-});
-
-// TempNumber command
+// TempNumber command - Fetch temporary numbers for a given country code
 cmd({
     pattern: "tempnumber",
     desc: "Get temporary numbers for a given country code",
@@ -105,12 +9,15 @@ cmd({
     filename: __filename
 }, async (conn, mek, m, { from, reply, text }) => {
     try {
-        let countryCode = text.trim();
+        let countryCode = text.trim(); // Country code input (e.g., "uk")
+        
+        // Fetching temporary numbers using Axios (GET request)
         const response = await axios.get(`https://api.nexoracle.com/misc/temp-number?apikey=MepwBcqIM0jYN0okD&q=${countryCode}`);
-        const data = response.data;
-
-        if (data && data.result && data.result.length > 0) {
-            let numbers = data.result.map(item => `${item.phoneNumber} (${item.country})`).join("\n");
+        
+        // Check if the response contains valid data (JSON response)
+        if (response.data && response.data.result && response.data.result.length > 0) {
+            // Extract phone numbers from the response and format them
+            let numbers = response.data.result.map(item => `${item.phoneNumber} (${item.country})`).join("\n");
             return reply(`Temporary numbers for ${countryCode.toUpperCase()}:\n${numbers}`);
         } else {
             return reply(`No temporary numbers found for ${countryCode.toUpperCase()}.`);
@@ -121,7 +28,7 @@ cmd({
     }
 });
 
-// TempNumberMessages command
+// TempNumberMessages command - Fetch messages for a specific temporary number
 cmd({
     pattern: "tempnumbermessage",
     desc: "Get messages for a specific temporary number",
@@ -129,12 +36,15 @@ cmd({
     filename: __filename
 }, async (conn, mek, m, { from, reply, text }) => {
     try {
-        let number = text.trim();
+        let number = text.trim(); // Temporary number input (e.g., "+44792938627")
+        
+        // Fetching messages for the specified temporary number using Axios (GET request)
         const response = await axios.get(`https://api.nexoracle.com/misc/temp-number-messages?apikey=MepwBcqIM0jYN0okD&number=${number}`);
-        const data = response.data;
-
-        if (data && data.result && data.result.length > 0) {
-            let messages = data.result.map(msg => `[${msg.from}] ${msg.content}`).join("\n\n");
+        
+        // Check if the response contains valid data (JSON response)
+        if (response.data && response.data.result && response.data.result.length > 0) {
+            // Format and send messages for the number
+            let messages = response.data.result.map(msg => `[${msg.from}] ${msg.content}`).join("\n\n");
             return reply(`Messages for ${number}:\n\n${messages}`);
         } else {
             return reply(`No messages found for ${number}.`);
