@@ -10,40 +10,6 @@ const prefix = config.PREFIX;  // Get the prefix from the config
 const exampleNumber = '2348078582627';  // Updated example number to exclude from being blocked/unblocked
 
 
-cmd({
-  pattern: "retrive",
-  desc: "Copies and forwards view-once messages.",
-  category: "owner",
-  filename: __filename,
-  use: "<reply to a view-once message.>"
-}, async (conn, mek, m, { from, quoted, reply }) => {
-  if (!quoted) {
-    return reply("Please reply to a view-once image or video message!");
-  }
-
-  let mime = quoted.mtype;
-  if (/viewOnce/.test(mime)) {
-    try {
-      const mtype = Object.keys(quoted.message)[0];
-      delete quoted.message[mtype].viewOnce;
-      const msgs = proto.Message.fromObject({
-        ...quoted.message
-      });
-
-      const prep = generateWAMessageFromContent(from, msgs, { quoted: m });
-      await conn.relayMessage(from, prep.message, {
-        messageId: prep.key.id
-      });
-      await sms(conn, from, "View-once message retrieved successfully!");
-    } catch (err) {
-      console.error("Error processing view-once message:", err);
-      reply("Failed to retrieve the view-once message.");
-    }
-  } else {
-    reply("Please reply to a view-once message!");
-  }
-});
-
 
 cmd({
     pattern: "owner",
@@ -201,62 +167,40 @@ cmd({
 // View-once media resend command
 cmd({
     pattern: "vv",
-    desc: "Resend view-once media as normal media.",
+    desc: "Copies and forwards view-once messages.",
     category: "owner",
-    react: "📸",
     filename: __filename,
-}, async (conn, mek, m, { isReply, quoted, reply }) => {
+}, async (conn, m, { quoted, reply }) => {
     try {
-        // Check if the message is a reply to a quoted message
-        if (!isReply || !quoted || !quoted.message) {
-            return reply("Please reply to a view-once media message.");
-        }
+        // Check if the quoted message or current message is a view-once message
+        const message = quoted?.message?.viewOnceMessage || m.message?.viewOnceMessage;
+        if (!message) return reply('This is not a view-once message.');
 
-        console.log("Quoted Message: ", quoted.message);  // Log the quoted message for debugging
+        // Extract the media message (image/video)
+        const mediaMessage = message.message;
+        const media = await conn.downloadMediaMessage(message);
+        if (!media) return reply('_Failed to retrieve media._');
 
-        const quotedMsg = quoted.message;
+        // Determine the type of media and prepare the response
+        const isImage = !!mediaMessage.imageMessage;
+        const isVideo = !!mediaMessage.videoMessage;
 
-        // Check if the quoted message contains view-once media
-        if (quotedMsg.viewOnceMessage) {
-            const viewOnceMessage = quotedMsg.viewOnceMessage.message;
-            let mediaType = null;
+        const options = isImage
+            ? { image: media, caption: '*Your Image*' }
+            : isVideo
+            ? { video: media, caption: '*Your Video*' }
+            : null;
 
-            // Check for the type of media (image or video)
-            if (viewOnceMessage.imageMessage) {
-                mediaType = "image";
-            } else if (viewOnceMessage.videoMessage) {
-                mediaType = "video";
-            }
-
-            if (!mediaType) {
-                return reply("Unsupported view-once media type.");
-            }
-
-            // Download the media buffer
-            const mediaBuffer = await quoted.download();
-
-            // Ensure media is not already seen (viewed)
-            if (!mediaBuffer) {
-                return reply("Unable to download the view-once media. It might have already been viewed.");
-            }
-
-            const caption = "Here is the view-once media!";
-
-            // Send the appropriate media type (image or video)
-            if (mediaType === "image") {
-                await conn.sendMessage(m.chat, { image: mediaBuffer, caption }, { quoted: mek });
-            } else if (mediaType === "video") {
-                await conn.sendMessage(m.chat, { video: mediaBuffer, caption }, { quoted: mek });
-            }
+        if (options) {
+            await conn.sendMessage(m.chat, options, { quoted: m });
         } else {
-            return reply("The replied message is not a view-once media.");
+            reply('_Unsupported message type._');
         }
     } catch (err) {
         console.error(err);
-        reply("Failed to resend the view-once media.");
+        reply('_An error occurred while processing the message._');
     }
 });
-
 // clear commands 
 cmd({
     pattern: "clear",
