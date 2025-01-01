@@ -116,7 +116,6 @@ async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, reply }) => 
     }
 });
 // repo commands 
-
 cmd({
     pattern: "repo", 
     desc: "Fetch Empire_X repository details",
@@ -127,7 +126,7 @@ async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, reply }) => 
     const githubRepoURL = 'https://github.com/efeurhobo/Empire_X';
 
     try {
-        // Validate that the URL is in the correct format
+        // Validate the URL format
         const regexMatch = githubRepoURL.match(/github\.com\/([^/]+)\/([^/]+)/);
         if (!regexMatch) {
             reply("Empire_X says: Invalid GitHub URL format.");
@@ -140,30 +139,30 @@ async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, reply }) => 
         if (response.status === 200) {
             const repoData = response.data;
 
-            // Handle null description and provide fallback
+            // Fallback description
             const description = repoData.description || "No description available";
 
-            // Format the repository information with the desired style
-            let formattedInfo = `
-╭─────────────❏ *REPOSITORY INFORMATION* ❏
-│📂 Repository Name: ${repoData.name}
-│📝 Description: ${description}
-│👤 Owner: ${repoData.owner.login}
-│⭐ Stars: ${repoData.stargazers_count}
-│🍴 Forks: ${repoData.forks_count}
-│🌐 URL: ${repoData.html_url}
-│🏠 Session: https://empire-x-paircode.onrender.com
-╰━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━──⊷
-
-╭────❏ *JOIN US* ❏
-│📞 Group: https://chat.whatsapp.com/DLrFOwuOnLwDS5VLeCuxHe
-│🤖 Channel: https://whatsapp.com/channel/0029VajVvpQIyPtUbYt3Oz0k
-╰━━━━━━━━━━━━━━━━━━━━━━━━──⊷
-
-╭────❏ *DEPLOY NOW* ❏
-│_DEPLOY 𝐄𝐌𝐏𝐈𝐑𝐄_𝑋 NOW_
-╰━━━━━━━━━━━━━━━━━━━━━━━━──⊷
-`.trim();
+            // Format the repository information
+            const repoInfo = {
+                caption: `
+╭━━━▻〔 *Empire_X REPOSITORY DETAILS* 〕━━━━⬤
+┃𖠄╭────────────────────·๏
+┃𖠄┃• *Repository Name:* ${repoData.name}
+┃𖠄┃• *Description:* ${description}
+┃𖠄┃• *Owner:* ${repoData.owner.login}
+┃𖠄┃• *Stars:* ${repoData.stargazers_count}
+┃𖠄┃• *Forks:* ${repoData.forks_count}
+┃𖠄┃• *URL:* ${repoData.html_url}
+┃𖠄└────────────────────·๏
+┃𖠄╭────────────────────·๏
+┃𖠄┃ *Session:* https://empire-x-paircode.onrender.com
+┃𖠄┃ *Join Us:*
+┃𖠄┃ - Group: https://chat.whatsapp.com/HnrCOlPdtH1AvhxIroMH90
+┃𖠄┃ - Channel: https://whatsapp.com/channel/0029VajVvpQIyPtUbYt3Oz0k
+┃𖠄┃ *Deploy:* _Deploy Empire_x Now_
+┃𖠄└────────────────────·๏
+╰━━━━━━━━━━━━━━━━━━━━━⬤
+                `.trim()
 
             // Send the formatted information as a message
             await conn.sendMessage(from, { text: formattedInfo }, { quoted: mek });
