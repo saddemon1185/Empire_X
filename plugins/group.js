@@ -428,37 +428,6 @@ cmd({
     }
 });
 
-// poll commands 
-cmd({
-    pattern: "poll",
-    desc: "Makes a poll in the group.",
-    category: "group",
-    filename: __filename,
-    use: `question; option1, option2, option3.....`,
-}, async (conn, mek, m, { from, isOwner, reply }) => {
-    if (!isOwner) return reply("This command is only for the owner.");
-
-    let [poll, opt] = m.body.split(";");
-    if (m.body.split(";") < 2) {
-        return await conn.reply(m.chat, `${prefix}poll question; option1, option2, option3.....`, m);
-    }
-
-    let options = [];
-    for (let i of opt.split(",")) {
-      options.push(i);
-    }
-    try {
-        await conn.sendMessage(m.chat, {
-            poll: {
-        name: poll,
-        values: options
-
-    } catch (error) {
-        console.error(error);
-        reply("Error creating poll. Please try again.");
-    }
-});
-
 //promote commands 
 cmd({
   pattern: "promote",
