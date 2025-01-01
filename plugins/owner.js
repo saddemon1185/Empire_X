@@ -170,19 +170,22 @@ cmd({
     desc: "Copies and forwards view-once messages.",
     category: "owner",
     filename: __filename,
-}, 
+}, async (conn, m, { quoted, reply }) => {
+    try {
         // Check if the quoted message or current message is a view-once message
         const message = quoted?.message?.viewOnceMessage || m.message?.viewOnceMessage;
         if (!message) return reply('This is not a view-once message.');
 
         // Extract the media message (image/video)
-        const mediaMessage = message.message;
+        const mediaMessage = message.message.imageMessage || message.message.videoMessage;
+        if (!mediaMessage) return reply('_Failed to retrieve media._');
+
         const media = await conn.downloadMediaMessage(message);
-        if (!media) return reply('_Failed to retrieve media._');
+        if (!media) return reply('_Failed to download media._');
 
         // Determine the type of media and prepare the response
-        const isImage = !!mediaMessage.imageMessage;
-        const isVideo = !!mediaMessage.videoMessage;
+        const isImage = !!message.message.imageMessage;
+        const isVideo = !!message.message.videoMessage;
 
         const options = isImage
             ? { image: media, caption: '*Your Image*' }
