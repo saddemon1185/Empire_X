@@ -15,14 +15,17 @@ async (conn, mek, m, { from, quoted, reply }) => {
     try {
         const botUptime = runtime(process.uptime());
 
-        const aliveMsg = `> *Empire_X IS Active*  
-╭───────────────◆  
-│⿻ *Uptime:* 
-│⿻ (${botUptime.days}) Days 
-│⿻ (${botUptime.hours}) Hours 
-│⿻ (${botUptime.minutes}) Minutes 
-│⿻ (${botUptime.seconds}) Seconds
-╰────────────────◆`;
+        const aliveMsg = `
+╭━━━▻〔 *Empire_X IS Active* 〕━━━━⬤
+┃𖠄╭────────────────────·๏
+┃𖠄┃ *Uptime:* 
+┃𖠄┃• (${botUptime.days}) Days
+┃𖠄┃• (${botUptime.hours}) Hours
+┃𖠄┃• (${botUptime.minutes}) Minutes
+┃𖠄┃• (${botUptime.seconds}) Seconds
+┃𖠄└────────────────────·๏
+╰━━━━━━━━━━━━━━━━━━━━━⬤
+`;
 
         // Information Message
         const infoMessage = {
@@ -81,7 +84,7 @@ cmd({
 cmd({
     pattern: "uptime",
     desc: "Check bot's uptime.",
-    category: "system", // Changed category to "system"
+    category: "system",
     filename: __filename
 },
 async (conn, mek, m, { from, quoted, pushname, reply }) => {
@@ -93,17 +96,19 @@ async (conn, mek, m, { from, quoted, pushname, reply }) => {
             seconds %= 60 * 60;
             const minutes = Math.floor(seconds / 60);
             seconds = Math.floor(seconds % 60);
-            return `│⿻  (${days}) Days\n│⿻  (${hours}) Hours\n│⿻  (${minutes}) Minutes\n│⿻  (${seconds}) Seconds`;
+            return `┃𖠄┃• (${days}) Days\n┃𖠄┃• (${hours}) Hours\n┃𖠄┃• (${minutes}) Minutes\n┃𖠄┃• (${seconds}) Seconds`;
         }
 
         const uptime = formatUptime(process.uptime());
 
-        const uptimeMessage = `> *Empire_X BOT UPTIME*  
-╭───────────────◆  
-│⿻ *Uptime:*  
-${uptime}  
-╰────────────────◆`;
-
+        const uptimeMessage = `
+╭━━━▻〔 *Empire_X BOT UPTIME* 〕━━━━⬤
+┃𖠄╭────────────────────·๏
+┃𖠄┃ *Uptime:*  
+${uptime}
+┃𖠄└────────────────────·๏
+╰━━━━━━━━━━━━━━━━━━━━━⬤
+`;
         const infoMessage = {
             text: uptimeMessage,
             contextInfo: {
