@@ -512,6 +512,9 @@ cmd({
   category: "group",
   filename: __filename,
   use: "<quote|reply|number>"
+}, async (conn, mek, m, { 
+  from, quoted, args, isGroup, sender, botNumber, groupAdmins, isBotAdmins, isAdmins, reply 
+}) => {
 
   if (!isGroup) {
     return reply("This command can only be used in groups.");
