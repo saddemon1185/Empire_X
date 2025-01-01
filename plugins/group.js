@@ -512,9 +512,7 @@ cmd({
   category: "group",
   filename: __filename,
   use: "<quote|reply|number>"
-}, async (conn, mek, m, { 
-  from, quoted, args, isGroup, isBotAdmins, isAdmins, reply 
-}) => {
+
   if (!isGroup) {
     return reply("This command can only be used in groups.");
   }
@@ -546,4 +544,85 @@ cmd({
     console.error("Error demoting user:", error);
     reply("Failed to demote the user. Ensure I have the necessary permissions.");
   }
+});
+
+cmd({
+    pattern: "antilink",
+    desc: "Activates and deactivates antilink. Use buttons or commands to toggle.",
+    category: "group",
+    filename: __filename,
+}, async (conn, mek, m, { 
+    from, quoted, args, isGroup, isBotAdmins, isAdmins, reply, prefix 
+}) => {
+    try {
+        if (!isGroup) return reply(`This command can only be used in groups. Use ${prefix}antilink in a group.`);
+
+        if (!isAdmins) return reply("You need to be a group admin to use this command.");
+        if (!isBotAdmins) return reply("I need to be an admin in this group to manage settings.");
+
+        // Check if the user has provided an argument (on or off)
+        const action = args[0]?.toLowerCase();
+
+        if (!action) {
+            // If no argument, send buttons for toggling
+            const buttons = [
+                {
+                    buttonId: `${prefix}antilink on`,
+                    buttonText: { displayText: "Turn On" },
+                    type: 1,
+                },
+                {
+                    buttonId: `${prefix}antilink off`,
+                    buttonText: { displayText: "Turn Off" },
+                    type: 1,
+                },
+            ];
+
+            const buttonMessage = {
+                text: "Activate or deactivate antilink: Deletes links and kicks users who post links.",
+                footer: conn.user.name,
+                buttons,
+                headerType: 1,
+            };
+
+            return await conn.sendMessage(from, buttonMessage, { quoted: mek });
+        }
+
+        // Handle the "on" and "off" actions
+        if (action === "on") {
+            // Enable the antilink feature here (implement your logic)
+            // Store the state of antilink in your group settings or database
+            return reply("Antilink has been activated. Links will now be deleted and users posting links will be kicked.");
+        }
+
+        if (action === "off") {
+            // Disable the antilink feature here (implement your logic)
+            // Remove the antilink setting from your group settings or database
+            return reply("Antilink has been deactivated. Links will no longer be deleted or result in kicks.");
+        }
+
+        // If the argument is neither "on" nor "off"
+        return reply(`Invalid option. Use ${prefix}antilink on to enable or ${prefix}antilink off to disable.`);
+    } catch (error) {
+        console.error(error);
+        return reply("An error occurred while processing your request.");
+    }
+});
+
+// Listening for new messages to detect links
+conn.on('message-new', async (message) => {
+    const { from, isGroup, body, sender } = message;
+
+    if (isGroup) {
+        // Check if the message contains a link (a URL pattern)
+        const linkRegex = /https?:\/\/[^\s]+/g;
+        if (linkRegex.test(body)) {
+            // Delete the message containing the link
+            await conn.sendMessage(from, { delete: { remoteJid: from, id: message.id } });
+
+            // Kick the user who posted the link
+            await conn.groupParticipantsUpdate(from, [sender], 'remove');
+            console.log(`Kicked ${sender} for posting a link`);
+        }
+    }
 });
