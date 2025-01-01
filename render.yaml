@@ -18,7 +18,7 @@ services:
         value: "."  # Your bot's prefix
       - key: MODE
         value: "private"  # Set the bot's mode: "private" or "groups"
-      - key: AUTO_READ_STATUS
+      - key: AUTO_VIEW_STATUS
         value: "false"  # Enable auto-read status
       - key: AUTO_REACT
         value: "false"  # Enable auto reactions if required
