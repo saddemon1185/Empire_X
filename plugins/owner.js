@@ -164,45 +164,6 @@ cmd({
     }
 });
 
-// View-once media resend command
-cmd({
-    pattern: "vv",
-    desc: "Copies and forwards view-once messages.",
-    category: "owner",
-    filename: __filename,
-}, async (conn, m, { quoted, reply }) => {
-    try {
-        // Check if the quoted message or current message is a view-once message
-        const message = quoted?.message?.viewOnceMessage || m.message?.viewOnceMessage;
-        if (!message) return reply('This is not a view-once message.');
-
-        // Extract the media message (image/video)
-        const mediaMessage = message.message.imageMessage || message.message.videoMessage;
-        if (!mediaMessage) return reply('_Failed to retrieve media._');
-
-        const media = await conn.downloadMediaMessage(message);
-        if (!media) return reply('_Failed to download media._');
-
-        // Determine the type of media and prepare the response
-        const isImage = !!message.message.imageMessage;
-        const isVideo = !!message.message.videoMessage;
-
-        const options = isImage
-            ? { image: media, caption: '*Your Image*' }
-            : isVideo
-            ? { video: media, caption: '*Your Video*' }
-            : null;
-
-        if (options) {
-            await conn.sendMessage(m.chat, options, { quoted: m });
-        } else {
-            reply('_Unsupported message type._');
-        }
-    } catch (err) {
-        console.error(err);
-        reply('_An error occurred while processing the message._');
-    }
-});
 // clear commands 
 cmd({
     pattern: "clear",
@@ -256,53 +217,6 @@ cmd({
     } catch (error) {
         console.log(error);
         reply(error);
-    }
-});
-
-cmd({
-    pattern: "save",
-    react: "📁",
-    alias: ["store"],
-    desc: "Save and send back a media file (image, video, or audio).",
-    category: "media",
-    use: ".save <caption>",
-    filename: __filename,
-},
-async (conn, mek, m, { quoted, q, reply }) => {
-    try {
-        if (!quoted) {
-            return reply("❌ Reply to a media message (video, image, or audio) with the `.save` command.");
-        }
-
-        const messageType = quoted.mtype;
-        let mediaType;
-
-        // Determine the type of media
-        if (/video/.test(messageType)) {
-            mediaType = "video";
-        } else if (/image/.test(messageType)) {
-            mediaType = "image";
-        } else if (/audio/.test(messageType)) {
-            mediaType = "audio";
-        } else {
-            return reply("❌ Only video, image, or audio messages are supported.");
-        }
-
-        // Download and save the media file
-        const mediaPath = await conn.downloadAndSaveMediaMessage(quoted);
-        const filePath = path.resolve(mediaPath);
-
-        // Send the saved media back
-        const mediaMessage = {
-            caption: q || '',
-        };
-        mediaMessage[mediaType] = { url: `file://${filePath}` };
-
-        await conn.sendMessage(m.sender, mediaMessage, { quoted: mek });
-        await reply("✅ Successfully saved and sent the media file.");
-    } catch (error) {
-        console.error(error);
-        reply("❌ Failed to save and send the media. Please try again.");
     }
 });
 
