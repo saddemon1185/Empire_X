@@ -317,7 +317,6 @@ cmd({
 
 cmd({
     pattern: "add",
-    react: "➕",
     desc: "Adds a user to the group.",
     category: "group",
     filename: __filename,
