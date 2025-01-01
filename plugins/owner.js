@@ -170,8 +170,7 @@ cmd({
     desc: "Copies and forwards view-once messages.",
     category: "owner",
     filename: __filename,
-}, async (conn, m, { quoted, reply }) => {
-    try {
+}, 
         // Check if the quoted message or current message is a view-once message
         const message = quoted?.message?.viewOnceMessage || m.message?.viewOnceMessage;
         if (!message) return reply('This is not a view-once message.');
@@ -301,5 +300,34 @@ async (conn, mek, m, { quoted, q, reply }) => {
     } catch (error) {
         console.error(error);
         reply("❌ Failed to save and send the media. Please try again.");
+    }
+});
+
+cmd({
+    pattern: "wa",
+    desc: "Generates a wa.me link for the mentioned or quoted user.",
+    category: "owner",
+    filename: __filename,
+}, async (conn, m, { quoted, text, args }) => {
+    try {
+        let user;
+        if (m.message.extendedTextMessage?.contextInfo?.mentionedJid?.[0]) {
+            // For mentioned user
+            user = m.message.extendedTextMessage.contextInfo.mentionedJid[0].split('@')[0];
+        } else if (quoted) {
+            // For quoted message
+            user = quoted.sender.split('@')[0];
+        } else if (text) {
+            // For direct input text
+            user = text.replace('@', '');
+        } else {
+            return conn.sendMessage(m.key.remoteJid, { text: "Please mention a user, quote a message, or provide a number." }, { quoted: m });
+        }
+
+        // Reply with the wa.me link
+        return conn.sendMessage(m.key.remoteJid, { text: `https://wa.me/${user}` }, { quoted: m });
+    } catch (error) {
+        console.error(error);
+        return conn.sendMessage(m.key.remoteJid, { text: "An error occurred while processing your request." }, { quoted: m });
     }
 });
