@@ -55,8 +55,8 @@
       "value": "Made By 𝐎𝐧𝐥𝐲_𝐨𝐧𝐞_🥇𝐞𝐦𝐩𝐢𝐫𝐞",
       "required": false
     },
-    "AUTO_READ_STATUS": {
-      "description": "Enable auto-read status. TRUE or FALSE.",
+    "AUTO_VIEW_STATUS": {
+      "description": "Enable auto-read status with true or false.",
       "value": "false",
       "required": true
     }
