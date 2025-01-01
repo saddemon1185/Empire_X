@@ -453,7 +453,6 @@ cmd({
         name: poll,
         values: options
 
-        });
     } catch (error) {
         console.error(error);
         reply("Error creating poll. Please try again.");
