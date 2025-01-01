@@ -440,21 +440,20 @@ cmd({
     if (!isOwner) return reply("This command is only for the owner.");
 
     let [poll, opt] = m.body.split(";");
-    if (m.body.split(";").length < 2) {
+    if (m.body.split(";") < 2) {
         return await conn.reply(m.chat, `${prefix}poll question; option1, option2, option3.....`, m);
     }
 
     let options = [];
     for (let i of opt.split(",")) {
-        options.push(i.trim());  // Trim spaces from each option
+      options.push(i);
     }
-
     try {
         await conn.sendMessage(m.chat, {
             poll: {
-                name: poll.trim(),  // Ensure the question is trimmed of extra spaces
-                values: options
-            }
+        name: poll,
+        values: options
+
         });
     } catch (error) {
         console.error(error);
