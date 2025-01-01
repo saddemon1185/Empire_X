@@ -59,20 +59,22 @@ cmd({
         }
 
         // Information Message
-        const infoMessage = {
-            image: { url: data.thumbnail },
-            caption: `> *${config.BOT_NAME} SONG DOWNLOADER*  
-╭───────────────◆  
-│⿻ *Title:* ${data.title}
-│⿻ *Quality:* mp3 (128kbps)
-│⿻ *Duration:* ${data.timestamp}
-│⿻ *Viewers:* ${data.views}
-│⿻ *Uploaded:* ${data.ago}
-│⿻ *Artist:* ${data.author.name}
-╰────────────────◆  
-╭────────────────◆  
-│ Powered by Empire_X
-╰─────────────────◆`,
+const infoMessage = {
+    image: { url: data.thumbnail },
+    caption: `
+╭━━━▻〔 *${config.BOT_NAME} SONG DOWNLOADER* 〕━━━━⬤
+┃𖠄╭────────────────────·๏
+┃𖠄┃• *Title:* ${data.title}
+┃𖠄┃• *Quality:* mp3 (128kbps)
+┃𖠄┃• *Duration:* ${data.timestamp}
+┃𖠄┃• *Viewers:* ${data.views}
+┃𖠄┃• *Uploaded:* ${data.ago}
+┃𖠄┃• *Artist:* ${data.author.name}
+┃𖠄└────────────────────·๏
+┃𖠄╭────────────────────·๏
+┃𖠄┃ Powered by Empire_X
+┃𖠄└────────────────────·๏
+╰━━━━━━━━━━━━━━━━━━━━━⬤`,
             contextInfo: {
                 mentionedJid: [mek.sender],
                 forwardingScore: 5,
@@ -177,20 +179,22 @@ cmd({
         }
 
         // Information Message
-        const infoMessage = {
-            image: { url: data.thumbnail },
-            caption: `> *${config.BOT_NAME} SONG DOWNLOADER*  
-╭───────────────◆  
-│⿻ *Title:* ${data.title}
-│⿻ *Quality:* mp3 (128kbps)
-│⿻ *Duration:* ${data.timestamp}
-│⿻ *Viewers:* ${data.views}
-│⿻ *Uploaded:* ${data.ago}
-│⿻ *Artist:* ${data.author.name}
-╰────────────────◆  
-╭────────────────◆  
-│ Powered by Empire_X
-╰─────────────────◆`,
+const infoMessage = {
+    image: { url: data.thumbnail },
+    caption: `
+╭━━━▻〔 *${config.BOT_NAME} SONG DOWNLOADER* 〕━━━━⬤
+┃𖠄╭────────────────────·๏
+┃𖠄┃• *Title:* ${data.title}
+┃𖠄┃• *Quality:* mp3 (128kbps)
+┃𖠄┃• *Duration:* ${data.timestamp}
+┃𖠄┃• *Viewers:* ${data.views}
+┃𖠄┃• *Uploaded:* ${data.ago}
+┃𖠄┃• *Artist:* ${data.author.name}
+┃𖠄└────────────────────·๏
+┃𖠄╭────────────────────·๏
+┃𖠄┃ Powered by Empire_X
+┃𖠄└────────────────────·๏
+╰━━━━━━━━━━━━━━━━━━━━━⬤`,
             contextInfo: {
                 mentionedJid: [mek.sender],
                 forwardingScore: 5,
@@ -288,20 +292,22 @@ cmd({
         }
 
         // Information Message
-        const infoMessage = {
-            image: { url: data.thumbnail },
-            caption: `> *${config.BOT_NAME} VIDEO DOWNLOADER*  
-╭───────────────◆  
-│⿻ *Title:* ${data.title}
-│⿻ *Quality:* mp4 (720p)
-│⿻ *Duration:* ${data.timestamp}
-│⿻ *Viewers:* ${data.views}
-│⿻ *Uploaded:* ${data.ago}
-│⿻ *Artist:* ${data.author.name}
-╰────────────────◆  
-╭────────────────◆  
-│ Powered by Empire_X
-╰─────────────────◆`,
+const infoMessage = {
+    image: { url: data.thumbnail },
+    caption: `
+╭━━━▻〔 *${config.BOT_NAME} VIDEO DOWNLOADER* 〕━━━━⬤
+┃𖠄╭────────────────────·๏
+┃𖠄┃• *Title:* ${data.title}
+┃𖠄┃• *Quality:* mp3 (128kbps)
+┃𖠄┃• *Duration:* ${data.timestamp}
+┃𖠄┃• *Viewers:* ${data.views}
+┃𖠄┃• *Uploaded:* ${data.ago}
+┃𖠄┃• *Artist:* ${data.author.name}
+┃𖠄└────────────────────·๏
+┃𖠄╭────────────────────·๏
+┃𖠄┃ Powered by Empire_X
+┃𖠄└────────────────────·๏
+╰━━━━━━━━━━━━━━━━━━━━━⬤`,
             contextInfo: {
                 mentionedJid: [mek.sender],
                 forwardingScore: 5,
@@ -406,20 +412,22 @@ cmd({
         }
 
         // Information Message
-        const infoMessage = {
-            image: { url: data.thumbnail },
-            caption: `> *${config.BOT_NAME} VIDEO DOWNLOADER*  
-╭───────────────◆  
-│⿻ *Title:* ${data.title}
-│⿻ *Quality:* mp4 (720p)
-│⿻ *Duration:* ${data.timestamp}
-│⿻ *Viewers:* ${data.views}
-│⿻ *Uploaded:* ${data.ago}
-│⿻ *Artist:* ${data.author.name}
-╰────────────────◆  
-╭────────────────◆  
-│ Powered by Empire_X
-╰─────────────────◆`,
+const infoMessage = {
+    image: { url: data.thumbnail },
+    caption: `
+╭━━━▻〔 *${config.BOT_NAME} VIDEO DOWNLOADER* 〕━━━━⬤
+┃𖠄╭────────────────────·๏
+┃𖠄┃• *Title:* ${data.title}
+┃𖠄┃• *Quality:* mp3 (128kbps)
+┃𖠄┃• *Duration:* ${data.timestamp}
+┃𖠄┃• *Viewers:* ${data.views}
+┃𖠄┃• *Uploaded:* ${data.ago}
+┃𖠄┃• *Artist:* ${data.author.name}
+┃𖠄└────────────────────·๏
+┃𖠄╭────────────────────·๏
+┃𖠄┃ Powered by Empire_X
+┃𖠄└────────────────────·๏
+╰━━━━━━━━━━━━━━━━━━━━━⬤`,
             contextInfo: {
                 mentionedJid: [mek.sender],
                 forwardingScore: 5,
