@@ -6,10 +6,6 @@ services:
     plan: free  # Choose the free plan, or upgrade depending on your needs
     runtime: "node"  # Use the Node.js runtime (this should work on Render)
     envVars:
-      - key: ANTI_BAD_WORD
-        value: "true"  # Enable auto delete bad word true or false 
-      - key: ANTILINK
-        value: "true"  # Enable auto delete link true or false
       - key: OWNER_NUMBER
         value: "2348078582627"  # Replace with your actual owner's phone number
       - key: OWNER_NAME
