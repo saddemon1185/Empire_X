@@ -12,7 +12,7 @@
     },
     "SESSION_ID": {
       "description": "Put session ID below.",
-      "value": "OV0HxCpL#pENCunWm8sZ1itoTAPPGKtRw2AVGufBQOfMFupSPSz8",
+      "value": "nJNDjTAC#2Rh-tqB4oCYfzWHn3W8sgWkkeXKHrVaXoaVD1RXhmMg",
       "required": true
     },
     "MODE": {
@@ -38,7 +38,7 @@
     "BOT_NAME": {
       "description": "Bot name.",
       "value": "Empire_X",
-      "required": true
+      "required": false
     },
     "AUTO_REACT": {
       "description": "Enable auto-reaction. TRUE or FALSE.",
@@ -47,7 +47,7 @@
     },
     "OWNER_REACT": {
       "description": "Enable owner reactions. TRUE or FALSE.",
-      "value": "true",
+      "value": "false",
       "required": true
     },
     "PREFIX": {
