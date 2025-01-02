@@ -248,3 +248,33 @@ cmd({
         return conn.sendMessage(m.key.remoteJid, { text: "An error occurred while processing your request." }, { quoted: m });
     }
 });
+cmd({
+    pattern: "vv",
+    desc: "Open a view-once media message and resend it in the chat.",
+    react: "👀",
+    category: "owner",
+    filename: __filename,
+}, async (conn, mek, m, { reply, quoted }) => {
+    try {
+        // Check if the command is used to reply to a view-once message
+        if (!quoted || (!quoted.image && !quoted.video)) {
+            return reply("❌ Please reply to a view-once message (image or video).");
+        }
+
+        // Download the view-once media
+        const media = await quoted.download();
+        if (!media) {
+            return reply("❌ Failed to open the view-once media.");
+        }
+
+        // Determine the type of media (image or video)
+        const type = quoted.image ? 'image' : 'video';
+
+        // Resend the media to the chat
+        await conn.sendMessage(m.chat, { [type]: media }, { quoted: mek });
+        reply(`✅ View-once ${type} opened and resent successfully.`);
+    } catch (error) {
+        console.error("Error in vv command:", error);
+        reply("❌ An error occurred while trying to open the view-once message.");
+    }
+});
