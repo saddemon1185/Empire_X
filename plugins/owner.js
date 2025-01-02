@@ -173,33 +173,6 @@ cmd({
     }
 });
 
-// clear commands 
-cmd({
-    pattern: "vv",
-    desc: "Open a view-once media message and resend it in the chat.",
-    react: "👀",
-    category: "owner",
-    filename: __filename,
-}, async (conn, mek, m, { reply, quoted, quotedtype }) => {
-    try {
-        if (!quoted || quotedtype !== 'viewoncemessage') {
-            return reply("❌ Please reply to a view-once message (image or video).");
-        }
-
-        const media = await quoted.download();
-        if (!media) {
-            return reply("❌ Failed to open the view-once media.");
-        }
-
-        const type = quoted.image ? 'image' : 'video';
-
-        await conn.sendMessage(m.chat, { [type]: media }, { quoted: mek });
-        reply(`✅ View-once ${type} opened and resent successfully.`);
-    } catch (error) {
-        console.error("Error in vv command:", error);
-        reply("❌ An error occurred while trying to open the view-once message.");
-    }
-});
 //pair commands 
 cmd({
     pattern: "pair",
@@ -249,4 +222,35 @@ cmd({
         console.error(error);
         return conn.sendMessage(m.key.remoteJid, { text: "An error occurred while processing your request." }, { quoted: m });
     }
+});
+
+cmd({
+  pattern: "vv",
+  desc: "Open a view-once media message and resend it in the chat.",
+  react: "👀",
+  category: "owner",
+  filename: __filename,
+}, async (message) => {
+  if (!message.quoted) {
+    return await message.reply('Please reply to a view-once message');
+  }
+  if (message.quoted.type !== 'viewOnceMessage') {
+    return await message.reply('This is not a view-once message');
+  }
+  try {
+    const mediaBuffer = await message.quoted.download();
+    const type = message.quoted.msg.type;
+    const caption = message.quoted.msg.caption || '';
+
+    if (type === 'imageMessage') {
+      await message.replyImg(mediaBuffer, caption);
+    } else if (type === 'videoMessage') {
+      await message.replyVid(mediaBuffer, caption);
+    } else {
+      await message.reply('No media found in view-once message');
+    }
+  } catch (error) {
+    console.error('Error handling view-once message:', error);
+    await message.reply('Failed to handle view-once message');
+  }
 });
