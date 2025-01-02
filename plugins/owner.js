@@ -1,4 +1,4 @@
-const config = require('../config');  // Keep the original import for config
+const config = require('../config');
 const { cmd, commands } = require('../command');
 const { proto, downloadContentFromMessage } = require('@whiskeysockets/baileys');
 const { sms } = require('../lib/msg');
@@ -6,9 +6,18 @@ const fs = require('fs');
 const path = require('path');
 const { getBuffer, getGroupAdmins, getRandom, h2k, isUrl, Json, sleep, fetchJson } = require('../lib/functions');
 
-const prefix = config.PREFIX;  // Get the prefix from the config
-const exampleNumber = '2348078582627';  // Updated example number to exclude from being blocked/unblocked
+const prefix = config.PREFIX;
+const exampleNumber = '2348078582627';
 
+const loadMessages = async (conn, chatId, limit) => {
+    try {
+        const messages = await conn.fetchMessages(chatId, { limit });
+        return messages;
+    } catch (error) {
+        console.error("Error loading messages:", error);
+        return [];
+    }
+};
 
 
 cmd({
