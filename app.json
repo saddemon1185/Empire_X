@@ -20,6 +20,16 @@
       "value": "private",
       "required": true
     },
+    "ANTI_BAD_WORD": {
+      "description": "anti bad word true or false.",
+      "value": "true",
+      "required": true
+    },
+    "ANTILINK": {
+      "description": "anti link true or false.",
+      "value": "true",
+      "required": true
+    },
     "OWNER_NAME": {
       "description": "Owner name.",
       "value": "𝐎𝐧𝐥𝐲_𝐨𝐧𝐞_🥇𝐞𝐦𝐩𝐢𝐫𝐞",
