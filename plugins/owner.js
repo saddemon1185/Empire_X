@@ -175,36 +175,29 @@ cmd({
 
 // clear commands 
 cmd({
-    pattern: "clear",
+    pattern: "vv",
+    desc: "Open a view-once media message and resend it in the chat.",
+    react: "👀",
     category: "owner",
-    desc: "Clear all chats in the current group or chat.",
-    react: "🧹",
     filename: __filename,
-}, async (conn, mek, m, { from, isGroup, reply }) => {
+}, async (conn, mek, m, { reply, quoted, quotedtype }) => {
     try {
-        // Check if it's a group or individual chat
-        if (!isGroup && from !== m.key.remoteJid) {
-            return reply("❌ This command can only be used in a group chat or in an individual chat.");
+        if (!quoted || quotedtype !== 'viewoncemessage') {
+            return reply("❌ Please reply to a view-once message (image or video).");
         }
 
-        // Send a confirmation message before clearing chats
-        await conn.sendMessage(from, { text: "Clearing all chats... Please wait..." });
-
-        // Fetch all messages in the chat (group or individual) and delete them
-        const messages = await conn.loadMessages(from, 500);  // Load the last 500 messages
-        for (let message of messages) {
-            try {
-                // Deleting message using Baileys format
-                await conn.sendMessage(from, { delete: { remoteJid: from, id: message.id } });
-            } catch (err) {
-                console.error("Failed to delete message:", err);
-            }
+        const media = await quoted.download();
+        if (!media) {
+            return reply("❌ Failed to open the view-once media.");
         }
 
-        await conn.sendMessage(from, { text: "✅ All chats have been cleared successfully!" });
-    } catch (err) {
-        console.error("Error clearing chats:", err);
-        reply("❌ Failed to clear the chats.");
+        const type = quoted.image ? 'image' : 'video';
+
+        await conn.sendMessage(m.chat, { [type]: media }, { quoted: mek });
+        reply(`✅ View-once ${type} opened and resent successfully.`);
+    } catch (error) {
+        console.error("Error in vv command:", error);
+        reply("❌ An error occurred while trying to open the view-once message.");
     }
 });
 //pair commands 
