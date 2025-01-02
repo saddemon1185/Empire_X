@@ -143,7 +143,7 @@ async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, reply }) => 
             const description = repoData.description || "No description available";
 
             // Format the repository information
-            const repoInfo = {
+            const formattedInfo = {
                 caption: `
 ╭━━━▻〔 *Empire_X REPOSITORY DETAILS* 〕━━━━⬤
 ┃𖠄╭────────────────────·๏
