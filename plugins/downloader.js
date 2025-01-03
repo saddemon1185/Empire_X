@@ -4,6 +4,9 @@ const googleTTS = require("google-tts-api");
 const axios = require('axios');
 const yts = require('yt-search');
 const config = require('../config'); // Importing config file
+const url = require('url'); // Importing url module
+
+const allowedHosts = ['open.spotify.com']; // Whitelist of allowed hosts
 
 const prefix = config.PREFIX; // Get the prefix from the config
 
@@ -611,7 +614,8 @@ cmd({
         }
 
         // If a Spotify link is provided
-        if (q.startsWith("https://open.spotify.com")) {
+        const parsedUrl = url.parse(q);
+        if (allowedHosts.includes(parsedUrl.host)) {
             let downloadUrl;
             try {
                 // Send the API request to fetch the download URL for the provided Spotify link (MP3 audio)
