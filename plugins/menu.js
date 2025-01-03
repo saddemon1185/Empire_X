@@ -40,7 +40,6 @@ async(conn, mek, m,{from, quoted, body, isCmd, command, args, q, isGroup, sender
         }
 
         const uptime = formatUptime(process.uptime());
-        const pluginCount = fs.readdirSync('./plugins').filter(file => file.endsWith('.js')).length;
         const totalCommands = commands.length;
 
         // Categorize commands dynamically
@@ -60,7 +59,7 @@ async(conn, mek, m,{from, quoted, body, isCmd, command, args, q, isGroup, sender
 ┃𖠄│ *Owner:* _${pushname}_
 ┃𖠄│ *Prefix:* _${prefix}_
 ┃𖠄│ *Mode:* _${mode}_
-┃𖠄│ *Plugins:* _${pluginCount}_
+┃𖠄│ *Commands:* _${totalCommands}_
 ┃𖠄│ *Uptime:* _${uptime}_
 ┃𖠄│ *Version:* _v 1.0.0_
 ┃𖠄╰──────────────────
