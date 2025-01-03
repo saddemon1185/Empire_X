@@ -224,33 +224,3 @@ cmd({
     }
 });
 
-cmd({
-  pattern: "vv",
-  desc: "Open a view-once media message and resend it in the chat.",
-  react: "👀",
-  category: "owner",
-  filename: __filename,
-}, async (message) => {
-  if (!message.quoted) {
-    return await message.reply('Please reply to a view-once message');
-  }
-  if (message.quoted.type !== 'viewOnceMessage') {
-    return await message.reply('This is not a view-once message');
-  }
-  try {
-    const mediaBuffer = await message.quoted.download();
-    const type = message.quoted.msg.type;
-    const caption = message.quoted.msg.caption || '';
-
-    if (type === 'imageMessage') {
-      await message.replyImg(mediaBuffer, caption);
-    } else if (type === 'videoMessage') {
-      await message.replyVid(mediaBuffer, caption);
-    } else {
-      await message.reply('No media found in view-once message');
-    }
-  } catch (error) {
-    console.error('Error handling view-once message:', error);
-    await message.reply('Failed to handle view-once message');
-  }
-});
