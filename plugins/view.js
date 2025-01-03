@@ -6,8 +6,7 @@ cmd({
     pattern: "vv",
     alias: ['retrive', "viewonce"],
     desc: "Fetch and resend a ViewOnce message content (image/video/voice).",
-    category: "misc",
-    use: '<query>',
+    category: "owner",
     filename: __filename
 },
 async (conn, mek, m, { from, reply }) => {
