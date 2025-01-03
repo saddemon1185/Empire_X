@@ -1,24 +1,23 @@
-const axios = require('axios')
-const {cmd , commands} = require('../command')
+const axios = require('axios');
+const { cmd, commands } = require('../command');
 
 cmd({
   pattern: 'insult',
   desc: 'Get a random insult',
-  category: "fun",
+  category: 'fun',
   react: '🤥',
-},
-async (Void, citel) => {
+}, async (conn, m) => {
   try {
     let response = await axios.get('https://evilinsult.com/generate_insult.php?lang=en&type=json');
     let data = response.data;
 
     if (!data || !data.insult) {
-      return citel.reply('Unable to retrieve an insult. Please try again later.');
+      return await conn.sendMessage(m.key.remoteJid, { text: 'Unable to retrieve an insult. Please try again later.' });
     }
 
     let insult = data.insult;
-    return citel.reply(`*Insult:* ${insult}`);
+    await conn.sendMessage(m.key.remoteJid, { text: `*Insult:* ${insult}` });
   } catch (error) {
-    citel.reply(`Error: ${error.message || error}`);
+    await conn.sendMessage(m.key.remoteJid, { text: `Error: ${error.message || error}` });
   }
 });
