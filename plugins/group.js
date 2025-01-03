@@ -562,3 +562,28 @@ async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sen
         reply(`${e}`)
     }
 });
+
+cmd({
+    pattern: "updategname",
+    react: "🔓",
+    alias: ["upgname","gname"],
+    desc: "To Change the group name",
+    category: "group",
+    use: '.updategname',
+    filename: __filename
+},
+async(conn, mek, m,{from, l, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins , isAdmins, reply}) => {
+try{
+
+if (!isGroup) return reply('This command can only be used in a group.')
+        if (!isBotAdmins) return reply('Bot must be an admin to use this command.')
+        if (!isAdmins) return reply('You must be an admin to use this command.')
+
+if (!q) return reply("🖊️ *Please write the new Group Subject*")
+await conn.groupUpdateSubject(from, q )
+ await conn.sendMessage(from , { text: `✔️ *Group name Updated*` }, { quoted: mek } )
+} catch (e) {
+reply('*Error !!*')
+l(e)
+}
+});
