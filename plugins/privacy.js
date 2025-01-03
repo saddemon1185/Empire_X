@@ -46,21 +46,6 @@ cmd({
     }
 });
 
-// Save Status Command
-cmd({
-    pattern: "ssave",
-    desc: "Saves the status of a replied message.",
-    category: "privacy",
-    filename: __filename,
-}, async (conn, mek, m, { quoted, reply }) => {
-    try {
-        if (!quoted) return reply("Reply to a status to save.");
-        await conn.sendMessage(mek.key.remoteJid, { text: "Status saved!" });
-    } catch (error) {
-        console.error("Error in ssave command:", error);
-        reply(`An error occurred: ${error.message || "Unknown error"}`);
-    }
-});
 
 // Profile Picture Command
 cmd({
