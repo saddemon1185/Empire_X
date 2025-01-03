@@ -160,33 +160,3 @@ cmd({
     }
 });
 
-cmd({
-    pattern: "txt2img",
-    desc: "Generate an image from text using AI.",
-    category: "fun",
-    filename: __filename,
-}, async (conn, mek, m, { args, reply }) => {
-    try {
-        // Join all arguments to create the text prompt
-        const prompt = args.join(" ");
-        
-        if (!prompt) {
-            return reply("Please provide a prompt to generate the image.");
-        }
-
-        // Send request to the Text-to-Image API
-        const response = await axios.get(`https://api.giftedtech.my.id/api/ai/text2img?apikey=gifted&prompt=${encodeURIComponent(prompt)}`);
-
-        const imageUrl = response.data.url;
-
-        if (!imageUrl) {
-            return reply("❌ An error occurred while generating the image. Please try again.");
-        }
-
-        // Send the generated image to the user
-        return conn.sendMessage(m.chat, { image: { url: imageUrl }, caption: "Here is your generated image!" }, { quoted: m });
-    } catch (err) {
-        console.error("Error generating image:", err);
-        return reply("❌ An error occurred while generating the image. Please try again later.");
-    }
-});
