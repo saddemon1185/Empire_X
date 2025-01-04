@@ -1,6 +1,5 @@
-comst axios = require("axios");
-const { cmd } = require("../command");
-
+const { cmd, commands } = require('../command');
+const axios = require('axios');
 // Command: bible
 cmd({
     pattern: "bible",
