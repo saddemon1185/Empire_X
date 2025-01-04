@@ -13,6 +13,11 @@ async (conn, mek, m, { text, isOwner, reply }) => {
         // Evaluate the provided JavaScript code
         let resultTest = await eval(`(async () => { ${text} })()`);
         
+        // Check if resultTest is undefined, null, or an object before calling .toString()
+        if (resultTest === undefined || resultTest === null) {
+            return reply('The result is undefined or null.');
+        }
+        
         // Send result back to the user
         if (typeof resultTest === "object") {
             return reply(JSON.stringify(resultTest, null, 2));
