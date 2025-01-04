@@ -23,7 +23,6 @@ cmd({
         if (response.status === 200 && response.data.text) {
             const { reference: ref, text, translation_name } = response.data;
 
-            // Envoyez la réponse formatée avec des emojis
             reply(
                 `📜 *Bible Verse Found!*\n\n` +
                 `📖 *Reference:* ${ref}\n` +
