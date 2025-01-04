@@ -40,7 +40,7 @@ cmd({
     if (!_0x222de9[0x0]) {
       return _0x18078b("*_Please give me a text. Eg .logo Carmen_*");
     }
-    let _0xffdb95 = "*🏞️ Empire_X Logo 🏞️*\n\n╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼➻\n*◈ᴛᴇxᴛ :* " + _0x34a07c + "\n╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼➻\n\n*🔢 Rᴇᴘʟʏ Tʜᴇ Nᴜᴍʙᴇʀ Yᴏᴜ Wᴀɴᴛ ➠*\n\n 1 ➠ Bʟᴀᴄᴋ Pɪɴᴋ\n 2 ➠ Bʟᴀᴄᴋ Pɪɴᴋ 2\n 3 ➠ Sɪʟᴠᴇʀ 3ᴅ\n 4 ➠ Nᴀʀᴜᴛᴏ\n 5 ➠ Dɪɢɪᴛᴀʟ Gʟɪᴛᴄʜ\n 6 ➠ Pɪxᴇʟ Gʟɪᴛᴄʜ\n 7 ➠ Cᴏᴍɪᴄ Sᴛʏʟᴇ\n 8 ➠ Nᴇᴏɴ Lɪɢʜᴛ\n 9 ➠ Fʀᴇᴇ Bᴇᴀʀ\n10 ➠ Dᴇᴠɪʟ Wɪɴɢꜱ\n11 ➠ Sᴀᴅ Gɪʀʟ\n12 ➠ Lᴇᴀᴠᴇꜱ\n13 ➠ Dʀᴀɢᴏɴ Bᴀʟʟ\n14 ➠ Hᴀɴᴅ Wʀɪᴛᴛᴇɴ\n15 ➠ Nᴇᴏɴ Lɪɢʜᴛ \n16 ➠ 3ᴅ Cᴀꜱᴛʟᴇ Pᴏᴘ\n17 ➠ Fʀᴏᴢᴇɴ ᴄʀɪꜱᴛᴍᴀꜱꜱ\n18 ➠ 3ᴅ Fᴏɪʟ Bᴀʟʟᴏɴꜱ\n19 ➠ 3ᴅ Cᴏʟᴏᴜʀꜰᴜʟ Pᴀɪɴᴛ\n20 ➠ Aᴍᴇʀɪᴄᴀɴ Fʟᴀɢ 3ᴅ\n\n>  © Gᴇɴᴇʀᴀᴛᴇᴅ Bʏ Kᴇʀᴍ_MD ⚡";
+    let _0xffdb95 = "*🏞️ Empire_X Logo 🏞️*\n\n╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼➻\n*◈ᴛᴇxᴛ :* " + _0x34a07c + "\n╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼➻\n\n*🔢 Rᴇᴘʟʏ Tʜᴇ Nᴜᴍʙᴇʀ Yᴏᴜ Wᴀɴᴛ ➠*\n\n 1 ➠ Bʟᴀᴄᴋ Pɪɴᴋ\n 2 ➠ Bʟᴀᴄᴋ Pɪɴᴋ 2\n 3 ➠ Sɪʟᴠᴇʀ 3ᴅ\n 4 ➠ Nᴀʀᴜᴛᴏ\n 5 ➠ Dɪɢɪᴛᴀʟ Gʟɪᴛᴄʜ\n 6 ➠ Pɪxᴇʟ Gʟɪᴛᴄʜ\n 7 ➠ Cᴏᴍɪᴄ Sᴛʏʟᴇ\n 8 ➠ Nᴇᴏɴ Lɪɢʜᴛ\n 9 ➠ Fʀᴇᴇ Bᴇᴀʀ\n10 ➠ Dᴇᴠɪʟ Wɪɴɢꜱ\n11 ➠ Sᴀᴅ Gɪʀʟ\n12 ➠ Lᴇᴀᴠᴇꜱ\n13 ➠ Dʀᴀɢᴏɴ Bᴀʟʟ\n14 ➠ Hᴀɴᴅ Wʀɪᴛᴛᴇɴ\n15 ➠ Nᴇᴏɴ Lɪɢʜᴛ \n16 ➠ 3ᴅ Cᴀꜱᴛʟᴇ Pᴏᴘ\n17 ➠ Fʀᴏᴢᴇɴ ᴄʀɪꜱᴛᴍᴀꜱꜱ\n18 ➠ 3ᴅ Fᴏɪʟ Bᴀʟʟᴏɴꜱ\n19 ➠ 3ᴅ Cᴏʟᴏᴜʀꜰᴜʟ Pᴀɪɴᴛ\n20 ➠ Aᴍᴇʀɪᴄᴀɴ Fʟᴀɢ 3ᴅ\n\n>  © Gᴇɴᴇʀᴀᴛᴇᴅ Bʏ Empire_X ⚡";
     const _0x39a514 = {
       'newsletterJid': '120363337275149306@newsletter',
       'newsletterName': "Empire_X",
@@ -298,44 +298,54 @@ cmd({
   }
 });
 
+
 cmd({
-   pattern: "fancy",
-   alias: ["font"],
-   react: "✍️",
-   desc: "Convert text into various fonts.",
-   category: "textpro",
-   filename: __filename
+    pattern: "fancy",
+    alias: ["style"],
+    react: '✍️',
+    desc: "Convert text into various fonts.",
+    category: "tools",
+    filename: __filename
 }, async (conn, mek, m, { from, quoted, body, args, q, reply }) => {
-   try {
-      if (!q) return reply("Please provide text to convert into fonts. Eg .fancy Carmen");
+    try {
+        if (!q) {
+            return reply("*🏞️ Empire_X Fancy 🏞️*\n\n╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼➻\n*◈ᴛᴇxᴛ :* Provide a text to style, e.g. `.fancy Empire`\n╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼➻");
+        }
 
-      let response = await axios.get('https://www.dark-yasiya-api.site/other/font?text=' + encodeURIComponent(q));
-      let data = response.data;
+        // Fetch fancy font styles
+        let response = await axios.get('https://www.dark-yasiya-api.site/other/font?text=' + encodeURIComponent(q));
+        let data = response.data;
 
-      if (!data.status) return reply("Error fetching fonts. Please try again later.");
+        if (!data.status) {
+            return reply("Error fetching fonts. Please try again later.");
+        }
 
-      let fontResults = data.result
-         .map(font => '*' + font.name + ":*\n" + font.result)
-         .join("\n\n");
+        // Prepare the font options list
+        let fontOptions = data.result
+            .map((font, index) => `${index + 1} ➠ ${font.name}`)
+            .join('\n');
 
-      let message = `*EMPIRE_X FONTS*:\n\n${fontResults}\n\n> *BY Empire_X*`;
+        let initialMessage = `*🏞️ Empire_X Fancy 🏞️*\n\n╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼➻\n*◈ᴛᴇxᴛ :* ${q}\n╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼➻\n\n*🔢 Reply with the number of the style you want ➠*\n\n${fontOptions}\n\n>  © Gᴇɴᴇʀᴀᴛᴇᴅ Bʏ Empire_X ⚡`;
 
-      await conn.sendMessage(from, {
-         text: message,
-         contextInfo: {
-            mentionedJid: [m.sender],
-            forwardingScore: 5,
-            isForwarded: true,
-            forwardedNewsletterMessageInfo: {
-               newsletterJid: '120363337275149306@newsletter',
-                    newsletterName: "Empire_X",
-                    serverMessageId: 143
+        // Send the font options
+        await conn.sendMessage(from, { text: initialMessage }, { quoted: mek });
+
+        // Wait for user reply
+        conn.once('chat-update', async (chatUpdate) => {
+            let selectedOption = parseInt(chatUpdate.message?.conversation?.trim() || '0');
+            if (isNaN(selectedOption) || selectedOption < 1 || selectedOption > data.result.length) {
+                return reply("Invalid selection. Please reply with a valid number.");
             }
-         }
-      }, { quoted: mek });
 
-   } catch (error) {
-      console.error(error);
-      reply("An error occurred while fetching fonts.");
-   }
+            // Send the selected fancy font
+            let selectedFont = data.result[selectedOption - 1];
+            let fancyText = `*${selectedFont.name}:*\n${selectedFont.result}\n\n> *BY Empire_X*`;
+
+            await conn.sendMessage(from, { text: fancyText }, { quoted: mek });
+        });
+
+    } catch (error) {
+        console.error(error);
+        reply("An error occurred while fetching fonts.");
+    }
 });
