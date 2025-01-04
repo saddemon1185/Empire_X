@@ -324,7 +324,7 @@ cmd({
          text: message,
          contextInfo: {
             mentionedJid: [m.sender],
-            forwardingScore: 999,
+            forwardingScore: 5,
             isForwarded: true,
             forwardedNewsletterMessageInfo: {
                newsletterJid: '120363337275149306@newsletter',
