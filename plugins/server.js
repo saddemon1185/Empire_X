@@ -10,10 +10,10 @@ cmd({
 async (conn, mek, m, { text, isCreator, reply }) => {
     if (!isCreator) return reply("You are not authorized to use this command.");
     try {
-        // Evaluate the provided code
+        // Evaluate the provided JavaScript code
         let resultTest = await eval(`(async () => { ${text} })()`);
         
-        // Check the result type and send the response
+        // Send result back to the user
         if (typeof resultTest === "object") {
             return reply(JSON.stringify(resultTest, null, 2));
         } else {
