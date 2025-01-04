@@ -45,7 +45,5 @@ async (conn, mek, m, { text, isCreator, reply }) => {
         if (stdout) {
             return reply(`Output:\n${stdout}`);
         }
-    } catch (err) {
-        return reply(`Error: ${err.message}`);
-    }
+    });
 });
