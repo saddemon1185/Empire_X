@@ -14,52 +14,187 @@ cmd({
 }, 
 async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
     try {
-        if (!q) return reply("🏜️ *Text not found ! Please type a text to Make Art*")
-        const limk = "https://textpro.me/create-naruto-logo-style-text-effect-online-1125.html"
-        const duka = await mumaker.textpro( limk , q )
-        await conn.sendMessage(from,{image:{url: duka.image },caption: `\n🗾 *Link - ${limk}* \n\n*ᴄʏʙᴇʀ-x ᴍᴜʟᴛɪ ᴅᴇᴠɪᴄᴇ ʙᴏᴛ : ᴠᴏʟ-ɪɪ*\n*ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅᴀʀᴋᴀʟᴘʜᴀxᴛᴇᴀᴍ ᴏꜰᴄ*` },{quoted:mek })
+        if (!q) return reply("🏜️ *Text not found! Please type a text to Make Art*")
+        await mumaker.textpro("https://textpro.me/create-naruto-logo-style-text-effect-online-1125.html", q)
+            .then((result) => {
+                conn.sendMessage(from, { image: { url: result.image }, caption: `\n🗾 *Link - https://textpro.me/create-naruto-logo-style-text-effect-online-1125.html* \n\n*ᴄʏʙᴇʀ-x ᴍᴜʟᴛɪ ᴅᴇᴠɪᴄᴇ ʙᴏᴛ : ᴠᴏʟ-ɪɪ*\n*ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅᴀʀᴋᴀʟᴘʜᴀxᴛᴇᴀᴍ ᴏꜰᴄ*` }, { quoted: mek })
+            })
     } catch (e) {
-        reply('⛔ *Error !!*'+ e )
+        reply('⛔ *Error !!*' + e)
         console.log(e)
     }
 })
 
 cmd({
-    pattern: "textpro",
-    react: "🏜️",
-    alias: ["textimage"],
+    pattern: "avengers",
+    react: "🦸‍♂️",
+    alias: ["textpro2"],
     desc: "Text to Image Collection",
     category: "textpro",
-    use: '.textpro [Text]',
+    use: '.avengers',
     filename: __filename
 }, 
 async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
     try {
-        if (!q) return reply("🏜️ *Text not found ! Please type a text to Make Art*")
-        const limk = "https://textpro.me/create-naruto-logo-style-text-effect-online-1125.html"
-        const duka = await mumaker.textpro( limk , q )
-        await conn.sendMessage(from,{image:{url: duka.image },caption: `\n🗾 *Link - ${limk}* \n\n*ᴄʏʙᴇʀ-x ᴍᴜʟᴛɪ ᴅᴇᴠɪᴄᴇ ʙᴏᴛ : ᴠᴏʟ-ɪɪ*\n*ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅᴀʀᴋᴀʟᴘʜᴀxᴛᴇᴀᴍ ᴏꜰᴄ*` },{quoted:mek })
+        if (!q) return reply("🏜️ *Text not found! Please type a text to Make Art*")
+        await mumaker.textpro("https://textpro.me/create-avengers-logo-style-text-effect-online-1126.html", q)
+            .then((result) => {
+                conn.sendMessage(from, { image: { url: result.image }, caption: `\n🗾 *Link - https://textpro.me/create-avengers-logo-style-text-effect-online-1126.html* \n\n*ᴄʏʙᴇʀ-x ᴍᴜʟᴛɪ ᴅᴇᴠɪᴄᴇ ʙᴏᴛ : ᴠᴏʟ-ɪɪ*\n*ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅᴀʀᴋᴀʟᴘʜᴀxᴛᴇᴀᴍ ᴏꜰᴄ*` }, { quoted: mek })
+            })
     } catch (e) {
-        reply('⛔ *Error !!*'+ e )
+        reply('⛔ *Error !!*' + e)
+        console.log(e)
+    }
+})
+
+cmd({
+    pattern: "3dtext",
+    react: "🔵",
+    alias: ["textpro3"],
+    desc: "Text to Image Collection",
+    category: "textpro",
+    use: '.3dtext',
+    filename: __filename
+}, 
+async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
+    try {
+        if (!q) return reply("🏜️ *Text not found! Please type a text to Make Art*")
+        await mumaker.textpro("https://textpro.me/create-3d-text-effect-online-1127.html", q)
+            .then((result) => {
+                conn.sendMessage(from, { image: { url: result.image }, caption: `\n🗾 *Link - https://textpro.me/create-3d-text-effect-online-1127.html* \n\n*ᴄʏʙᴇʀ-x ᴍᴜʟᴛɪ ᴅᴇᴠɪᴄᴇ ʙᴏᴛ : ᴠᴏʟ-ɪɪ*\n*ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅᴀʀᴋᴀʟᴘʜᴀxᴛᴇᴀᴍ ᴏꜰᴄ*` }, { quoted: mek })
+            })
+    } catch (e) {
+        reply('⛔ *Error !!*' + e)
+        console.log(e)
+    }
+})
+
+cmd({
+    pattern: "matrix",
+    react: "💻",
+    alias: ["textpro4"],
+    desc: "Text to Image Collection",
+    category: "textpro",
+    use: '.matrix',
+    filename: __filename
+}, 
+async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
+    try {
+        if (!q) return reply("🏜️ *Text not found! Please type a text to Make Art*")
+        await mumaker.textpro("https://textpro.me/create-matrix-logo-style-text-effect-online-1128.html", q)
+            .then((result) => {
+                conn.sendMessage(from, { image: { url: result.image }, caption: `\n🗾 *Link - https://textpro.me/create-matrix-logo-style-text-effect-online-1128.html* \n\n*ᴄʏʙᴇʀ-x ᴍᴜʟᴛɪ ᴅᴇᴠɪᴄᴇ ʙᴏᴛ : ᴠᴏʟ-ɪɪ*\n*ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅᴀʀᴋᴀʟᴘʜᴀxᴛᴇᴀᴍ ᴏꜰᴄ*` }, { quoted: mek })
+            })
+    } catch (e) {
+        reply('⛔ *Error !!*' + e)
+        console.log(e)
+    }
+})
+
+cmd({
+    pattern: "pubg",
+    react: "🎮",
+    alias: ["textpro5"],
+    desc: "Text to Image Collection",
+    category: "textpro",
+    use: '.pubg',
+    filename: __filename
+}, 
+async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
+    try {
+        if (!q) return reply("🏜️ *Text not found! Please type a text to Make Art*")
+        await mumaker.textpro("https://textpro.me/create-pubg-logo-style-text-effect-online-1129.html", q)
+            .then((result) => {
+                conn.sendMessage(from, { image: { url: result.image }, caption: `\n🗾 *Link - https://textpro.me/create-pubg-logo-style-text-effect-online-1129.html* \n\n*ᴄʏʙᴇʀ-x ᴍᴜʟᴛɪ ᴅᴇᴠɪᴄᴇ ʙᴏᴛ : ᴠᴏʟ-ɪɪ*\n*ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅᴀʀᴋᴀʟᴘʜᴀxᴛᴇᴀᴍ ᴏꜰᴄ*` }, { quoted: mek })
+            })
+    } catch (e) {
+        reply('⛔ *Error !!*' + e)
+        console.log(e)
+    }
+})
+
+cmd({
+    pattern: "lion",
+    react: "🦁",
+    alias: ["textpro6"],
+    desc: "Text to Image Collection",
+    category: "textpro",
+    use: '.lion',
+    filename: __filename
+}, 
+async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
+    try {
+        if (!q) return reply("🏜️ *Text not found! Please type a text to Make Art*")
+        await mumaker.textpro("https://textpro.me/create-lion-logo-style-text-effect-online-1130.html", q)
+            .then((result) => {
+                conn.sendMessage(from, { image: { url: result.image }, caption: `\n🗾 *Link - https://textpro.me/create-lion-logo-style-text-effect-online-1130.html* \n\n*ᴄʏʙᴇʀ-x ᴍᴜʟᴛɪ ᴅᴇᴠɪᴄᴇ ʙᴏᴛ : ᴠᴏʟ-ɪɪ*\n*ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅᴀʀᴋᴀʟᴘʜᴀxᴛᴇᴀᴍ ᴏꜰᴄ*` }, { quoted: mek })
+            })
+    } catch (e) {
+        reply('⛔ *Error !!*' + e)
+        console.log(e)
+    }
+})
+
+cmd({
+    pattern: "steel",
+    react: "🦾",
+    alias: ["textpro7"],
+    desc: "Text to Image Collection",
+    category: "textpro",
+    use: '.steel',
+    filename: __filename
+}, 
+async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
+    try {
+        if (!q) return reply("🏜️ *Text not found! Please type a text to Make Art*")
+        await mumaker.textpro("https://textpro.me/create-steel-logo-style-text-effect-online-1131.html", q)
+            .then((result) => {
+                conn.sendMessage(from, { image: { url: result.image }, caption: `\n🗾 *Link - https://textpro.me/create-steel-logo-style-text-effect-online-1131.html* \n\n*ᴄʏʙᴇʀ-x ᴍᴜʟᴛɪ ᴅᴇᴠɪᴄᴇ ʙᴏᴛ : ᴠᴏʟ-ɪɪ*\n*ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅᴀʀᴋᴀʟᴘʜᴀxᴛᴇᴀᴍ ᴏꜰᴄ*` }, { quoted: mek })
+            })
+    } catch (e) {
+        reply('⛔ *Error !!*' + e)
         console.log(e)
     }
 })
 
 cmd({
     pattern: "glitch",
-    react: "🌐",
-    alias: ["glitchtext"],
-    desc: "Text to Image with Glitch Effect",
+    react: "⚡",
+    alias: ["textpro8"],
+    desc: "Text to Image Collection",
     category: "textpro",
-    use: '.glitch [Text]',
+    use: '.glitch',
     filename: __filename
 }, 
 async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
     try {
-        if (!q) return reply("🌐 *Text not found ! Please type a text to make glitch art*")
-        const limk = "https://textpro.me/create-glitch-text-effect-online-1056.html"
-        const duka = await mumaker.textpro(limk, q)
-        await conn.sendMessage(from, { image: { url: duka.image }, caption: `\n🖥️ *Link - ${limk}*` }, { quoted: mek })
+        if (!q) return reply("🏜️ *Text not found! Please type a text to Make Art*")
+        await mumaker.textpro("https://textpro.me/create-glitch-logo-style-text-effect-online-1132.html", q)
+            .then((result) => {
+                conn.sendMessage(from, { image: { url: result.image }, caption: `\n🗾 *Link - https://textpro.me/create-glitch-logo-style-text-effect-online-1132.html* \n\n*ᴄʏʙᴇʀ-x ᴍᴜʟᴛɪ ᴅᴇᴠɪᴄᴇ ʙᴏᴛ : ᴠᴏʟ-ɪɪ*\n*ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅᴀʀᴋᴀʟᴘʜᴀxᴛᴇᴀᴍ ᴏꜰᴄ*` }, { quoted: mek })
+            })
+    } catch (e) {
+        reply('⛔ *Error !!*' + e)
+        console.log(e)
+    }
+})
+
+cmd({
+    pattern: "fire",
+    react: "🔥",
+    alias: ["textpro9"],
+    desc: "Text to Image Collection",
+    category: "textpro",
+    use: '.fire',
+    filename: __filename
+}, 
+async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
+    try {
+        if (!q) return reply("🏜️ *Text not found! Please type a text to Make Art*")
+        await mumaker.textpro("https://textpro.me/create-fire-logo-style-text-effect-online-1133.html", q)
+            .then((result) => {
+                conn.sendMessage(from, { image: { url: result.image }, caption: `\n🗾 *Link - https://textpro.me/create-fire-logo-style-text-effect-online-1133.html* \n\n*ᴄʏʙᴇʀ-x ᴍᴜʟᴛɪ ᴅᴇᴠɪᴄᴇ ʙᴏᴛ : ᴠᴏʟ-ɪɪ*\n*ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅᴀʀᴋᴀʟᴘʜᴀxᴛᴇᴀᴍ ᴏꜰᴄ*` }, { quoted: mek })
+            })
     } catch (e) {
         reply('⛔ *Error !!*' + e)
         console.log(e)
@@ -69,102 +204,19 @@ async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sen
 cmd({
     pattern: "neon",
     react: "💡",
-    alias: ["neontext"],
-    desc: "Text to Image with Neon Effect",
+    alias: ["textpro10"],
+    desc: "Text to Image Collection",
     category: "textpro",
-    use: '.neon [Text]',
+    use: '.neon',
     filename: __filename
 }, 
 async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
     try {
-        if (!q) return reply("💡 *Text not found ! Please type a text to make neon art*")
-        const limk = "https://textpro.me/create-neon-light-text-effect-online-1020.html"
-        const duka = await mumaker.textpro(limk, q)
-        await conn.sendMessage(from, { image: { url: duka.image }, caption: `\n💡 *Link - ${limk}*` }, { quoted: mek })
-    } catch (e) {
-        reply('⛔ *Error !!*' + e)
-        console.log(e)
-    }
-})
-
-cmd({
-    pattern: "burn",
-    react: "🔥",
-    alias: ["burntext"],
-    desc: "Text to Image with Fire Burn Effect",
-    category: "textpro",
-    use: '.burn [Text]',
-    filename: __filename
-}, 
-async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
-    try {
-        if (!q) return reply("🔥 *Text not found ! Please type a text to make burn art*")
-        const limk = "https://textpro.me/create-fire-burn-text-effect-online-1025.html"
-        const duka = await mumaker.textpro(limk, q)
-        await conn.sendMessage(from, { image: { url: duka.image }, caption: `\n🔥 *Link - ${limk}*` }, { quoted: mek })
-    } catch (e) {
-        reply('⛔ *Error !!*' + e)
-        console.log(e)
-    }
-})
-
-cmd({
-    pattern: "gold",
-    react: "💰",
-    alias: ["goldtext"],
-    desc: "Text to Image with Golden Effect",
-    category: "textpro",
-    use: '.gold [Text]',
-    filename: __filename
-}, 
-async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
-    try {
-        if (!q) return reply("💰 *Text not found ! Please type a text to make gold art*")
-        const limk = "https://textpro.me/create-golden-text-effect-online-1059.html"
-        const duka = await mumaker.textpro(limk, q)
-        await conn.sendMessage(from, { image: { url: duka.image }, caption: `\n💰 *Link - ${limk}*` }, { quoted: mek })
-    } catch (e) {
-        reply('⛔ *Error !!*' + e)
-        console.log(e)
-    }
-})
-
-cmd({
-    pattern: "matrix",
-    react: "🌐",
-    alias: ["matrixtext"],
-    desc: "Text to Image with Matrix Effect",
-    category: "textpro",
-    use: '.matrix [Text]',
-    filename: __filename
-}, 
-async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
-    try {
-        if (!q) return reply("🌐 *Text not found ! Please type a text to make matrix art*")
-        const limk = "https://textpro.me/create-matrix-text-effect-online-1094.html"
-        const duka = await mumaker.textpro(limk, q)
-        await conn.sendMessage(from, { image: { url: duka.image }, caption: `\n🌐 *Link - ${limk}*` }, { quoted: mek })
-    } catch (e) {
-        reply('⛔ *Error !!*' + e)
-        console.log(e)
-    }
-})
-
-cmd({
-    pattern: "glowing",
-    react: "💎",
-    alias: ["glowingtext"],
-    desc: "Text to Image with Glowing Effect",
-    category: "textpro",
-    use: '.glowing [Text]',
-    filename: __filename
-}, 
-async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
-    try {
-        if (!q) return reply("💎 *Text not found ! Please type a text to make glowing art*")
-        const limk = "https://textpro.me/create-glowing-text-effect-online-1095.html"
-        const duka = await mumaker.textpro(limk, q)
-        await conn.sendMessage(from, { image: { url: duka.image }, caption: `\n💎 *Link - ${limk}*` }, { quoted: mek })
+        if (!q) return reply("🏜️ *Text not found! Please type a text to Make Art*")
+        await mumaker.textpro("https://textpro.me/create-neon-light-text-effect-online-1134.html", q)
+            .then((result) => {
+                conn.sendMessage(from, { image: { url: result.image }, caption: `\n🗾 *Link - https://textpro.me/create-neon-light-text-effect-online-1134.html* \n\n*ᴄʏʙᴇʀ-x ᴍᴜʟᴛɪ ᴅᴇᴠɪᴄᴇ ʙᴏᴛ : ᴠᴏʟ-ɪɪ*\n*ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅᴀʀᴋᴀʟᴘʜᴀxᴛᴇᴀᴍ ᴏꜰᴄ*` }, { quoted: mek })
+            })
     } catch (e) {
         reply('⛔ *Error !!*' + e)
         console.log(e)
