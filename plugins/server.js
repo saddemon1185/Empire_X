@@ -1,54 +1,29 @@
+const { exec } = require('child_process');
 const { cmd } = require('../command');
-const { exec } = require("child_process");
 
-cmd({
-    pattern: "eval",
-    category: "owner",
-    desc: "Runs JavaScript code on the node server.",
-    filename: __filename,
-},
-async (conn, mek, m, { text, isOwner, reply }) => {
-    if (!isOwner) return reply('🚫 *You must be an Owner to use this command*');
-    try {
-        // Evaluate the provided JavaScript code
-        let resultTest = await eval(`(async () => { ${text} })()`);
-        
-        // Check if resultTest is undefined or null and return a message
-        if (resultTest === undefined || resultTest === null) {
-            return reply('The result is undefined or null. Make sure your code returns a value.');
-        }
-        
-        // Send result back to the user
-        if (typeof resultTest === "object") {
-            return reply(JSON.stringify(resultTest, null, 2));
-        } else {
-            return reply(resultTest.toString());
-        }
-    } catch (err) {
-        return reply(`Error: ${err.message}`);
-    }
-});
-
+// Shell command: Runs command in the server shell
 cmd({
     pattern: "shell",
     category: "owner",
-    desc: "Runs commands in the server shell.",
     filename: __filename,
-},
-async (conn, mek, m, { text, isOwner, reply }) => {
+    desc: "Runs command in server shell."
+}, async (conn, mek, text, { isOwner, reply }) => {
     if (!isOwner) return reply('🚫 *You must be an Owner to use this command*');
-    
-    if (!text) return reply("Please provide a shell command to execute.");
-    
-    exec(text, (err, stdout, stderr) => {
-        if (err) {
-            return reply(`Error:\n${err.message}`);
-        }
-        if (stderr) {
-            return reply(`Stderr:\n${stderr}`);
-        }
-        if (stdout) {
-            return reply(`Output:\n${stdout}`);
-        }
-    });
+    exec(text, (err, stdout) => reply(err ? `Error: ${err}` : stdout || 'No output.'));
+});
+
+// Eval command: Runs JS code on the server
+cmd({
+    pattern: "eval",
+    category: "owner",
+    filename: __filename,
+    desc: "Runs JS code on server."
+}, async (conn, mek, text, { isOwner, reply }) => {
+    if (!isOwner) return reply('🚫 *You must be an Owner to use this command*');
+    try {
+        let result = await eval(`(async () => { ${text} })()`);
+        reply(typeof result === 'object' ? JSON.stringify(result, null, 2) : result.toString());
+    } catch (err) {
+        reply(`Error: ${err}`);
+    }
 });
