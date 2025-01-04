@@ -2,31 +2,41 @@ const { cmd, commands } = require('../command');
 const { generateWAMessageFromContent, proto } = require('@whiskeysockets/baileys');
 
 cmd({
-    pattern: "cv",
+    pattern: "retrive",
     desc: "Copies and forwards view-once messages.",
     category: "group",
-    filename: __filename,
-    use: '<reply to a view-once message>',
+    filename: __filename
 }, 
-async (m) => {
-    if (!m.quoted) {
-        return m.reply("Please reply to a view-once message (image or video).");
-    }
+async (conn, mek, m, { from, quoted, reply }) => {
+    try {
+        // Check if the message is a reply
+        if (!quoted) {
+            return reply("Please reply to a view-once message (image or video).");
+        }
 
-    const mime = m.quoted.mtype;
-    if (/viewOnce/.test(mime)) {
-        const quotedMessage = m.quoted.message;
-        const mtype = Object.keys(quotedMessage)[0];
+        const mime = quoted.mtype;
 
-        delete quotedMessage[mtype].viewOnce;
+        // Check if the message is a view-once message
+        if (/viewOnce/.test(mime)) {
+            const quotedMessage = quoted.message;
+            const mtype = Object.keys(quotedMessage)[0];
 
-        const msgContent = proto.Message.fromObject({
-            ...quotedMessage,
-        });
+            // Remove the view-once restriction
+            delete quotedMessage[mtype].viewOnce;
 
-        const prepMessage = generateWAMessageFromContent(m.chat, msgContent, { quoted: m });
-        await m.client.relayMessage(m.chat, prepMessage.message, { messageId: prepMessage.key.id });
-    } else {
-        await m.reply("Please reply to a view-once message.");
+            // Create a new message object without the view-once restriction
+            const msgContent = proto.Message.fromObject({
+                ...quotedMessage,
+            });
+
+            // Prepare and send the message
+            const prepMessage = generateWAMessageFromContent(from, msgContent, { quoted: mek });
+            await conn.relayMessage(from, prepMessage.message, { messageId: prepMessage.key.id });
+        } else {
+            await reply("Please reply to a view-once message.");
+        }
+    } catch (err) {
+        console.error(err);
+        reply("An error occurred while processing the view-once message.");
     }
 });
