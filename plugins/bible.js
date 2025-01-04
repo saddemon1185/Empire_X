@@ -42,7 +42,7 @@ cmd({
     pattern: "biblelist",
     alias: ["biblebooks", "listbible", "blist"], // Ajout des alias
     desc: "Get the complete list of books in the Bible.",
-    category: "search,
+    category: "search",
     react: "📜",
     filename: __filename
 }, async (conn, mek, m, { reply }) => {
