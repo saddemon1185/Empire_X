@@ -24,7 +24,7 @@ async(conn, mek, m,{from, quoted, body, isCmd, command, args, q, isGroup, sender
             privacy: '',
             search: '',
             system: '',
-            text2img: '',
+            textpro: '',
             sticker: '',
         };
 
@@ -116,7 +116,7 @@ ${menu.system || '┃𖠄┃• No commands'}
 
 ╭━━━▻〔 📜 LOGO MENU 〕━━━━
 ┃𖠄╭────────────────────·๏
-${menu.text2img || '┃𖠄┃• No commands'}
+${menu.textpro || '┃𖠄┃• No commands'}
 ┃𖠄└────────────────────·๏
 ╰━━━━━━━━━━━━━━━━━━━━━
 
