@@ -7,7 +7,7 @@
   "env": {
     "OWNER_NUMBER": {
       "description": "Put the owner number below.",
-      "value": "2348078582627",
+      "value": "2348144250768",
       "required": true
     },
     "SESSION_ID": {
