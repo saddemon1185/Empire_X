@@ -4,11 +4,11 @@ const { exec } = require("child_process");
 cmd({
     pattern: "eval",
     category: "owner",
-    desc: "Runs JavaScript code on the node server."
+    desc: "Runs JavaScript code on the node server.",
     filename: __filename,
 },
-async (conn, mek, m, { text, isCreator, reply }) => {
-    if (!isCreator) return reply("You are not authorized to use this command.");
+async (conn, mek, m, { text, isOwner, reply }) => {
+    if (!isOwner) return reply('🚫 *You must be an Owner to use this command*');
     try {
         // Evaluate the provided JavaScript code
         let resultTest = await eval(`(async () => { ${text} })()`);
@@ -27,11 +27,11 @@ async (conn, mek, m, { text, isCreator, reply }) => {
 cmd({
     pattern: "shell",
     category: "owner",
-    desc: "Runs commands in the server shell."
+    desc: "Runs commands in the server shell.",
     filename: __filename,
 },
-async (conn, mek, m, { text, isCreator, reply }) => {
-    if (!isCreator) return reply("You are not authorized to use this command.");
+async (conn, mek, m, { text, isOwner, reply }) => {
+    if (!isOwner) return reply('🚫 *You must be an Owner to use this command*');
     
     if (!text) return reply("Please provide a shell command to execute.");
     
