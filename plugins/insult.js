@@ -8,7 +8,7 @@ cmd({
   react: '🤥',
 }, async (conn, m) => {
   try {
-    let response = await axios.get('https://evilinsult.com/generate_insult.php?lang=en&type=json');
+    let response = await axios.get('https://api.maher-zubair.tech/misc/insult');
     let data = response.data;
 
     if (!data || !data.insult) {
