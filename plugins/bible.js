@@ -37,8 +37,6 @@ cmd({
     }
 });
 
-const { cmd } = require("../command");
-
 // Command: biblelist
 cmd({
     pattern: "biblelist",
