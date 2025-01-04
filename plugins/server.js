@@ -4,8 +4,8 @@ const { exec } = require("child_process");
 cmd({
     pattern: "eval",
     category: "owner",
-    filename: __filename,
     desc: "Runs JavaScript code on the node server."
+    filename: __filename,
 },
 async (conn, mek, m, { text, isCreator, reply }) => {
     if (!isCreator) return reply("You are not authorized to use this command.");
@@ -27,8 +27,8 @@ async (conn, mek, m, { text, isCreator, reply }) => {
 cmd({
     pattern: "shell",
     category: "owner",
-    filename: __filename,
     desc: "Runs commands in the server shell."
+    filename: __filename,
 },
 async (conn, mek, m, { text, isCreator, reply }) => {
     if (!isCreator) return reply("You are not authorized to use this command.");
