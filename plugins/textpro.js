@@ -12,11 +12,18 @@ const mumaker = require("mumaker")
     use: '.naruto <text>',
     filename: __filename
 }, 
-async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
+async (conn, mek, m, { from, quoted, body, isCmd, command, args, isGroup, sender, senderNumber, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
     try {
-        if (!q) return reply("🏜️ *Text not found! Please type a text to Make Art*");
+        if (args.length == 0) return reply("🏜️ *Text not found! Please type a text to make art*");
+
+        // Get the text input from args, which is the correct method for handling user input.
+        const textInput = args.join(" ");
         
-        await mumaker.textpro("https://textpro.me/create-naruto-logo-style-text-effect-online-1125.html", q)
+        // Log the text input to verify it's being captured correctly
+        console.log("Received text:", textInput);
+        
+        // Proceed with the textpro API call
+        await mumaker.textpro("https://textpro.me/create-naruto-logo-style-text-effect-online-1125.html", textInput)
             .then((result) => {
                 conn.sendMessage(from, { image: { url: result.image }, caption: `\n🗾 *Link - https://textpro.me/create-naruto-logo-style-text-effect-online-1125.html* \n\n*ᴄʏʙᴇʀ-x ᴍᴜʟᴛɪ ᴅᴇᴠɪᴄᴇ ʙᴏᴛ : ᴠᴏʟ-ɪɪ*\n*ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅᴀʀᴋᴀʟᴘʜᴀxᴛᴇᴀᴍ ᴏꜰᴄ*` }, { quoted: mek });
             }).catch((err) => {
