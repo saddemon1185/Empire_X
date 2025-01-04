@@ -2,6 +2,7 @@ const {
   cmd,
   commands
 } = require("../command");
+const axios = require('axios');
 const {
   fetchJson
 } = require("../lib/functions");
@@ -295,4 +296,34 @@ cmd({
     console.log(_0x22b33e);
     _0x18078b('' + _0x22b33e);
   }
+});
+
+cmd({
+    pattern: "font",
+    alias: ["fancy"],
+    react: "✍️",
+    desc: "Convert text into various fonts.",
+    category: "textpro",
+    filename: __filename 
+}, async (_conn, _mek, _m, { from, quoted, body, args, q, reply }) => {
+    try {
+        
+        if (!q) return reply('Please provide text to convert into fonts.');
+
+        
+        let response = await axios.get(`https://www.dark-yasiya-api.site/other/font?text=${encodeURIComponent(q)}`);
+        let result = response.data;
+
+        if (!result.result) return reply('Error fetching fonts. Please try again later.');
+
+        let formattedFonts = result.result
+            .map(font => `*${font.name}:*\n${font.font}`) 
+            .join('\n\n'); 
+
+        reply(`*FANCY FONTS:*\n\n${formattedFonts}\n\n> *By Empire_X*`);
+    } catch (error) {
+        
+        console.error(error);
+        reply('An error occurred while fetching fonts.');
+    }
 });
