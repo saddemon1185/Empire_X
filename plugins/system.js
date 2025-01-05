@@ -29,7 +29,7 @@ async (conn, mek, m, { from, quoted, reply }) => {
 
         // Information Message
         const infoMessage = {
-    image: { url: 'https://raw.githubusercontent.com/efeurhobo/Empire_X/main/lib/assets/empire.jpg' },
+    image: { url: 'https://files.catbox.moe/r4decc.jpg' },
     caption: aliveMsg,
     contextInfo: {
         mentionedJid: [mek.sender],
