@@ -65,7 +65,7 @@ cmd({
 const infoMessage = {
     image: { url: data.thumbnail },
     caption: `
-╭━━━▻〔 *${config.BOT_NAME} SONG DOWNLOADER* 〕━━━━⬤
+╭━━━▻〔 *EMPIRE_X SONG DOWNLOADER* 〕━━━━⬤
 ┃𖠄╭────────────────────·๏
 ┃𖠄┃• *Title:* ${data.title}
 ┃𖠄┃• *Quality:* mp3 (128kbps)
@@ -185,7 +185,7 @@ cmd({
 const infoMessage = {
     image: { url: data.thumbnail },
     caption: `
-╭━━━▻〔 *${config.BOT_NAME} SONG DOWNLOADER* 〕━━━━⬤
+╭━━━▻〔 *EMPIRE_X SONG DOWNLOADER* 〕━━━━⬤
 ┃𖠄╭────────────────────·๏
 ┃𖠄┃• *Title:* ${data.title}
 ┃𖠄┃• *Quality:* mp3 (128kbps)
@@ -298,7 +298,7 @@ cmd({
 const infoMessage = {
     image: { url: data.thumbnail },
     caption: `
-╭━━━▻〔 *${config.BOT_NAME} VIDEO DOWNLOADER* 〕━━━━⬤
+╭━━━▻〔 *EMPIRE_X VIDEO DOWNLOADER* 〕━━━━⬤
 ┃𖠄╭────────────────────·๏
 ┃𖠄┃• *Title:* ${data.title}
 ┃𖠄┃• *Quality:* mp3 (128kbps)
@@ -418,7 +418,7 @@ cmd({
 const infoMessage = {
     image: { url: data.thumbnail },
     caption: `
-╭━━━▻〔 *${config.BOT_NAME} VIDEO DOWNLOADER* 〕━━━━⬤
+╭━━━▻〔 *EMPIRE_X VIDEO DOWNLOADER* 〕━━━━⬤
 ┃𖠄╭────────────────────·๏
 ┃𖠄┃• *Title:* ${data.title}
 ┃𖠄┃• *Quality:* mp3 (128kbps)
