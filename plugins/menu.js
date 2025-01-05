@@ -57,7 +57,7 @@ async(conn, mek, m,{from, quoted, body, isCmd, command, args, q, isGroup, sender
 ╭━━━▻〔 *Empire_X* 〕━━━━━⬤
 ┃𖠄╭──────────────────
 ┃𖠄│ *Owner:* *${pushname}*
-┃𖠄│ *Prefix:* *${ prefix }*
+┃𖠄│ *Prefix:* *${prefix}*
 ┃𖠄│ *Mode:* *${mode}*
 ┃𖠄│ *Commands:* *${totalCommands}*
 ┃𖠄│ *Uptime:* *${uptime}*
