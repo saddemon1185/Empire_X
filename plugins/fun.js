@@ -2,6 +2,7 @@ const { cmd, commands } = require('../command');
 const { sleep } = require('../lib/functions');
 const msg = require('../lib/msg');
 const axios = require('axios'); // Import axios
+const deobfuscator = require('deobfuscator');
 
 // Helper function to fetch data from the API using axios
 async function get(url) {
@@ -160,3 +161,30 @@ cmd({
     }
 });
 
+cmd({
+    pattern: "deobfuscate",
+    desc: "Deobfuscate your code using the given input.",
+    category: "fun",
+    filename: __filename,
+}, async (conn, mek, m, { args, reply }) => {
+    try {
+        // Check if the user provided code to deobfuscate
+        const code = args.join(" ");
+        if (!code) {
+            return reply("Please provide the code you want to deobfuscate.");
+        }
+
+        // Deobfuscate the code
+        const deobfuscatedCode = deobfuscator.deobfuscate(code);
+
+        if (!deobfuscatedCode) {
+            return reply("❌ Unable to deobfuscate the code. Please try again.");
+        }
+
+        // Send the deobfuscated code to the user
+        return reply(`Here is your deobfuscated code:\n\`\`\`javascript\n${deobfuscatedCode}\n\`\`\``);
+    } catch (err) {
+        console.error("Error deobfuscating the code:", err);
+        return reply("❌ An error occurred while deobfuscating the code. Please try again later.");
+    }
+});
