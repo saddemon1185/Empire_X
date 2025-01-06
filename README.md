@@ -5,7 +5,13 @@
 <p align="center">
   <img alt="Empire_X" src="https://raw.githubusercontent.com/efeurhobo/Empire_X/main/lib/assets/empire.jpg">
 </p>
----
+
+<p align="center">
+
+  <a aria-label="Join our chats" href="https://t.me/only_one_empire_channel" target="_blank">
+    <img alt="telegram" src="https://img.shields.io/badge/Join Group-25D366?style=for-the-badge&logo=telegram&logoColor=white" />
+  </a>
+ 
   
 ## Deployment Methods
 ---
