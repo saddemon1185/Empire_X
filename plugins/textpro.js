@@ -304,7 +304,7 @@ cmd({
     alias: ["style"],
     react: '✍️',
     desc: "Convert text into various fonts.",
-    category: "tools",
+    category: "textpro",
     filename: __filename
 }, async (conn, mek, m, { from, quoted, body, args, q, reply }) => {
     try {
