@@ -234,15 +234,17 @@ cmd({
 async (conn, mek, m, { from, isOwner, reply }) => {
     if (!isOwner) return reply("❌ You are not the owner!");
     try {
-        const chats = conn.chats.all();
-        for (const chat of chats) {
-            await conn.modifyChat(chat.jid, 'delete');
+        const chats = Object.keys(conn.chats);
+        for (const chatId of chats) {
+            await conn.modifyChat(chatId, 'delete');
         }
         reply("🧹 All chats cleared successfully!");
     } catch (error) {
+        console.error("Error clearing chats:", error);
         reply(`❌ Error clearing chats: ${error.message}`);
     }
 });
+
 
 //2. Broadcast Message to All Groups
 cmd({
@@ -262,7 +264,7 @@ async (conn, mek, m, { from, isOwner, args, reply }) => {
     }
     reply("📢 Message broadcasted to all groups.");
 });
-// 3. Set Profile Picture
+
 cmd({
     pattern: "setpp",
     desc: "Set bot profile picture.",
@@ -274,13 +276,21 @@ async (conn, mek, m, { from, isOwner, quoted, reply }) => {
     if (!isOwner) return reply("❌ You are not the owner!");
     if (!quoted || !quoted.message.imageMessage) return reply("❌ Please reply to an image.");
     try {
-        const media = await conn.downloadMediaMessage(quoted);
-        await conn.updateProfilePicture(conn.user.jid, { url: media });
+        const stream = await downloadContentFromMessage(quoted.message.imageMessage, 'image');
+        let buffer = Buffer.from([]);
+        for await (const chunk of stream) {
+            buffer = Buffer.concat([buffer, chunk]);
+        }
+        const mediaPath = path.join(__dirname, `${Date.now()}.jpg`);
+        fs.writeFileSync(mediaPath, buffer);
+        await conn.updateProfilePicture(conn.user.jid, { url: `file://${mediaPath}` });
         reply("🖼️ Profile picture updated successfully!");
     } catch (error) {
+        console.error("Error updating profile picture:", error);
         reply(`❌ Error updating profile picture: ${error.message}`);
     }
 });
+
 
 cmd({
   pattern: "vv",
@@ -292,25 +302,6 @@ cmd({
 }, async (conn, mek, m, {
   from,
   quoted,
-  body,
-  isCmd,
-  command,
-  args,
-  q,
-  isGroup,
-  sender,
-  senderNumber,
-  botNumber2,
-  botNumber,
-  pushname,
-  isMe,
-  isOwner,
-  groupMetadata,
-  groupName,
-  participants,
-  groupAdmins,
-  isBotAdmins,
-  isAdmins,
   reply,
 }) => {
   try {
@@ -324,7 +315,13 @@ cmd({
     if (viewOnceMessage.message?.imageMessage) {
       console.log("Processing a ViewOnce image.");
       const caption = viewOnceMessage.message.imageMessage.caption || "No caption.";
-      const mediaPath = await conn.downloadAndSaveMediaMessage(viewOnceMessage.message.imageMessage);
+      const stream = await downloadContentFromMessage(viewOnceMessage.message.imageMessage, 'image');
+      let buffer = Buffer.from([]);
+      for await (const chunk of stream) {
+        buffer = Buffer.concat([buffer, chunk]);
+      }
+      const mediaPath = path.join(__dirname, `${Date.now()}.jpg`);
+      fs.writeFileSync(mediaPath, buffer);
       return conn.sendMessage(from, {
         image: { url: mediaPath },
         caption: caption,
@@ -335,7 +332,13 @@ cmd({
     if (viewOnceMessage.message?.videoMessage) {
       console.log("Processing a ViewOnce video.");
       const caption = viewOnceMessage.message.videoMessage.caption || "No caption.";
-      const mediaPath = await conn.downloadAndSaveMediaMessage(viewOnceMessage.message.videoMessage);
+      const stream = await downloadContentFromMessage(viewOnceMessage.message.videoMessage, 'video');
+      let buffer = Buffer.from([]);
+      for await (const chunk of stream) {
+        buffer = Buffer.concat([buffer, chunk]);
+      }
+      const mediaPath = path.join(__dirname, `${Date.now()}.mp4`);
+      fs.writeFileSync(mediaPath, buffer);
       return conn.sendMessage(from, {
         video: { url: mediaPath },
         caption: caption,
