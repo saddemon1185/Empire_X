@@ -119,7 +119,7 @@ cmd({
     }
 });
 
-// List Group Chats Command
+// List group
 cmd({
     pattern: "listgroupchat",
     desc: "Lists all group chats.",
@@ -137,6 +137,7 @@ cmd({
         reply("An error occurred while fetching group chats.");
     }
 });
+
 
 // VCard Command (from dev.json)
 cmd({
