@@ -55,29 +55,24 @@ cmd({
 // Tagll
 cmd({
     pattern: "tagall",
-    category: "group",
+    category: "group", // Already group
     desc: "Tags every person in the group.",
     filename: __filename,
 }, async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber, pushname, groupMetadata, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
     try {
         if (!isGroup) return reply("𝐓𝐡𝐢𝐬 𝐅𝐞𝐚𝐭𝐮𝐫𝐞 𝐈𝐬 𝐎𝐧𝐥𝐲 𝐅𝐨𝐫 𝐆𝐫𝐨𝐮𝐩❗");
-
+        
         // Fetch group metadata to get participants
         groupMetadata = await conn.groupMetadata(from);
         participants = groupMetadata.participants;
 
-        let messageContent = args.join(' ') || "blank";
-        if (quoted) {
-            messageContent = quoted.message.conversation || quoted.message.extendedTextMessage.text || messageContent;
-        }
-
         let textt = `
 ◐╤╤✪〘 *Tag All* 〙✪╤╤◑
 
-➲ *Message:* ${messageContent}\n\n
+➲ *Message:* ${args.join(' ') || "blank"}\n\n
 ➲ *Author:* ${pushname}
         `;
-
+        
         // Loop through participants and tag each member
         for (let mem of participants) {
             textt += `📌 @${mem.id.split('@')[0]}\n`;
@@ -90,11 +85,10 @@ cmd({
         }, { quoted: mek });
 
     } catch (e) {
-        console.error("Error in tagall command:", e);
+        console.log(e);
         reply("An error occurred while trying to tag all members.");
     }
 });
-
 
 //tag admin commands 
 
@@ -228,6 +222,61 @@ cmd({
 
 cmd({
     pattern: "hidetag",
+    category: "group",
+    desc: "Tags every person in the group without showing the sender's name.",
+    filename: __filename,
+}, async (conn, mek, m, { 
+    from, 
+    quoted, 
+    body, 
+    isCmd, 
+    command, 
+    args, 
+    q, 
+    isGroup, 
+    sender, 
+    senderNumber, 
+    botNumber, 
+    pushname, 
+    groupMetadata, 
+    participants, 
+    groupAdmins, 
+    isBotAdmins, 
+    isAdmins, 
+    reply
+}) => {
+    try {
+        if (!isGroup) return reply("𝐓𝐡𝐢𝐬 𝐅𝐞𝐚𝐭𝐮𝐫𝐞 𝐈𝐬 𝐎𝐧𝐥𝐲 𝐅𝐨𝐫 𝐆𝐫𝐨𝐮𝐩❗");
+
+        // If no message is provided, prompt the user to use the correct format
+        if (args.length === 0) {
+            return reply(`📜 *Use:* \n\n${prefix}hidetag <your message>`);
+        }
+
+        // Fetch group metadata to ensure participants are up-to-date
+        groupMetadata = await conn.groupMetadata(from);
+        participants = groupMetadata.participants;
+
+        // Get the message after the command (hidetag)
+        const message = args.join(' ');
+
+        // Send the message with mentions
+        await conn.sendMessage(from, {
+            text: `${message}`, // Send the message to tag everyone
+            mentions: participants.map(a => a.id), // Mentions all participants
+        }, { quoted: mek });
+
+    } catch (e) {
+        console.error(e);
+        reply("🚨 *An error occurred while trying to tag all members.*");
+    }
+});
+
+//tag 
+
+
+cmd({
+    pattern: "tag",
     category: "group",
     desc: "Tags every person in the group without showing the sender's name.",
     filename: __filename,
@@ -597,51 +646,3 @@ l(e)
 
 //tag command 
 
-cmd({
-    pattern: "tag",
-    category: "group",
-    desc: "Tags every person in the group with the replied message.",
-    filename: __filename,
-}, async (conn, mek, m, { 
-    from, 
-    quoted, 
-    body, 
-    isCmd, 
-    command, 
-    args, 
-    q, 
-    isGroup, 
-    sender, 
-    senderNumber, 
-    botNumber, 
-    pushname, 
-    groupMetadata, 
-    participants, 
-    groupAdmins, 
-    isBotAdmins, 
-    isAdmins, 
-    reply 
-}) => {
-    try {
-        if (!isGroup) return reply("𝐓𝐡𝐢𝐬 𝐅𝐞𝐚𝐭𝐮𝐫𝐞 𝐈𝐬 𝐎𝐧𝐥𝐲 𝐅𝐨𝐫 𝐆𝐫𝐨𝐮𝐩❗");
-
-        // Fetch group metadata to get participants
-        groupMetadata = await conn.groupMetadata(from);
-        participants = groupMetadata.participants;
-
-        let messageContent = args.join(' ') || "blank";
-        if (quoted) {
-            messageContent = quoted.message.conversation || quoted.message.extendedTextMessage.text || messageContent;
-        }
-
-        // Send the tagged message
-        await conn.sendMessage(from, {
-            text: messageContent,
-            mentions: participants.map(a => a.id),
-        }, { quoted: mek });
-
-    } catch (e) {
-        console.error("Error in tag command:", e);
-        reply("An error occurred while trying to tag all members.");
-    }
-});
