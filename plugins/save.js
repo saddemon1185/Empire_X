@@ -2,6 +2,7 @@ const config = require('../config');
 const { cmd, commands } = require('../command');
 const fs = require('fs');
 const path = require('path');
+const { proto, downloadContentFromMessage } = require('@whiskeysockets/baileys');
 
 cmd({
     pattern: "save",
@@ -33,14 +34,19 @@ async (conn, mek, m, { quoted, q, reply }) => {
         }
 
         // Download and save the media file
-        const mediaPath = await conn.downloadAndSaveMediaMessage(quoted);
-        const filePath = path.resolve(mediaPath);
+        const stream = await downloadContentFromMessage(quoted, mediaType);
+        let buffer = Buffer.from([]);
+        for await (const chunk of stream) {
+            buffer = Buffer.concat([buffer, chunk]);
+        }
+        const mediaPath = path.join(__dirname, `${Date.now()}.${mediaType}`);
+        fs.writeFileSync(mediaPath, buffer);
 
         // Send the saved media back
         const mediaMessage = {
             caption: q || '',
         };
-        mediaMessage[mediaType] = { url: `file://${filePath}` };
+        mediaMessage[mediaType] = { url: `file://${mediaPath}` };
 
         await conn.sendMessage(m.sender, mediaMessage, { quoted: mek });
         await reply("✅ Successfully saved and sent the media file.");
