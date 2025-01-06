@@ -51,27 +51,33 @@ cmd({
         reply("An error occurred while fetching group information.");
     }
 });
-// Tag All
+
+// Tagll
 cmd({
     pattern: "tagall",
-    category: "group", // Already group
+    category: "group",
     desc: "Tags every person in the group.",
     filename: __filename,
 }, async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber, pushname, groupMetadata, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
     try {
         if (!isGroup) return reply("𝐓𝐡𝐢𝐬 𝐅𝐞𝐚𝐭𝐮𝐫𝐞 𝐈𝐬 𝐎𝐧𝐥𝐲 𝐅𝐨𝐫 𝐆𝐫𝐨𝐮𝐩❗");
-        
+
         // Fetch group metadata to get participants
         groupMetadata = await conn.groupMetadata(from);
         participants = groupMetadata.participants;
 
+        let messageContent = args.join(' ') || "blank";
+        if (quoted) {
+            messageContent = quoted.message.conversation || quoted.message.extendedTextMessage.text || messageContent;
+        }
+
         let textt = `
 ◐╤╤✪〘 *Tag All* 〙✪╤╤◑
 
-➲ *Message:* ${args.join(' ') || "blank"}\n\n
+➲ *Message:* ${messageContent}\n\n
 ➲ *Author:* ${pushname}
         `;
-        
+
         // Loop through participants and tag each member
         for (let mem of participants) {
             textt += `📌 @${mem.id.split('@')[0]}\n`;
@@ -84,10 +90,11 @@ cmd({
         }, { quoted: mek });
 
     } catch (e) {
-        console.log(e);
+        console.error("Error in tagall command:", e);
         reply("An error occurred while trying to tag all members.");
     }
 });
+
 
 //tag admin commands 
 
@@ -586,4 +593,55 @@ await conn.groupUpdateSubject(from, q )
 reply('*Error !!*')
 l(e)
 }
+});
+
+//tag command 
+
+cmd({
+    pattern: "tag",
+    category: "group",
+    desc: "Tags every person in the group with the replied message.",
+    filename: __filename,
+}, async (conn, mek, m, { 
+    from, 
+    quoted, 
+    body, 
+    isCmd, 
+    command, 
+    args, 
+    q, 
+    isGroup, 
+    sender, 
+    senderNumber, 
+    botNumber, 
+    pushname, 
+    groupMetadata, 
+    participants, 
+    groupAdmins, 
+    isBotAdmins, 
+    isAdmins, 
+    reply 
+}) => {
+    try {
+        if (!isGroup) return reply("𝐓𝐡𝐢𝐬 𝐅𝐞𝐚𝐭𝐮𝐫𝐞 𝐈𝐬 𝐎𝐧𝐥𝐲 𝐅𝐨𝐫 𝐆𝐫𝐨𝐮𝐩❗");
+
+        // Fetch group metadata to get participants
+        groupMetadata = await conn.groupMetadata(from);
+        participants = groupMetadata.participants;
+
+        let messageContent = args.join(' ') || "blank";
+        if (quoted) {
+            messageContent = quoted.message.conversation || quoted.message.extendedTextMessage.text || messageContent;
+        }
+
+        // Send the tagged message
+        await conn.sendMessage(from, {
+            text: messageContent,
+            mentions: participants.map(a => a.id),
+        }, { quoted: mek });
+
+    } catch (e) {
+        console.error("Error in tag command:", e);
+        reply("An error occurred while trying to tag all members.");
+    }
 });
