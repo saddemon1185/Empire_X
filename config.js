@@ -6,11 +6,11 @@ function convertToBool(text, fault = 'true') {
 }
 
 module.exports = {
-    SESSION_ID: process.env.SESSION_ID || "2c9AxRoC#2idz_QjbUhWWlkjM62Snu5hKE9pHu5vkMTlPOqED-4o",
+    SESSION_ID: process.env.SESSION_ID || "2BVnFCiJ#0kw0CIJfPLKHjwZA7xiDBIuiJhmp8vjtDQpArHHB0AE",
     OWNER_NUMBER: process.env.OWNER_NUMBER || "2348078582627",
     AUTO_VIEW_STATUS: process.env.AUTO_VIEW_STATUS || "false",
     MODE: process.env.MODE || "private",
-    ALIVE_IMG: process.env.ALIVE_IMG || "https://raw.githubusercontent.com/efeurhobo/Empire_X/main/lib/assets/empire.jpg",
+    ALIVE_IMG: process.env.ALIVE_IMG || "https://files.catbox.moe/r4decc.jpg",
     PREFIX: process.env.PREFIX || ".",
     OWNER_REACT: process.env.OWNER_REACT || "false",
     AUTO_REACT: process.env.AUTO_REACT || "false",
