@@ -1,9 +1,8 @@
-const config = require('../config')
-const { cmd, commands } = require('../command')
-const axios = require("axios")
-const fs = require("fs")
-const FormData = require("form-data")
-
+const config = require('../config');
+const { cmd, commands } = require('../command');
+const axios = require("axios");
+const fs = require("fs");
+const FormData = require("form-data");
 
 cmd({
     pattern: "url",
@@ -13,23 +12,19 @@ cmd({
     category: "owner",
     filename: __filename
 },
-async(conn, mek, m, {from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply}) => {
+async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
     try {
-        if (!/video/.test(body) && !/image/.test(body)) {
+        if (!quoted || (!quoted.mimetype.includes("image") && !quoted.mimetype.includes("video"))) {
             return reply("*❌ REQUEST ERROR!!*\n\n> *Reply/Send an Image or Video with Caption `.url`*");
         }
 
         await conn.sendMessage(from, { react: { text: '⏳', key: m.key } });
 
-        if (!quoted) {
-            return reply("*❌ REQUEST ERROR!!*\n\n> *Reply/Send an Image or Video with Caption `.url`*");
-        }
-
         let filePath = await conn.downloadAndSaveMediaMessage(quoted);
-        
+
         // Upload to server
         let uploadedFile = await shannzCdn(filePath);
-        
+
         if (uploadedFile && uploadedFile.status && uploadedFile.result?.url) {
             const message = `*✅ SUCCESSFUL UPLOAD!*\n\n🔗 *DIRECT LINK:*\n${uploadedFile.result.url}\n\n> POWERED By Empire_X`;
             await conn.sendMessage(from, { text: message });
