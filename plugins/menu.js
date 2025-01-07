@@ -63,7 +63,6 @@ async(conn, mek, m, { from, quoted, isCmd, command, args, q, isGroup, sender, pu
 ┃𖠄 Uptime: ${monospace(uptime)}
 ┃𖠄 Date: ${monospace(date)}
 ┃𖠄 Time: ${monospace(time)}
-┃𖠄 Version: ${monospace('v1.0.0')}
 ╰━━━━━━━━━━━━━━━━━━━━━━⬤`;
 
         // Category formatter
