@@ -3,7 +3,7 @@
 <h1 align="center"> Empire_X </h1> 
 
 <p align="center">
-  <img alt="Empire_X" src="https://raw.githubusercontent.com/efeurhobo/Empire_X/main/lib/assets/empire.jpg">
+  <img alt="Empire_X" src="https://files.catbox.moe/r4decc.jpg">
 </p>
 
 ---
