@@ -94,7 +94,7 @@ console.log('Empire_X Connected 🔌')
 ╰━━━━━━━━━━━━━━⬤`;
 
         conn.sendMessage(`${ownerNumber}@s.whatsapp.net`, { 
-            image: { url: 'https://files.catbox.moe/r4decc.jpg'}, 
+            image: { url: 'https://raw.githubusercontent.com/efeurhobo/Empire_X/main/lib/assets/empire.jpg'}, 
             caption: up 
         });
 }
