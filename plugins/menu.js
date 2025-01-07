@@ -7,6 +7,7 @@ const prefix = config.PREFIX || ".";
 const ownername = config.OWNER_NAME || "𝐎𝐧𝐥𝐲_𝐨𝐧𝐞_🥇𝐄𝐦𝐩𝐢𝐫𝐞";
 const mode = config.MODE || "private";
 const version = "1.0.0"; 
+const botname = "Empire_X"; 
 
 cmd({
     pattern: "menu",
@@ -59,7 +60,7 @@ async(conn, mek, m, { from, quoted, isCmd, command, args, q, isGroup, sender, pu
         }, {});
 
         // Header section
-        const header = `╭━━━〔 ${monospace(Empire_X)} 〕━━━⬤
+        const header = `╭━━━〔 ${monospace(botname)} 〕━━━⬤
 ┃𖠄│ Prefix: [ ${monospace(prefix)} ]
 ┃𖠄│ User: *${monospace(ownername)}*
 ┃𖠄│ Mode: *${monospace(mode)}*
