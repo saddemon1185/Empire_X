@@ -20,9 +20,20 @@ const { File } = require('megajs');
 const googleTTS = require("google-tts-api");
 const prefix = config.PREFIX;
 const mode = config.MODE || "private";
-const pushname = mek.pushName || 'Sin Nombre'
-
 const ownerNumber = [config.OWNER_NUMBER];
+
+
+        function formatUptime(seconds) {
+            const days = Math.floor(seconds / (24 * 60 * 60));
+            seconds %= 24 * 60 * 60;
+            const hours = Math.floor(seconds / (60 * 60));
+            seconds %= 60 * 60;
+            const minutes = Math.floor(seconds / 60);
+            seconds = Math.floor(seconds % 60);
+            return `${days}d ${hours}h ${minutes}m ${seconds}s`;
+        }
+
+        const uptime = formatUptime(process.uptime());
 
 //===================SESSION-AUTH============================
 if (!fs.existsSync(__dirname + '/auth_info_baileys/creds.json')) {
@@ -77,7 +88,6 @@ console.log('Empire_X Connected 🔌')
 
         let up = `╭━━━〔 Empire_X 〕━━━⬤
 ┃𖠄│ *Prefix*: *[ ${prefix} ]*
-┃𖠄│ *User*: *${pushname}*
 ┃𖠄│ *Mode*: *${mode}*
 ┃𖠄│ *Uptime*: *${uptime}*
 ┃𖠄╰─────────────⬤
