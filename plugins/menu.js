@@ -59,7 +59,7 @@ async(conn, mek, m, { from, quoted, isCmd, command, args, q, isGroup, sender, pu
         }, {});
 
         // Header section
-        const header = `╭━━━〔 ${monospace('Empire_X')} 〕━━━⬤
+        const header = `╭━━━〔 ${monospace(Empire_X)} 〕━━━⬤
 ┃𖠄│ Prefix: [ ${monospace(prefix)} ]
 ┃𖠄│ User: *${monospace(ownername)}*
 ┃𖠄│ Mode: *${monospace(mode)}*
