@@ -64,7 +64,7 @@ async(conn, mek, m, { from, quoted, isCmd, command, args, q, isGroup, sender, pu
 ┃𖠄 Date: ${monospace(date)}
 ┃𖠄 Time: ${monospace(time)}
 ┃𖠄 Version: ${monospace('v1.0.0')}
-╰━━━━━━━━━━━━━━━━━━━━━━⬤\n\n`;
+╰━━━━━━━━━━━━━━━━━━━━━━⬤`;
 
         // Category formatter
         const formatCategory = (category, cmds) => {
