@@ -1,6 +1,6 @@
 const config = require('../config');
 const { cmd, commands } = require('../command');
-const fs = require('fs');
+const { monospace } = require('../lib/monospace');
 
 const prefix = config.PREFIX || ".";
 const mode = config.MODE || "private";
@@ -12,23 +12,8 @@ cmd({
     category: "main",
     filename: __filename
 },
-async(conn, mek, m,{from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply}) => {
+async(conn, mek, m, { from, quoted, isCmd, command, args, q, isGroup, sender, pushname, reply }) => {
     try {
-        // Dynamic command categories
-        let menu = {
-            ai: '',
-            download: '',
-            fun: '',
-            bugs: '',
-            owner: '',
-            group: '',
-            privacy: '',
-            search: '',
-            system: '',
-            textpro: '',
-            sticker: '',
-        };
-
         // Format uptime function
         function formatUptime(seconds) {
             const days = Math.floor(seconds / (24 * 60 * 60));
@@ -40,106 +25,66 @@ async(conn, mek, m,{from, quoted, body, isCmd, command, args, q, isGroup, sender
             return `${days}d ${hours}h ${minutes}m ${seconds}s`;
         }
 
+        // Get current date and time in Nigeria timezone (WAT)
+        const now = new Date();
+        const date = new Intl.DateTimeFormat('en-GB', {
+            timeZone: 'Africa/Lagos',
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+        }).format(now);
+
+        const time = new Intl.DateTimeFormat('en-GB', {
+            timeZone: 'Africa/Lagos',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: true
+        }).format(now);
+
         const uptime = formatUptime(process.uptime());
         const totalCommands = commands.length;
 
         // Categorize commands dynamically
-        for (let i = 0; i < commands.length; i++) {
-            const command = commands[i];
-            if (command.pattern && !command.dontAddCommandList) {
-                if (menu[command.category] !== undefined) {
-                    menu[command.category] += `┃𖠄┃• ${prefix}${command.pattern}\n`;
-                }
+        const categorized = commands.reduce((menu, cmd) => {
+            if (cmd.pattern && !cmd.dontAddCommandList) {
+                if (!menu[cmd.category]) menu[cmd.category] = [];
+                menu[cmd.category].push(cmd.pattern);
             }
+            return menu;
+        }, {});
+
+        // Header section
+        const header = `╭━━━▻〔 ${monospace('EMPIRE_X')} 〕━━━━━⬤
+┃𖠄 Owner: ${monospace(pushname)}
+┃𖠄 Prefix: ${monospace(prefix)}
+┃𖠄 Mode: ${monospace(mode)}
+┃𖠄 Commands: ${monospace(totalCommands.toString())}
+┃𖠄 Uptime: ${monospace(uptime)}
+┃𖠄 Date: ${monospace(date)}
+┃𖠄 Time: ${monospace(time)}
+┃𖠄 Version: ${monospace('v1.0.0')}
+╰━━━━━━━━━━━━━━━━━━━━━━⬤\n\n`;
+
+        // Category formatter
+        const formatCategory = (category, cmds) => {
+            const title = `╭───╼【 ${monospace(category.toUpperCase())} 】\n`;
+            const body = cmds.map(cmd => `┃ ∘ ${monospace(prefix + cmd)}`).join('\n');
+            const footer = `╰──────────╼\n`;
+            return `${title}${body}\n${footer}`;
+        };
+
+        // Generate menu dynamically
+        let menu = header;
+        for (const [category, cmds] of Object.entries(categorized)) {
+            menu += formatCategory(category, cmds) + '\n';
         }
 
-        // Construct menu with the provided design
-        let madeMenu = `
-╭━━━▻〔 *Empire_X* 〕━━━━━⬤
-┃𖠄╭──────────────────
-┃𖠄│ *Owner:* *${pushname}*
-┃𖠄│ *Prefix:* *${prefix}*
-┃𖠄│ *Mode:* *${mode}*
-┃𖠄│ *Commands:* *${totalCommands}*
-┃𖠄│ *Uptime:* *${uptime}*
-┃𖠄│ *Version:* *v 1.0.0*
-┃𖠄╰──────────────────
-╰━━━━━━━━━━━━━━━━━━━━━━⬤
-
-╭━━━▻〔 AI MENU 〕━━━━
-┃𖠄╭────────────────────·๏
-${menu.ai || '┃𖠄┃• No commands'}
-┃𖠄└────────────────────·๏
-╰━━━━━━━━━━━━━━━━━━━━━
-
-╭━━━▻〔 DOWNLOAD MENU 〕━━━━
-┃𖠄╭────────────────────·๏
-${menu.download || '┃𖠄┃• No commands'}
-┃𖠄└────────────────────·๏
-╰━━━━━━━━━━━━━━━━━━━━━
-
-╭━━━▻〔 FUN MENU 〕━━━━
-┃𖠄╭────────────────────·๏
-${menu.fun || '┃𖠄┃• No commands'}
-┃𖠄└────────────────────·๏
-╰━━━━━━━━━━━━━━━━━━━━━
-
-╭━━━▻〔 BUGS MENU 〕━━━━
-┃𖠄╭────────────────────·๏
-${menu.bugs || '┃𖠄┃• No commands'}
-┃𖠄└────────────────────·๏
-╰━━━━━━━━━━━━━━━━━━━━━
-
-╭━━━▻〔 OWNER MENU 〕━━━━
-┃𖠄╭────────────────────·๏
-${menu.owner || '┃𖠄┃• No commands'}
-┃𖠄└────────────────────·๏
-╰━━━━━━━━━━━━━━━━━━━━━
-
-╭━━━▻〔 GROUP MENU 〕━━━━
-┃𖠄╭────────────────────·๏
-${menu.group || '┃𖠄┃• No commands'}
-┃𖠄└────────────────────·๏
-╰━━━━━━━━━━━━━━━━━━━━━
-
-╭━━━▻〔 PRIVACY MENU 〕━━━━
-┃𖠄╭────────────────────·๏
-${menu.privacy || '┃𖠄┃• No commands'}
-┃𖠄└────────────────────·๏
-╰━━━━━━━━━━━━━━━━━━━━━
-
-╭━━━▻〔 SEARCH MENU 〕━━━━
-┃𖠄╭────────────────────·๏
-${menu.search || '┃𖠄┃• No commands'}
-┃𖠄└────────────────────·๏
-╰━━━━━━━━━━━━━━━━━━━━━
-
-╭━━━▻〔 SYSTEM MENU 〕━━━━
-┃𖠄╭────────────────────·๏
-${menu.system || '┃𖠄┃• No commands'}
-┃𖠄└────────────────────·๏
-╰━━━━━━━━━━━━━━━━━━━━━
-
-
-╭━━━▻〔 LOGO MENU 〕━━━━
-┃𖠄╭────────────────────·๏
-${menu.textpro || '┃𖠄┃• No commands'}
-┃𖠄└────────────────────·๏
-╰━━━━━━━━━━━━━━━━━━━━━
-
-╭━━━▻〔 STICKER MENU 〕━━━━
-┃𖠄╭────────────────────·๏
-${menu.sticker || '┃𖠄┃• No commands'}
-┃𖠄└────────────────────·๏
-╰━━━━━━━━━━━━━━━━━━━━━
-`;
-
-        // Send the constructed menu
+        // Send the menu with an image
         await conn.sendMessage(from, {
-            image: { url: 'https://files.catbox.moe/r4decc.jpg' },
-            caption: madeMenu
+            image: { url: 'https://files.catbox.moe/r4decc.jpg' }, // Replace with your desired image URL
+            caption: menu.trim(),
         }, { quoted: mek });
-
     } catch (e) {
         console.log(e);
         reply(`${e}`);
