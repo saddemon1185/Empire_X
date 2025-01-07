@@ -20,6 +20,7 @@ const { File } = require('megajs');
 const googleTTS = require("google-tts-api");
 const prefix = config.PREFIX;
 const mode = config.MODE || "private";
+const totalCommands = commands.length;
 
 const ownerNumber = [config.OWNER_NUMBER];
 
@@ -74,13 +75,17 @@ console.log('Plugins installed successful 🔁')
 console.log('Bot connected to whatsapp ✅')
 console.log('Empire_X Connected 🔌')
 
-        let up = `*╭──〈 **Empire_X Connected** 〉────
-│▸ **Prefix**: [ ${prefix} ]
-│▸ **Mode**: ${mode}
-╰────────────────*`;
+        let up = `╭━━━〔 Empire_X 〕━━━⬤
+┃𖠄│ *Prefix*: *[ ${prefix} ]*
+┃𖠄│ *User*: *${pushname}*
+┃𖠄│ *Mode*: *${mode}*
+┃𖠄│ *Uptime*: *${uptime}*
+┃𖠄│ *Commands*: *${totalCommands}*
+┃𖠄╰─────────────⬤
+╰━━━━━━━━━━━━━━⬤`;
 
         conn.sendMessage(`${ownerNumber}@s.whatsapp.net`, { 
-            image: { url: 'https://raw.githubusercontent.com/efeurhobo/Empire_X/main/lib/assets/empire.jpg'}, 
+            image: { url: 'https://files.catbox.moe/r4decc.jpg'}, 
             caption: up 
         });
 }
