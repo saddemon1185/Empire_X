@@ -20,7 +20,7 @@ const { File } = require('megajs');
 const googleTTS = require("google-tts-api");
 const prefix = config.PREFIX;
 const mode = config.MODE || "private";
-const totalCommands = commands.length;
+const pushname = mek.pushName || 'Sin Nombre'
 
 const ownerNumber = [config.OWNER_NUMBER];
 
@@ -80,7 +80,6 @@ console.log('Empire_X Connected 🔌')
 ┃𖠄│ *User*: *${pushname}*
 ┃𖠄│ *Mode*: *${mode}*
 ┃𖠄│ *Uptime*: *${uptime}*
-┃𖠄│ *Commands*: *${totalCommands}*
 ┃𖠄╰─────────────⬤
 ╰━━━━━━━━━━━━━━⬤`;
 
