@@ -130,12 +130,11 @@ async (conn, mek, m, { from, quoted, isCmd, command, args, q, isGroup, sender, p
         const totalCommands = commands.length;
 
         // Format the command list
-        let list = `╭━━〘 ${monospace('Empire_Md')} 〙────⊷     
+        let list = `╭━━〘 ${monospace('Empire_X')} 〙────⊷     
 ┃ ✭ Prefix: ${monospace(prefix)}
 ┃ ✭ Owner: ${monospace(pushname)}
 ┃ ✭ Commands: ${monospace(totalCommands.toString())}
 ┃ ✭ Uptime: ${monospace(uptime)}
-┃ ✭ Mem: ${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB
 ┃ ✭ Date: ${monospace(date)}
 ┃ ✭ Time: ${monospace(time)}
 ╰━━━━━━━━━━━━━━⊷\n`;
