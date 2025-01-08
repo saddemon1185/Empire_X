@@ -135,7 +135,7 @@ async (conn, mek, m, { from, quoted, isCmd, command, args, q, isGroup, sender, p
 ┃ ✭ Owner: ${monospace(pushname)}
 ┃ ✭ Commands: ${monospace(totalCommands.toString())}
 ┃ ✭ Uptime: ${monospace(uptime)}
-┃ ✭ Mem: ${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB/${(process.memoryUsage().heapTotal / 1024 / 1024).toFixed(2)} MB
+┃ ✭ Mem: ${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB
 ┃ ✭ Date: ${monospace(date)}
 ┃ ✭ Time: ${monospace(time)}
 ╰━━━━━━━━━━━━━━⊷\n`;
