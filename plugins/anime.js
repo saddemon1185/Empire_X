@@ -4,6 +4,36 @@ const { cmd, commands } = require('../command');
 const prefix = config.PREFIX;
 
 cmd({
+    pattern: "random",
+    desc: "Fetch a random anime wallpaper.",
+    category: "anime",
+    react: "🌸",
+    filename: __filename
+},
+async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, pushname, reply }) => {
+    try {
+        // API URL with API key
+        const API_URL = 'https://api.nexoracle.com/wallpapers/anime?apikey=MepwBcqIM0jYN0okD';
+
+        // Fetch the anime wallpaper as a buffer
+        const response = await axios.get(API_URL, {
+            responseType: 'arraybuffer'
+        });
+
+        const buffer = Buffer.from(response.data, 'binary');
+
+        // Send the anime wallpaper without a caption
+        await conn.sendMessage(from, {
+            image: buffer,
+            quoted: quoted
+        });
+    } catch (error) {
+        console.error(error);
+        reply('Failed to fetch anime wallpaper. Please try again later.');
+    }
+});
+
+cmd({
     pattern: "loli",
     desc: "Fetch a random anime girl image.",
     category: "anime",
