@@ -8,7 +8,7 @@ const { getBuffer, getGroupAdmins, getRandom, h2k, isUrl, Json, sleep, fetchJson
 cmd({
     pattern: "gitstalk",
     desc: "Fetch detailed GitHub user profile including profile picture.",
-    category: "search",
+    category: "stalker",
     react: "📚",
     filename: __filename
 },
