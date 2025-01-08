@@ -1,13 +1,9 @@
 const config = require('../config');
 const { cmd, commands } = require('../command');
 const { monospace } = require('../lib/monospace');
-const os = require("os");
 
 const prefix = config.PREFIX || ".";
-const ownername = config.OWNER_NAME || "𝐎𝐧𝐥𝐲_𝐨𝐧𝐞_🥇𝐄𝐦𝐩𝐢𝐫𝐞";
 const mode = config.MODE || "private";
-const version = "1.0.0";
-const botname = "Empire_X";
 
 cmd({
     pattern: "menu",
@@ -48,8 +44,6 @@ async(conn, mek, m, { from, quoted, isCmd, command, args, q, isGroup, sender, pu
 
         const uptime = formatUptime(process.uptime());
         const totalCommands = commands.length;
-        const platform = os.platform();
-        const memoryUsage = (process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2);
 
         // Categorize commands dynamically
         const categorized = commands.reduce((menu, cmd) => {
@@ -61,22 +55,21 @@ async(conn, mek, m, { from, quoted, isCmd, command, args, q, isGroup, sender, pu
         }, {});
 
         // Header section
-        const header = `╭━━━〔 ${monospace(botname)} 〕━━━⬤
-┃𖠄│ Prefix: [ ${monospace(prefix)} ]
-┃𖠄│ User: *${monospace(ownername)}*
-┃𖠄│ Mode: *${monospace(mode)}*
-┃𖠄│ Platform: *${monospace(platform)}*
-┃𖠄│ Uptime: *${monospace(uptime)}*
-┃𖠄│ Memory: *${monospace(memoryUsage)}MB*
-┃𖠄│ Commands: *${monospace(totalCommands)}*
-┃𖠄╰─────────────⬤
-╰━━━━━━━━━━━━━━⬤`;
+        const header = `╭━━━▻〔 ${monospace('EMPIRE_X')} 〕━━━━━⬤
+┃𖠄 Owner: ${monospace(pushname)}
+┃𖠄 Prefix: ${monospace(prefix)}
+┃𖠄 Mode: ${monospace(mode)}
+┃𖠄 Commands: ${monospace(totalCommands.toString())}
+┃𖠄 Uptime: ${monospace(uptime)}
+┃𖠄 Date: ${monospace(date)}
+┃𖠄 Time: ${monospace(time)}
+╰━━━━━━━━━━━━━━━━━━━━━━⬤`;
 
         // Category formatter
         const formatCategory = (category, cmds) => {
-            const title = `╭━━〔 *${monospace(category)}* 〕━━⬤\n`;
-            const body = cmds.map((cmd, index) => `│ ${index + 1}. ${monospace(prefix + cmd)}`).join('\n');
-            const footer = `╰━━━━━━━━━━━━━⬤\n`;
+            const title = `╭───╼【 ${monospace(category.toUpperCase())} 】\n`;
+            const body = cmds.map(cmd => `┃ ∘ ${monospace(prefix + cmd)}`).join('\n');
+            const footer = `╰──────────╼\n`;
             return `${title}${body}\n${footer}`;
         };
 
