@@ -6,8 +6,6 @@ const yts = require('yt-search');
 const config = require('../config'); // Importing config file
 const url = require('url'); // Importing url module
 
-const allowedHosts = ['open.spotify.com']; // Whitelist of allowed hosts
-
 const prefix = config.PREFIX; // Get the prefix from the config
 
 // Song Downloader Command
