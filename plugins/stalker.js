@@ -115,3 +115,105 @@ async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sen
         reply(`Error fetching data🤕: ${e.response ? e.response.data.message : e.message}`);
     }
 });
+
+cmd({
+    pattern: "instastalk",
+    desc: "Fetch detailed Instagram user profile including profile picture.",
+    category: "stalker",
+    react: "📚",
+    filename: __filename
+},
+async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
+    try {
+        const username = args[0];
+        if (!username) {
+            return reply("Please provide an Instagram username.");
+        }
+
+        const apiUrl = `https://api.nexoracle.com/stalking/insta-user?apikey=MepwBcqIM0jYN0okD&user=${username}`;
+        const response = await axios.get(apiUrl);
+        const data = response.data.result;
+
+        let userInfo = `     👨‍💻*Empire_X INSTAGRAM STALK*👨‍💻
+        
+👤 *Full Name*: ${data.fullName || 'Not available'}
+
+🔗 *Instagram Username*: ${data.username}
+
+📝 *Bio*: ${data.bio || 'Not available'}
+
+📸 *Posts*: ${data.posts}
+
+👥 *Followers*: ${data.followers}
+
+👥 *Following*: ${data.following}
+
+*MADE ♥ BY Empire_X*
+`;
+
+        await conn.sendMessage(from, { image: { url: data.profile }, caption: userInfo }, { quoted: mek });
+    } catch (e) {
+        console.log(e);
+        reply(`Error fetching data🤕: ${e.response ? e.response.data.message : e.message}`);
+    }
+});
+
+cmd({
+    pattern: "ipstalk",
+    desc: "Fetch detailed information about an IP address.",
+    category: "stalker",
+    react: "📚",
+    filename: __filename
+},
+async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
+    try {
+        const ip = args[0];
+        if (!ip) {
+            return reply("Please provide an IP address.");
+        }
+
+        const apiUrl = `https://api.nexoracle.com/stalking/ip?apikey=MepwBcqIM0jYN0okD&q=${ip}`;
+        const response = await axios.get(apiUrl);
+        const data = response.data.result;
+
+        if (data.status !== 'success') {
+            return reply(`Error: Unable to retrieve information for the provided IP.`);
+        }
+
+        let ipInfo = `     🌐*Empire_X IP STALK*🌐
+        
+🌍 *Continent*: ${data.continent}
+
+🇺🇸 *Country*: ${data.country} (${data.countryCode})
+
+📍 *Region*: ${data.regionName}
+
+🏙️ *City*: ${data.city}
+
+💼 *ISP*: ${data.isp}
+
+🏢 *Organization*: ${data.org}
+
+🌐 *AS*: ${data.as}
+
+📅 *Timezone*: ${data.timezone}
+
+💵 *Currency*: ${data.currency}
+
+📍 *IP Address*: ${data.ip}
+
+🔄 *Reverse DNS*: ${data.reverse}
+
+📍 *Hosting*: ${data.hosting ? 'Yes' : 'No'}
+
+📱 *Mobile*: ${data.mobile ? 'Yes' : 'No'}
+
+*MADE ♥ BY Empire_X*
+`;
+
+        await conn.sendMessage(from, { text: ipInfo }, { quoted: mek });
+    } catch (e) {
+        console.log(e);
+        reply(`Error fetching data🤕: ${e.response ? e.response.data.message : e.message}`);
+    }
+});
