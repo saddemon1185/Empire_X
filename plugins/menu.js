@@ -88,3 +88,69 @@ async(conn, mek, m, { from, quoted, isCmd, command, args, q, isGroup, sender, pu
         reply(`${e}`);
     }
 });
+
+cmd({
+    pattern: "list",
+    desc: "Show all commands and descriptions",
+    react: "📜",
+    category: "main",
+    filename: __filename
+},
+async (conn, mek, m, { from, quoted, isCmd, command, args, q, isGroup, sender, pushname, reply }) => {
+    try {
+        // Format uptime function
+        function formatUptime(seconds) {
+            const days = Math.floor(seconds / (24 * 60 * 60));
+            seconds %= 24 * 60 * 60;
+            const hours = Math.floor(seconds / (60 * 60));
+            seconds %= 60 * 60;
+            const minutes = Math.floor(seconds / 60);
+            seconds = Math.floor(seconds % 60);
+            return `${days}d ${hours}h ${minutes}m ${seconds}s`;
+        }
+
+        // Get current date and time in Nigeria timezone (WAT)
+        const now = new Date();
+        const date = new Intl.DateTimeFormat('en-GB', {
+            timeZone: 'Africa/Lagos',
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+        }).format(now);
+
+        const time = new Intl.DateTimeFormat('en-GB', {
+            timeZone: 'Africa/Lagos',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: true
+        }).format(now);
+
+        const uptime = formatUptime(process.uptime());
+        const totalCommands = commands.length;
+
+        // Format the command list
+        let list = `╭━━〘 ${monospace('Empire_Md')} 〙────⊷     
+┃ ✭ Prefix: ${monospace(prefix)}
+┃ ✭ Owner: ${monospace(pushname)}
+┃ ✭ Commands: ${monospace(totalCommands.toString())}
+┃ ✭ Uptime: ${monospace(uptime)}
+┃ ✭ Mem: ${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB/${(process.memoryUsage().heapTotal / 1024 / 1024).toFixed(2)} MB
+┃ ✭ Date: ${monospace(date)}
+┃ ✭ Time: ${monospace(time)}
+╰━━━━━━━━━━━━━━⊷\n`;
+
+        commands.forEach((cmd, index) => {
+            if (cmd.pattern && cmd.desc) {
+                list += `*${index + 1} ${monospace(cmd.pattern)}*\n  ${cmd.desc}\n`;
+            }
+        });
+
+        await conn.sendMessage(from, {
+            text: list.trim(),
+        }, { quoted: mek });
+    } catch (e) {
+        console.error(e);
+        reply(`${e}`);
+    }
+});
