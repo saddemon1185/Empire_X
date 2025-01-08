@@ -1,7 +1,7 @@
 cmd({
-    pattern: "telegramstalk",
+    pattern: "tgstalker",
     desc: "Fetch detailed Telegram user profile including profile picture.",
-    category: "search",
+    category: "stalker",
     react: "📚",
     filename: __filename
 },
