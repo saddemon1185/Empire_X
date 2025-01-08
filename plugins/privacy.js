@@ -160,23 +160,3 @@ cmd({
         reply("An error occurred while sending VCard.");
     }
 });
-
-// Forward Message Command
-cmd({
-    pattern: "forward",
-    desc: "Forwards a message.",
-    category: "privacy",
-    filename: __filename,
-}, async (conn, mek, m, { quoted, args, reply }) => {
-    try {
-        if (!quoted) return reply("Reply to a message to forward.");
-        const to = args[0];
-        if (!to) return reply("Provide a chat ID to forward to.");
-
-        await conn.forwardMessage(to, quoted.message);
-        return reply("Message forwarded.");
-    } catch (error) {
-        console.error("Error in forward command:", error);
-        reply("An error occurred while forwarding.");
-    }
-});
