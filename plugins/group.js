@@ -3,6 +3,43 @@ const config = require('../config');
 
 const prefix = config.PREFIX; // Get the prefix from the config
 
+cmd({
+    pattern: "info",
+    category: "group",
+    desc: "Get information about the group",
+    filename: __filename,
+}, async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber, pushname, groupMetadata, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
+    try {
+        if (!isGroup) return reply("𝐓𝐡𝐢𝐬 𝐅𝐞𝐚𝐭𝐮𝐫𝐞 𝐈𝐬 𝐎𝐧𝐥𝐲 𝐅𝐨𝐫 𝐆𝐫𝐨𝐮𝐩❗");
+
+        // Fetch group metadata
+        groupMetadata = await conn.groupMetadata(from);
+        const name = groupMetadata.subject;
+        const desc = groupMetadata.desc || "No description available.";
+        const count = groupMetadata.participants.length;
+        const img = await conn.profilePictureUrl(from);
+
+        // Prepare the information message
+        let textt = `
+◐╤╤✪〘 *Group Information* 〙✪╤╤◑
+
+➲ *Group Name:* ${name}
+➲ *Description:* ${desc}
+➲ *Members:* ${count}
+        `;
+
+        // Send the group info message
+        await conn.sendMessage(from, {
+            image: { url: img }, 
+            caption: textt
+        }, { quoted: mek });
+
+    } catch (e) {
+        console.log(e);
+        reply("An error occurred while fetching group information.");
+    }
+});
+
 
 cmd({
   pattern: "exit",
