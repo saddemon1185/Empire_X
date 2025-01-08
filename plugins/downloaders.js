@@ -117,6 +117,113 @@ const infoMessage = {
     }
 });
 
+// Video Downloader Command
+cmd({
+    pattern: "video",
+    alias: ["mp4", "ytmp4"],
+    desc: "Download videos",
+    category: "download",
+    react: "🎬",
+    filename: __filename
+}, async (conn, mek, m, { from, quoted, body, args, q, reply }) => {
+    try {
+        // Check for query
+        if (!q) {
+            return reply(`Please Enter a Search Query or YouTube link. Usage Example:\n*${config.PREFIX}downloadvideo Spectre*\n*${config.PREFIX}downloadvideo https://youtu.be/aGjXa18XCRY?si=-rNZHD-trThO1x4Y*`);
+        }
+
+        // If a YouTube link is provided
+        if (q.startsWith("https://youtu")) {
+            let downloadUrl;
+            try {
+                // Send the API request to fetch the download URL for the provided YouTube link (MP4)
+                let response = await axios.get(`https://api.giftedtech.my.id/api/download/dlmp4?apikey=gifted&url=${encodeURIComponent(q)}`);
+                downloadUrl = response.data.result.download_url;
+
+                // Download the video
+                const buffer = await axios.get(downloadUrl, { responseType: 'arraybuffer' });
+
+                // Send the video to the user
+                await conn.sendMessage(from, { video: buffer.data, mimetype: "video/mp4" }, { quoted: mek });
+                await m.react("✅");
+                return;
+            } catch (err) {
+                console.error("Error fetching download URL:", err);
+                return reply("❌ Unable to fetch download URL. Please try again later.");
+            }
+        }
+
+        // If no link, perform a search for the video
+        const search = await yts(q);
+        const data = search.videos[0];
+        const videoUrl = data.url;
+
+        // Fetch the download URL for the found video (MP4)
+        let downloadUrl;
+        try {
+            let response = await axios.get(`https://api.giftedtech.my.id/api/download/dlmp4?apikey=gifted&url=${encodeURIComponent(videoUrl)}`);
+            downloadUrl = response.data.result.download_url;
+        } catch (err) {
+            console.error("Error fetching download URL:", err);
+            return reply("❌ Unable to fetch download URL. Please try again later.");
+        }
+
+        // Information Message
+const infoMessage = {
+    image: { url: data.thumbnail },
+    caption: `
+╭━━━▻〔 *EMPIRE_X VIDEO DOWNLOADER* 〕━━━━⬤
+┃𖠄╭────────────────────·๏
+┃𖠄┃• *Title:* ${data.title}
+┃𖠄┃• *Quality:* mp3 (128kbps)
+┃𖠄┃• *Duration:* ${data.timestamp}
+┃𖠄┃• *Viewers:* ${data.views}
+┃𖠄┃• *Uploaded:* ${data.ago}
+┃𖠄┃• *Artist:* ${data.author.name}
+┃𖠄└────────────────────·๏
+┃𖠄╭────────────────────·๏
+┃𖠄┃ Powered by Empire_X
+┃𖠄└────────────────────·๏
+╰━━━━━━━━━━━━━━━━━━━━━⬤`,
+            contextInfo: {
+                mentionedJid: [mek.sender],
+                forwardingScore: 5,
+                isForwarded: true,
+                forwardedNewsletterMessageInfo: {
+                    newsletterJid: '120363337275149306@newsletter',
+                    newsletterName: "Empire_X",
+                    serverMessageId: 143
+                }
+            }
+        };
+
+        await conn.sendMessage(from, infoMessage, { quoted: mek });
+
+        // Send the video file
+        await conn.sendMessage(from, {
+            video: { url: downloadUrl },
+            fileName: `${data.title}.mp4`,
+            mimetype: 'video/mp4',
+            contextInfo: {
+                externalAdReply: {
+                    showAdAttribution: false,
+                    title: data.title,
+                    body: 'Powered by Empire_X',
+                    thumbnailUrl: data.thumbnail,
+                    sourceUrl: config.channelUrl,
+                    mediaType: 2, // video
+                    renderLargerThumbnail: false
+                }
+            }
+        }, { quoted: mek });
+
+        await m.react("✅");
+    } catch (e) {
+        console.error("Error in video download command:", e);
+        reply(`❌ Error: ${e.message}`);
+    }
+});
+
 //ytmp3doc commands 
 cmd({
     pattern: "ytmp3doc",
@@ -243,112 +350,7 @@ const infoMessage = {
         reply(`❌ Error: ${e.message}`);
     }
 });
-// Video Downloader Command
-cmd({
-    pattern: "video",
-    alias: ["mp4", "ytmp4"],
-    desc: "Download videos",
-    category: "download",
-    react: "🎬",
-    filename: __filename
-}, async (conn, mek, m, { from, quoted, body, args, q, reply }) => {
-    try {
-        // Check for query
-        if (!q) {
-            return reply(`Please Enter a Search Query or YouTube link. Usage Example:\n*${config.PREFIX}downloadvideo Spectre*\n*${config.PREFIX}downloadvideo https://youtu.be/aGjXa18XCRY?si=-rNZHD-trThO1x4Y*`);
-        }
 
-        // If a YouTube link is provided
-        if (q.startsWith("https://youtu")) {
-            let downloadUrl;
-            try {
-                // Send the API request to fetch the download URL for the provided YouTube link (MP4)
-                let response = await axios.get(`https://api.giftedtech.my.id/api/download/dlmp4?apikey=gifted&url=${encodeURIComponent(q)}`);
-                downloadUrl = response.data.result.download_url;
-
-                // Download the video
-                const buffer = await axios.get(downloadUrl, { responseType: 'arraybuffer' });
-
-                // Send the video to the user
-                await conn.sendMessage(from, { video: buffer.data, mimetype: "video/mp4" }, { quoted: mek });
-                await m.react("✅");
-                return;
-            } catch (err) {
-                console.error("Error fetching download URL:", err);
-                return reply("❌ Unable to fetch download URL. Please try again later.");
-            }
-        }
-
-        // If no link, perform a search for the video
-        const search = await yts(q);
-        const data = search.videos[0];
-        const videoUrl = data.url;
-
-        // Fetch the download URL for the found video (MP4)
-        let downloadUrl;
-        try {
-            let response = await axios.get(`https://api.giftedtech.my.id/api/download/dlmp4?apikey=gifted&url=${encodeURIComponent(videoUrl)}`);
-            downloadUrl = response.data.result.download_url;
-        } catch (err) {
-            console.error("Error fetching download URL:", err);
-            return reply("❌ Unable to fetch download URL. Please try again later.");
-        }
-
-        // Information Message
-const infoMessage = {
-    image: { url: data.thumbnail },
-    caption: `
-╭━━━▻〔 *EMPIRE_X VIDEO DOWNLOADER* 〕━━━━⬤
-┃𖠄╭────────────────────·๏
-┃𖠄┃• *Title:* ${data.title}
-┃𖠄┃• *Quality:* mp3 (128kbps)
-┃𖠄┃• *Duration:* ${data.timestamp}
-┃𖠄┃• *Viewers:* ${data.views}
-┃𖠄┃• *Uploaded:* ${data.ago}
-┃𖠄┃• *Artist:* ${data.author.name}
-┃𖠄└────────────────────·๏
-┃𖠄╭────────────────────·๏
-┃𖠄┃ Powered by Empire_X
-┃𖠄└────────────────────·๏
-╰━━━━━━━━━━━━━━━━━━━━━⬤`,
-            contextInfo: {
-                mentionedJid: [mek.sender],
-                forwardingScore: 5,
-                isForwarded: true,
-                forwardedNewsletterMessageInfo: {
-                    newsletterJid: '120363337275149306@newsletter',
-                    newsletterName: "Empire_X",
-                    serverMessageId: 143
-                }
-            }
-        };
-
-        await conn.sendMessage(from, infoMessage, { quoted: mek });
-
-        // Send the video file
-        await conn.sendMessage(from, {
-            video: { url: downloadUrl },
-            fileName: `${data.title}.mp4`,
-            mimetype: 'video/mp4',
-            contextInfo: {
-                externalAdReply: {
-                    showAdAttribution: false,
-                    title: data.title,
-                    body: 'Powered by Empire_X',
-                    thumbnailUrl: data.thumbnail,
-                    sourceUrl: config.channelUrl,
-                    mediaType: 2, // video
-                    renderLargerThumbnail: false
-                }
-            }
-        }, { quoted: mek });
-
-        await m.react("✅");
-    } catch (e) {
-        console.error("Error in video download command:", e);
-        reply(`❌ Error: ${e.message}`);
-    }
-});
 
 //ytmp4doc commands 
 cmd({
@@ -548,5 +550,60 @@ cmd({
     } catch (err) {
         console.error("Error fetching GitHub repository URL:", err);
         return reply("❌ Unable to fetch GitHub repository. Please try again later.");
+    }
+});
+
+
+// TikTok Downloader Command
+cmd({
+    pattern: "tiktok",
+    desc: "Download a TikTok video without watermark.",
+    react: "🎥",
+    category: "download",
+    filename: __filename
+},
+async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
+    try {
+        if (!q) return reply("Please provide the TikTok video URL.");
+
+        // Fetch TikTok video details from the NexOracle API
+        const tiktokUrl = encodeURIComponent(q);
+        const apiUrl = `https://api.nexoracle.com/downloader/tiktok-nowm?apikey=MepwBcqIM0jYN0okD&url=${tiktokUrl}`;
+        
+        const response = await axios.get(apiUrl);
+        const data = response.data;
+
+        if (data.status !== 200 || !data.result) {
+            return reply("Unable to fetch TikTok video. Please check the URL.");
+        }
+
+        const videoDetails = data.result;
+        const videoUrl = videoDetails.url;
+        const title = videoDetails.title;
+        const authorName = videoDetails.author.nickname;
+        const thumbnailUrl = videoDetails.thumbnail;
+
+        // Send video details
+        await conn.sendMessage(from, {
+            video: { url: videoUrl },
+            caption: `
+*🎬TikTok Video Downloaded!🎬*
+
+*Title*: ${title}
+*Author*: ${authorName}
+*Duration*: ${videoDetails.duration}s
+
+> 🌟*Empire_X*`
+        }, { quoted: mek });
+
+        // Optionally, send the thumbnail as well
+        await conn.sendMessage(from, {
+            image: { url: thumbnailUrl },
+            caption: `Thumbnail for *${title}*`
+        }, { quoted: mek });
+
+    } catch (e) {
+        console.error(e);
+        reply(`Error: ${e.message}`);
     }
 });
