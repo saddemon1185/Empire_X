@@ -137,7 +137,7 @@ cmd({
   react: "🤥",
 }, async (conn, m) => {
   try {
-    let response = await axios.get('https://api.maher-zubair.tech/misc/insult');
+    let response = await axios.get('https://api.nexoracle.com/misc/insult-lines?apikey=MepwBcqIM0jYN0okD');
     let data = response.data;
 
     if (!data || !data.insult) {
