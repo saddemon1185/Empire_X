@@ -170,46 +170,6 @@ async (conn, mek, m, { from, q, reply }) => {
     }
 });
 
-cmd({
-    pattern: "dictionary",
-    desc: "📚 Get the definition of a word",
-    react: "🔍",
-    category: "search",
-    filename: __filename
-}, async (conn, mek, m, { from, q, reply }) => {
-    try {
-        if (!q) {
-            return reply("❗ Please provide a word to define. Usage: .dictionary [word]");
-        }
-
-        const word = q.trim();
-        const url = `https://api.dictionaryapi.dev/api/v2/entries/en/${word}`;
-
-        const response = await axios.get(url);
-        const definitionData = response.data[0];
-
-        const definition = definitionData.meanings[0].definitions[0].definition || "No definition available";
-        const example = definitionData.meanings[0].definitions[0].example || "No example available";
-        const synonyms = definitionData.meanings[0].definitions[0].synonyms?.join(', ') || "No synonyms available";
-
-        const wordInfo = `
-📚 *Word*: ${definitionData.word}
-🔍 *Definition*: ${definition}
-📝 *Example*: ${example}
-🔗 *Synonyms*: ${synonyms}
-
-*MADE By 𝐎𝐧𝐥𝐲_𝐨𝐧𝐞_🥇𝐄𝐦𝐩𝐢𝐫𝐞*`;
-
-        return reply(wordInfo);
-    } catch (e) {
-        console.error(e);
-        if (e.response && e.response.status === 404) {
-            return reply("🚫 Word not found. Please check the spelling and try again.");
-        }
-        return reply("⚠️ An error occurred while fetching the definition. Please try again later.");
-    }
-});
-
 // Image Downloader Command
 cmd({
     pattern: "img",
@@ -256,5 +216,56 @@ async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sen
     } catch (e) {
         console.error(e);
         reply(`Error: ${e.message}`);
+    }
+});
+
+cmd({
+    pattern: "dictionary",
+    desc: "📚 Get the definition of a word",
+    react: "🔍",
+    category: "search",
+    filename: __filename
+}, async (conn, mek, m, { from, q, reply }) => {
+    try {
+        if (!q) {
+            return reply("❗ Please provide a word to define. Usage: .dictionary [word]");
+        }
+
+        const word = q.trim();
+        const url = `https://api.nexoracle.com/details/dictionary?apikey=MepwBcqIM0jYN0okD&q=${word}`;
+
+        const response = await axios.get(url);
+        const data = response.data.result[0];
+
+        if (!data) {
+            return reply("🚫 Word not found. Please check the spelling and try again.");
+        }
+
+        const phonetic = data.phonetic || "No phonetic available";
+        const phonetics = data.phonetics.map(p => p.text).join(', ') || "No phonetics available";
+        const meanings = data.meanings.map(meaning => `
+🔹 *Part of Speech*: ${meaning.partOfSpeech}
+🔹 *Definitions*:
+${meaning.definitions.map(def => ` - ${def.definition}`).join('\n')}
+`).join('\n') || "No meanings available";
+        const synonyms = data.synonyms.length > 0 ? data.synonyms.join(', ') : "No synonyms available";
+        const audioUk = data.phonetics.find(p => p.text === phonetic)?.audio || null;
+
+        const wordInfo = `
+📚 *Word*: ${data.word}
+🔤 *Phonetic*: ${phonetic} (${phonetics})
+🎧 *Audio (UK)*: ${audioUk ? `[Listen](${audioUk})` : "Not available"}
+
+*Meanings*:
+${meanings}
+
+🔗 *Synonyms*: ${synonyms}
+
+*MADE By 𝐎𝐧𝐥𝐲_𝐨𝐧𝐞_🥇𝐄𝐦𝐩𝐢𝐫𝐞*`;
+
+        return reply(wordInfo);
+    } catch (e) {
+        console.error(e);
+        return reply("⚠️ An error occurred while fetching the definition. Please try again later.");
     }
 });
