@@ -3,7 +3,6 @@ const fg = require('api-dylux');
 const config = require('../config');
 const { cmd, commands } = require('../command');
 const prefix = config.PREFIX; 
-const caption = config.CAPTION; 
 const { getBuffer, getGroupAdmins, getRandom, h2k, isUrl, Json, sleep, fetchJson } = require('../lib/functions');
 
 const GOOGLE_API_KEY = 'AIzaSyDebFT-uY_f82_An6bnE9WvVcgVbzwDKgU'; // Replace with your Google API key
