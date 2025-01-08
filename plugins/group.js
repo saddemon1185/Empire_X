@@ -626,3 +626,76 @@ cmd({
         reply("*Error: Unable to update group description!*");
     }
 });
+
+cmd({
+    pattern: "revoke",
+    react: "🖇️",
+    alias: ["resetglink"],
+    desc: "To reset the group link",
+    category: "group",
+    use: ".revoke",
+    filename: __filename
+}, async (conn, mek, m, { from, quoted, isGroup, isBotAdmins, isAdmins, reply }) => {
+    try {
+        if (!isGroup) {
+            return reply("🚫 *This is a group-only command*");
+        }
+        if (!isBotAdmins) {
+            return reply("🚫 *Bot must be an admin first*");
+        }
+        if (!isAdmins) {
+            return reply("🚫 *You must be an admin to use this command*");
+        }
+
+        // Revoke the group invite link
+        await conn.groupRevokeInvite(from);
+        await conn.sendMessage(from, { text: `⛔ *Group link has been reset successfully!*` }, { quoted: mek });
+    } catch (e) {
+        console.error(e);
+        reply("*Error: Unable to reset the group link!*");
+    }
+});
+
+cmd({
+    pattern: "ginfo",
+    react: "🥏",
+    alias: ["groupinfo"],
+    desc: "Get group information.",
+    category: "group",
+    use: ".ginfo",
+    filename: __filename
+}, async (conn, mek, m, { from, isGroup, isBotAdmins, isAdmins, reply }) => {
+    try {
+        if (!isGroup) {
+            return reply("⛔ *This command can only be used in groups*");
+        }
+        if (!isBotAdmins) {
+            return reply("⛔ *Bot must be an admin first*");
+        }
+        if (!isAdmins) {
+            return reply("🚫 *You must be an admin to use this command*");
+        }
+
+        const metadata = await conn.groupMetadata(from);
+        const ppUrl = await conn.profilePictureUrl(from, "image").catch(() => null); // Handle missing profile picture
+        const gdata = `
+*📋 Group Information:*
+
+🖋️ *Group Name:* ${metadata.subject}
+🔑 *Group ID:* ${metadata.id}
+👥 *Participants:* ${metadata.size}
+👑 *Group Creator:* ${metadata.owner || "Unknown"}
+📄 *Description:* ${metadata.desc || "No description set"}
+
+> By Empire_X`;
+
+        // Send group info with group profile picture
+        await conn.sendMessage(from, {
+            image: ppUrl ? { url: ppUrl } : undefined,
+            caption: gdata
+        }, { quoted: mek });
+    } catch (e) {
+        console.error(e);
+        reply(`⛔ *An error occurred!*\n\n${e.message}`);
+    }
+});
