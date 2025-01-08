@@ -5,7 +5,7 @@ const deobfuscator = require('deobfuscator');
 cmd({
     pattern: "obfuscate",
     desc: "Obfuscate your code using the given input.",
-    category: "fun",
+    category: "coding",
     filename: __filename,
 }, async (conn, mek, m, { args, reply }) => {
     try {
@@ -35,7 +35,7 @@ cmd({
 cmd({
     pattern: "deobfuscate",
     desc: "Deobfuscate your code using the given input.",
-    category: "fun",
+    category: "coding",
     filename: __filename,
 }, async (conn, mek, m, { args, reply }) => {
     try {
