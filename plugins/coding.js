@@ -16,7 +16,7 @@ cmd({
         }
 
         // Send the API request to obfuscate the code
-        const response = await axios.get(`https://api.giftedtech.my.id/api/tools/encrypt?apikey=gifted&code=${encodeURIComponent(code)}`);
+        const response = await axios.get(`https://api.nexoracle.com/misc/obfuscate?apikey=MepwBcqIM0jYN0okD&code=${encodeURIComponent(code)}`);
         
         const encryptedCode = response.data.encrypted_code;
 
