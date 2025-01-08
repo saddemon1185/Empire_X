@@ -6,8 +6,8 @@ const os = require("os");
 const prefix = config.PREFIX || ".";
 const ownername = config.OWNER_NAME || "𝐎𝐧𝐥𝐲_𝐨𝐧𝐞_🥇𝐄𝐦𝐩𝐢𝐫𝐞";
 const mode = config.MODE || "private";
-const version = "1.0.0"; 
-const botname = "Empire_X"; 
+const version = "1.0.0";
+const botname = "Empire_X";
 
 cmd({
     pattern: "menu",
@@ -50,6 +50,7 @@ async(conn, mek, m, { from, quoted, isCmd, command, args, q, isGroup, sender, pu
         const totalCommands = commands.length;
         const platform = os.platform();
         const memoryUsage = (process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2);
+
         // Categorize commands dynamically
         const categorized = commands.reduce((menu, cmd) => {
             if (cmd.pattern && !cmd.dontAddCommandList) {
@@ -78,7 +79,6 @@ async(conn, mek, m, { from, quoted, isCmd, command, args, q, isGroup, sender, pu
             const footer = `╰━━━━━━━━━━━━━⬤\n`;
             return `${title}${body}\n${footer}`;
         };
-
 
         // Generate menu dynamically
         let menu = header;
