@@ -6,7 +6,6 @@ const path = require('path');
 // Load dev.json to get the contact number
 const devData = JSON.parse(fs.readFileSync("./lib/dev.json", "utf8"));
 
-
 cmd({
     pattern: "getprivacy",
     react: "🥏",
@@ -36,7 +35,6 @@ async (conn, mek, m, { from, l, quoted, body, isCmd, command, args, q, isGroup, 
         l(e);
     }
 });
-
 
 cmd({
     pattern: "updatebio",
@@ -73,6 +71,7 @@ cmd({
         console.error("Error in bio command:", error);
         reply("No bio found.");
     }
+});
 
 cmd({
     pattern: "developer",
