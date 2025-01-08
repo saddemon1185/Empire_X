@@ -54,22 +54,23 @@ async(conn, mek, m, { from, quoted, isCmd, command, args, q, isGroup, sender, pu
             return menu;
         }, {});
    
-        const header = `\`\`\`╭━━━▻〔 ${monospace('EMPIRE_X')} 〕━━━━━⬤
-┃𖠄│ User: ${monospace(pushname)}
-┃𖠄│ Prefix: ${monospace(prefix)}
-┃𖠄│ Mode: ${monospace(mode)}
-┃𖠄│ Commands: ${monospace(totalCommands.toString())}
-┃𖠄│ Uptime: ${monospace(uptime)}
-┃𖠄│ Date: ${monospace(date)}
-┃𖠄│ Time: ${monospace(time)}
-┃𖠄│ Version:  ${monospace('1.0.0')}
-┃𖠄╰─────────────⬤
-╰━━━━━━━━━━━━━━⬤\`\`\`\n`;
+        const header = `\`\`\`╭────《  ${monospace('EMPIRE_X')  》────⊷
+│ ╭──────✧❁✧──────◆
+│ │ Owner : ${monospace(pushname)}
+│ │ Prefix : ${monospace(prefix)}
+│ │ Mode : ${monospace(mode)}
+│ │ Commands : ${monospace(totalCommands.toString())}
+│ │ Uptime : ${monospace(uptime)}
+│ │ Date : ${monospace(date)}
+│ │ Time : ${monospace(time)}
+│ │ Version :  ${monospace('1.0.0')}
+│ ╰──────✧❁✧──────◆
+╰══════════════════⊷\`\`\`\n`;
 
         const formatCategory = (category, cmds) => {
-            const title = `╭━━〔 ${monospace(category.toUpperCase())} 〕━━⬤ \n`;
+            const title = `╭────❏ *${monospace(category.toUpperCase())}*  ❏ \n`;
             const body = cmds.map(cmd => `┃ • ${monospace(prefix + cmd)}`).join('\n');
-            const footer = `╰━━━━━━━━━━━━━⬤\n`;
+            const footer = `╰━━━━━━━━━━━━━━──⊷\n`;
             return `${title}${body}\n${footer}`;
         };
 
