@@ -5,6 +5,58 @@ const { cmd, commands } = require('../command');
 const prefix = config.PREFIX; 
 const { getBuffer, getGroupAdmins, getRandom, h2k, isUrl, Json, sleep, fetchJson } = require('../lib/functions');
 
+// Wallpaper Command
+cmd({
+    pattern: "wallpaper",
+    desc: "Search and send wallpapers based on a query.",
+    react: "🖼️",
+    category: "search",
+    filename: __filename
+},
+async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
+    try {
+        if (!q) return reply("Please provide a search query for the wallpaper.");
+
+        // Fetch wallpaper URLs from the NexOracle API
+        const searchQuery = encodeURIComponent(q);
+        const url = `https://api.nexoracle.com/search/wallpaper?apikey=MepwBcqIM0jYN0okD&q=${searchQuery}`;
+        
+        const response = await axios.get(url);
+        const data = response.data;
+
+        if (data.status !== 200 || !data.result || data.result.length === 0) {
+            return reply("No wallpapers found for your query.");
+        }
+
+        // Send wallpapers
+        for (let i = 0; i < data.result.length; i++) {
+            const wallpaper = data.result[i];
+            const wallpaperUrl = wallpaper.image;
+            const source = wallpaper.source;
+            const type = wallpaper.type;
+
+            // Download the wallpaper image
+            const imageResponse = await axios.get(wallpaperUrl, { responseType: 'arraybuffer' });
+            const buffer = Buffer.from(imageResponse.data, 'binary');
+
+            // Send the wallpaper with a caption
+            await conn.sendMessage(from, {
+                image: buffer,
+                caption: `
+*💗Wallpaper ${i + 1} from your search!💗*
+
+*Type*: ${type}
+*Source*: [${source}](${source})
+
+> 🌈*Empire_X*`
+            }, { quoted: mek });
+        }
+
+    } catch (e) {
+        console.error(e);
+        reply(`Error: ${e.message}`);
+    }
+});
 
 //ss commands 
 cmd({
