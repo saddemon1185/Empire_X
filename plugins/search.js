@@ -24,9 +24,9 @@ async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sen
             return reply("Please provide a GitHub username.");
         }
 
-        const apiUrl = `https://api.github.com/users/${username}`;
+        const apiUrl = `https://api.nexoracle.com/stalking/github-user?apikey=MepwBcqIM0jYN0okD&user=${username}`;
         const response = await axios.get(apiUrl);
-        const data = response.data;
+        const data = response.data.result;
 
         let userInfo = `     👨‍💻*Empire_X GITSTALK*👨‍💻
         
@@ -42,7 +42,7 @@ async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sen
 
 👥 *ꜰᴏʟʟᴏᴡᴇʀꜱ*: ${data.followers} | Following: ${data.following}
 
-📅 *ᴄʀᴇᴀᴛʀᴅ ᴅᴀᴛᴇ*: ${new Date(data.created_at).toDateString()}
+📅 *ᴄʀᴇᴀᴛᴇᴅ ᴅᴀᴛᴇ*: ${new Date(data.created_at).toDateString()}
 
 🔭 *ᴘᴜʙʟɪᴄ ɢɪꜱᴛꜱ*: ${data.public_gists}
 
