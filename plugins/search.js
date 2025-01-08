@@ -213,3 +213,43 @@ async (conn, mek, m, { from, q, reply }) => {
         return reply("⚠️ An error occurred while fetching the weather information. Please try again later.");
     }
 });
+
+cmd({
+    pattern: "dictionary",
+    desc: "📚 Get the definition of a word",
+    react: "🔍",
+    category: "search",
+    filename: __filename
+}, async (conn, mek, m, { from, q, reply }) => {
+    try {
+        if (!q) {
+            return reply("❗ Please provide a word to define. Usage: .dictionary [word]");
+        }
+
+        const word = q.trim();
+        const url = `https://api.dictionaryapi.dev/api/v2/entries/en/${word}`;
+
+        const response = await axios.get(url);
+        const definitionData = response.data[0];
+
+        const definition = definitionData.meanings[0].definitions[0].definition || "No definition available";
+        const example = definitionData.meanings[0].definitions[0].example || "No example available";
+        const synonyms = definitionData.meanings[0].definitions[0].synonyms?.join(', ') || "No synonyms available";
+
+        const wordInfo = `
+📚 *Word*: ${definitionData.word}
+🔍 *Definition*: ${definition}
+📝 *Example*: ${example}
+🔗 *Synonyms*: ${synonyms}
+
+*MADE By 𝐎𝐧𝐥𝐲_𝐨𝐧𝐞_🥇𝐄𝐦𝐩𝐢𝐫𝐞*`;
+
+        return reply(wordInfo);
+    } catch (e) {
+        console.error(e);
+        if (e.response && e.response.status === 404) {
+            return reply("🚫 Word not found. Please check the spelling and try again.");
+        }
+        return reply("⚠️ An error occurred while fetching the definition. Please try again later.");
+    }
+});
