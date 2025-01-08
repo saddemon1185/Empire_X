@@ -10,7 +10,7 @@ cmd({
   'pattern': "logo",
   'desc': "Create logos",
   'react': '🎁',
-  'category': "textpro",
+  'category': "logo",
   'filename': __filename
 }, async (_0x218f5d, _0x28282a, _0x208f73, {
   from: _0x1aa1bb,
