@@ -67,9 +67,9 @@ async(conn, mek, m, { from, quoted, isCmd, command, args, q, isGroup, sender, pu
 
         // Category formatter
         const formatCategory = (category, cmds) => {
-            const title = `╭───╼【 ${monospace(category.toUpperCase())} 】\n`;
-            const body = cmds.map(cmd => `┃ ∘ ${monospace(prefix + cmd)}`).join('\n');
-            const footer = `╰──────────╼\n`;
+            const title = `╭━━〔 ${monospace(category.toUpperCase())} 〕━━⬤ \n`;
+            const body = cmds.map(cmd => `┃ • ${monospace(prefix + cmd)}`).join('\n');
+            const footer = `╰━━━━━━━━━━━━━⬤\n`;
             return `${title}${body}\n${footer}`;
         };
 
