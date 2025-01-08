@@ -595,3 +595,34 @@ reply('*Error !!*')
 l(e)
 }
 });
+
+cmd({
+    pattern: "updategdesc",
+    react: "🔓",
+    alias: ["upgdesc", "gdesc"],
+    desc: "To change the group description",
+    category: "group",
+    use: ".updategdesc",
+    filename: __filename
+}, async (conn, mek, m, { from, quoted, body, args, q, isGroup, sender, isBotAdmins, isAdmins, reply }) => {
+    try {
+        if (!isGroup) {
+            return reply("🚫 *This is a group-only command*");
+        }
+        if (!isBotAdmins) {
+            return reply("🚫 *Bot must be an admin first*");
+        }
+        if (!isAdmins) {
+            return reply("🚫 *You must be an admin to use this command*");
+        }
+        if (!q) {
+            return reply("🖊️ *Please provide the new group description*");
+        }
+
+        await conn.groupUpdateDescription(from, q);
+        await conn.sendMessage(from, { text: `✔️ *Group description updated successfully!*` }, { quoted: mek });
+    } catch (e) {
+        console.error(e);
+        reply("*Error: Unable to update group description!*");
+    }
+});
