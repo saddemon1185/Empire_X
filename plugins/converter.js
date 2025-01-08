@@ -1,8 +1,7 @@
 const { Sticker, StickerTypes } = require('wa-sticker-formatter');
 const { cmd } = require('../command');
 const axios = require('axios');
-const { getRandom } = require('../lib/functions');
-const { downloadMediaMessage } = require('./lib/functions');  // Adjust the path accordingly
+const { getBuffer, getGroupAdmins, getRandom, h2k, isUrl, Json, sleep, fetchJson } = require('../lib/functions');
 
 const imgmsg = 'Reply to a photo for sticker!'; // Default message when no image or sticker is found.
 
