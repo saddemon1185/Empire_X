@@ -54,7 +54,7 @@ async(conn, mek, m, { from, quoted, isCmd, command, args, q, isGroup, sender, pu
             return menu;
         }, {});
    
-        const header = `\`\`\`╭────《  ${monospace('EMPIRE_X')  》────⊷
+        const header = `\`\`\`╭────《  ${monospace('EMPIRE_X')}  》────⊷
 │ ╭──────✧❁✧──────◆
 │ │ Owner : ${monospace(pushname)}
 │ │ Prefix : ${monospace(prefix)}
