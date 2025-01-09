@@ -19,7 +19,7 @@ cmd({
     try {
         // Check for query
         if (!q) {
-            return reply(`Please Enter a Search Query or YouTube link. Usage Example:\n*${config.prefix}play Spectre*\n*${config.prefix}play https://youtu.be/aGjXa18XCRY?si=-rNZHD-trThO1x4Y*`);
+            return reply(`Please Enter a Search Query or YouTube link. Usage Example:\n*${config.PREFIX}play Spectre*\n*${config.PREFIX}play https://youtu.be/aGjXa18XCRY?si=-rNZHD-trThO1x4Y*`);
         }
 
         // If a YouTube link is provided
