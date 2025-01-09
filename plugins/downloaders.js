@@ -123,7 +123,7 @@ cmd({
     category: "download",
     react: "🎶",
     filename: __filename
-}, async (conn, mek, m, { from, quoted, body, args, q, reply }) => {
+}, async (conn, mek, m, { from, quoted, body, args,pushname, q, reply }) => {
     try {
         // Check for query
         if (!q) {
@@ -250,7 +250,7 @@ cmd({
     category: "download",
     react: "🎬",
     filename: __filename
-}, async (conn, mek, m, { from, quoted, body, args, q, reply }) => {
+}, async (conn, mek, m, { from, quoted, body, args, pushname, q, reply }) => {
     try {
         // Check for query
         if (!q) {
@@ -358,7 +358,7 @@ cmd({
     category: "download",
     react: "🎬",
     filename: __filename
-}, async (conn, mek, m, { from, quoted, body, args, q, reply }) => {
+}, async (conn, mek, m, { from, quoted, body, pushname, args, q, reply }) => {
     try {
         // Check for query
         if (!q) {
@@ -540,7 +540,7 @@ cmd({
     desc: "Download Google Drive Files",
     category: "download",
     filename: __filename
-}, async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, reply }) => {
+}, async (conn, mek, m, { from, quoted, body, isCmd, pushname, command, args, q, reply }) => {
     try {
         if (!q) {
             return reply("Please send me the Google Drive link.");
@@ -576,7 +576,7 @@ cmd({
     desc: "Download media from Pinterest.",
     category: "download",
     filename: __filename,
-}, async (conn, mek, m, { args, reply }) => {
+}, async (conn, mek, m, { args, pushname,reply }) => {
     try {
         const pinterestUrl = args[0];
         if (!pinterestUrl) {
@@ -599,6 +599,6 @@ cmd({
         await m.react("✅");
     } catch (err) {
         console.error("Error fetching Pinterest media URL:", err);
-        return reply("❌ Unable to fetch Pinterest media. Please try again later.");
+        return reply("❌ Unable to fetch Pinterest media. Pl ease try again later.");
     }
 });
