@@ -60,7 +60,7 @@ cmd({
     filename: __filename
 }, async (conn, mek, m, { from, reply }) => {
     try {
-        let data = await get(`https://api.giftedtech.my.id/api/fun/pickupline?apikey=gifted`);
+        let data = await get(`https://api.giftedtech.web.id/api/fun/pickupline?apikey=gifted`);
         return reply(`${data.result}`);
     } catch (e) {
         console.log(e);
@@ -91,7 +91,7 @@ cmd({
     filename: __filename
 }, async (conn, mek, m, { from, reply }) => {
     try {
-        let data = await get(`https://api.giftedtech.my.id/api/fun/jokes?apikey=gifted`);
+        let data = await get(`https://api.giftedtech.web.id/api/fun/jokes?apikey=gifted`);
         return reply(`${data.result}`);  // Ensure the result is a string.
     } catch (e) {
         console.log(e);
