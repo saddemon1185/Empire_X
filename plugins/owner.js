@@ -310,3 +310,64 @@ cmd({
     }
 });
 
+
+
+cmd({
+    pattern: "autoviewstatus",
+    alias: ["avstatus"],
+    desc: "Enable or disable auto-viewing of statuses",
+    category: "owner",
+    react: "👁️",
+    filename: __filename
+}, async (conn, mek, m, { from, quoted, body, args, q, pushname, reply }) => {
+    if (args[0] === "true") {
+        config.AUTO_VIEW_STATUS = "true";
+        await reply("Auto-viewing of statuses is now enabled.");
+    } else if (args[0] === "false") {
+        config.AUTO_VIEW_STATUS = "false";
+        await reply("Auto-viewing of statuses is now disabled.");
+    } else {
+        await reply(`Invalid input! Use either 'true' or 'false'. Example:\n${prefix}autoviewstatus true`);
+    }
+});
+
+cmd({
+    pattern: "autolikestatus",
+    alias: ["alstatus"],
+    desc: "Enable or disable auto-liking of statuses",
+    category: "owner",
+    react: "💜",
+    filename: __filename
+}, async (conn, mek, m, { from, quoted, body, args, q, pushname, reply }) => {
+    if (args[0] === "true") {
+        config.AUTO_LIKE_STATUS = "true";
+        await reply("Auto-liking of statuses is now enabled.");
+    } else if (args[0] === "false") {
+        config.AUTO_LIKE_STATUS = "false";
+        await reply("Auto-liking of statuses is now disabled.");
+    } else {
+        await reply(`Invalid input! Use either 'true' or 'false'. Example:\n${prefix}autolikestatus true`);
+    }
+});
+
+cmd({
+    pattern: "autoreplystatus",
+    alias: ["arsstatus"],
+    desc: "Enable or disable auto-reply to statuses",
+    category: "owner",
+    react: "🔄",
+    filename: __filename
+}, async (conn, mek, m, { from, quoted, body, args, q, pushname, reply }) => {
+    if (args[0] === "true") {
+        config.AUTO_REPLY_STATUS = "true";
+        await reply("Auto-reply to statuses is now enabled.");
+    } else if (args[0] === "false") {
+        config.AUTO_REPLY_STATUS = "false";
+        await reply("Auto-reply to statuses is now disabled.");
+    } else if (args[0]) {
+        config.STATUS_REPLY_MSG = args.join(' ');
+        await reply(`Custom auto-reply message set to: ${config.STATUS_REPLY_MSG}`);
+    } else {
+        await reply(`Invalid input! Use 'true', 'false', or a custom reply message. Example:\n${prefix}autoreplystatus true`);
+    }
+});
