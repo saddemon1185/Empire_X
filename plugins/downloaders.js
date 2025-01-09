@@ -477,91 +477,60 @@ cmd({
         reply(`❌ Error: ${e.message}`);
     }
 });
-// TikTok Video Downloader Command
+
+// TikTok Downloader Command
 cmd({
     pattern: "tiktok",
-    desc: "Download TikTok Videos",
+    desc: "Download a TikTok video without watermark.",
+    react: "🎥",
     category: "download",
     filename: __filename
-}, async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, reply }) => {
+},
+async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
     try {
-        // Check for query
-        if (!q) {
-            return reply(`Please enter a TikTok URL. Usage Example:\n*${cconfig.PREFIX}tiktok https://www.tiktok.com/@user/video/1234567890123456789*`);
-        }
+        if (!q) return reply("Please provide the TikTok video URL.");
 
-        // Validate if the provided URL is a valid TikTok URL
-        if (!/^https?:\/\/www\.tiktok\.com/.test(q)) {
-            return reply("❌ Please enter a valid TikTok URL starting with https://www.tiktok.com.");
-        }
-
-        // Encode the TikTok URL for the API request
-        const tiktokUrl = encodeURIComponent(q.trim());
-
-        // Send the API request to fetch the download URL for the TikTok video
-        let response = await axios.get(`https://api.giftedtech.web.id/api/download/tiktokdlv1?apikey=gifted&url=${tiktokUrl}`);
+        // Fetch TikTok video details from the NexOracle API
+        const tiktokUrl = encodeURIComponent(q);
+        const apiUrl = `https://api.nexoracle.com/downloader/tiktok-nowm?apikey=MepwBcqIM0jYN0okD&url=${tiktokUrl}`;
         
-        // Extract necessary data
-        const videoUrl = response.data.result.download_url;
-        const videoTitle = response.data.result.title || "Untitled Video";
-        const videoAuthor = response.data.result.author || "Unknown";
-        const videoDuration = response.data.result.duration || "N/A";
-        const videoLikes = response.data.stats.likeCount || 0;
-        const videoComments = response.data.stats.commentCount || 0;
-        const videoShares = response.data.stats.shareCount || 0;
-        const videoPlays = response.data.stats.playCount || 0;
+        const response = await axios.get(apiUrl);
+        const data = response.data;
 
-        // If the video URL is not found, send an error message
-        if (!videoUrl) {
-            return reply("❌ Sorry, I couldn't fetch the video. Please check the URL and try again.");
+        if (data.status !== 200 || !data.result) {
+            return reply("Unable to fetch TikTok video. Please check the URL.");
         }
 
-        // Information Message
-        const infoMessage = {
-            image: { url: data.thumbnail },
+        const videoDetails = data.result;
+        const videoUrl = videoDetails.url;
+        const title = videoDetails.title;
+        const authorName = videoDetails.author.nickname;
+        const thumbnailUrl = videoDetails.thumbnail;
+
+        // Send video details
+        await conn.sendMessage(from, {
+            video: { url: videoUrl },
             caption: `
 ╭──────❏ *EMPIRE_X DOWNLOADER* ❏
 │ 𝙷𝙴𝙻𝙻𝙾 ${pushname || "User"}
 │❏──────────────────────────────❏
-│ *Video Title:* ${videoTitle}
-│ *Uploader:* ${videoAuthor}
-│ *Duration:* ${videoDuration}s
-│ *Likes:* ${videoLikes}
-│ *Comments:* ${videoComments}
-│ *Shares:* ${videoShares}
-│ *Plays:* ${videoPlays}
+│ *Title*: ${title}
+│ **Author*: ${authorName}
+│ *Duration*: ${videoDetails.duration}s
 │❏──────────────────────────────❏
-│⦿ *⦿ *Direct TikTok Link:* ${q}
-│❏──────────────────────────────❏
-│ >Made By 𝐄𝐦𝐩𝐢𝐫𝐞 𝐓𝐞𝐜𝐡 [ 𝐃𝐞𝐯𝐞𝐥𝐨𝐩𝐞𝐫 ]
-╰━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⊷`,
-            contextInfo: {
-                mentionedJid: [mek.sender],
-                forwardingScore: 5,
-                isForwarded: true,
-                forwardedNewsletterMessageInfo: {
-                    newsletterJid: '120363337275149306@newsletter',
-                    newsletterName: "Empire_X",
-                    serverMessageId: 143
-                }
-            }
-        };
-
-        // Send the information message
-        await conn.sendMessage(from, infoMessage, { quoted: mek });
-
-        // Send the video to the user
-        await conn.sendMessage(from, {
-            video: { url: videoUrl },
-            mimetype: "video/mp4",
-            fileName: `${videoTitle}.mp4`,
-            caption: "Here is your TikTok video!"
+│>Made By 𝐄𝐦𝐩𝐢𝐫𝐞 𝐓𝐞𝐜𝐡 [ 𝐃𝐞𝐯𝐞𝐥𝐨𝐩𝐞𝐫 ]
+╰━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⊷`
         }, { quoted: mek });
 
-        await m.react("✅");
+        // Optionally, send the thumbnail as well
+        await conn.sendMessage(from, {
+            image: { url: thumbnailUrl },
+            caption: `Thumbnail for *${title}*`
+        }, { quoted: mek });
+
     } catch (e) {
         console.error(e);
-        reply(`❌ An error occurred: ${e.message}`);
+        reply(`Error: ${e.message}`);
     }
 });
 
