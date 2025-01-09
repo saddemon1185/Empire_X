@@ -5,79 +5,38 @@ const fs = require('fs');
 const axios = require('axios');
 const { exec } = require('child_process'); // Import exec for executing system commands
 
+
 cmd({
-    pattern: "alive",
-    desc: "Check bot online or no.",
-    category: "system",  // Changed category to "system"
+    pattern: "ping",
+    react: "♻️",
+    alias: ["speed"],
+    desc: "Check bot's ping",
+    category: "system",
+    use: '.ping',
     filename: __filename
 },
-async (conn, mek, m, { from, quoted, reply }) => {
+async (conn, mek, m, { from, quoted, pushname, reply }) => {
     try {
-        const botUptime = runtime(process.uptime());
+        const startTime = Date.now();
+        const message = await conn.sendMessage(from, { text: '*_Pinging..._*' });
+        const endTime = Date.now();
+        const ping = endTime - startTime;
 
-        const aliveMsg = `
-╭━━━▻〔 *Empire_X IS Active* 〕━━━━⬤
-┃𖠄╭────────────────────·๏
-┃𖠄┃ *Uptime:* 
-┃𖠄┃• (${botUptime.days}) Days
-┃𖠄┃• (${botUptime.hours}) Hours
-┃𖠄┃• (${botUptime.minutes}) Minutes
-┃𖠄┃• (${botUptime.seconds}) Seconds
-┃𖠄└────────────────────·๏
-╰━━━━━━━━━━━━━━━━━━━━━⬤
-`;
-
-        // Information Message
-        const infoMessage = {
-    image: { url: 'https://files.catbox.moe/r4decc.jpg' },
-    caption: aliveMsg,
-    contextInfo: {
-        mentionedJid: [mek.sender],
-        forwardingScore: 5,
-        isForwarded: true,
-        forwardedNewsletterMessageInfo: {
-            newsletterJid: '120363337275149306@newsletter',
-            newsletterName: "Empire_X",
-            serverMessageId: 143
-        }
-    }
-};
-
-        // Send the alive message with the formatted information
-        await conn.sendMessage(from, infoMessage, { quoted: mek });
-
+        await conn.sendMessage(
+            from,
+            {
+                text: `
+╭─────❏ 𝙿𝙸𝙽𝙶 ❏
+│ 𝙷𝙴𝙻𝙻𝙾 ${pushname}
+│──────────────────
+│𝙴𝙼𝙿𝙸𝚁𝙴_𝚇 𝙿𝙸𝙽𝙶 : ${ping} 𝙼𝚂
+╰━━━━━━━━━━━━━━━──⊷`,
+            },
+            { quoted: message }
+        );
     } catch (e) {
-        console.log(e);
+        console.error(e);
         reply(`${e}`);
-    }
-});
-cmd({
-    pattern: "updatebot",
-    react: "🔄",
-    desc: "Automatically update the bot from the GitHub repository",
-    category: "system",
-    use: '.update',
-    filename: __filename
-}, async (conn, mek, m, { from, reply }) => {
-    try {
-        const targetFolder = 'bot'; // Directory of your bot project
-        const gitCommand = `git -C ${targetFolder} pull origin main`; // Pull updates from the 'main' branch
-
-        exec(gitCommand, (err, stdout, stderr) => {
-            if (err) {
-                reply(`*Error during update:* ${err.message}`);
-                return;
-            }
-            if (stderr) {
-                reply(`*Git stderr:* ${stderr}`);
-                return;
-            }
-
-            conn.sendMessage(from, { text: '*✅ Bot updated successfully with the latest files from GitHub!*' }, { quoted: mek });
-        });
-    } catch (error) {
-        console.error("Error during bot update:", error);
-        reply(`*Error during bot update:* ${error.message}`);
     }
 });
 
@@ -87,7 +46,7 @@ cmd({
     category: "system",
     filename: __filename
 },
-async (conn, mek, m, { from, quoted, pushname, reply }) => {
+async (conn, mek, m, { from, pushname, reply }) => {
     try {
         function formatUptime(seconds) {
             const days = Math.floor(seconds / (24 * 60 * 60));
@@ -96,34 +55,64 @@ async (conn, mek, m, { from, quoted, pushname, reply }) => {
             seconds %= 60 * 60;
             const minutes = Math.floor(seconds / 60);
             seconds = Math.floor(seconds % 60);
-            return `┃𖠄┃• (${days}) Days\n┃𖠄┃• (${hours}) Hours\n┃𖠄┃• (${minutes}) Minutes\n┃𖠄┃• (${seconds}) Seconds`;
+            return `${days} Days, ${hours} Hours, ${minutes} Minutes, ${seconds} Seconds`;
         }
 
         const uptime = formatUptime(process.uptime());
 
         const uptimeMessage = `
-╭━━━▻〔 *Empire_X BOT UPTIME* 〕━━━━⬤
-┃𖠄╭────────────────────·๏
-┃𖠄┃ *Uptime:*  
-${uptime}
-┃𖠄└────────────────────·๏
-╰━━━━━━━━━━━━━━━━━━━━━⬤
-`;
-        const infoMessage = {
-            text: uptimeMessage,
-            contextInfo: {
-                mentionedJid: [mek.sender],
-                forwardingScore: 5,
-                isForwarded: true,
-                forwardedNewsletterMessageInfo: {
-                    newsletterJid: '120363337275149306@newsletter', // Your newsletter JID
-                    newsletterName: "Empire_X",                  // Your newsletter name
-                    serverMessageId: 143                         // Adjust based on the actual message ID you want to forward
-                }
-            }
-        };
+╭─────❏ 𝚄𝙿𝚃𝙸𝙼𝙴 ❏
+│ 𝙷𝙴𝙻𝙻𝙾 ${pushname}
+│───────────────────
+│𝙴𝙼𝙿𝙸𝚁𝙴_𝚇 𝙷𝙰𝚂 𝙱𝙴𝙴𝙽 𝙰𝙲𝚃𝙸𝚅𝙴 :
+│ ${uptime}
+╰━━━━━━━━━━━━━━━━━━━──⊷
+        `;
 
-        await conn.sendMessage(from, infoMessage, { quoted: mek });
+        await conn.sendMessage(from, { text: uptimeMessage }, { quoted: mek });
+    } catch (e) {
+        console.log(e);
+        reply(`An error occurred: ${e.message || e}`);
+    }
+});
+
+cmd({
+    pattern: "alive",
+    desc: "Check if the bot is online.",
+    category: "system",
+    filename: __filename
+},
+async (conn, mek, m, { from, pushname, reply }) => {
+    try {
+        function formatUptime(seconds) {
+            const days = Math.floor(seconds / (24 * 60 * 60));
+            seconds %= 24 * 60 * 60;
+            const hours = Math.floor(seconds / (60 * 60));
+            seconds %= 60 * 60;
+            const minutes = Math.floor(seconds / 60);
+            seconds = Math.floor(seconds % 60);
+            return { days, hours, minutes, seconds };
+        }
+
+        const uptime = formatUptime(process.uptime());
+
+        const aliveMsg = `
+╭───────❏ *Empire_X IS ACTIVE* ❏
+│ 𝙷𝙴𝙻𝙻𝙾 ${pushname}
+│──────────────────
+│ *UPTIME:* 
+│ ${uptime.days} Days, ${uptime.hours} Hours, ${uptime.minutes} Minutes, ${uptime.seconds} Seconds
+╰━━━━━━━━━━━━━━━━━━━━━━━━──⊷
+        `;
+
+        await conn.sendMessage(
+            from,
+            { 
+                image: { url: 'https://files.catbox.moe/r4decc.jpg' },
+                caption: aliveMsg
+            },
+            { quoted: mek }
+        );
 
     } catch (e) {
         console.log(e);
@@ -134,18 +123,30 @@ ${uptime}
 cmd({
     pattern: "requestbug",
     alias: ["report"],
-    category: "system",  // Changed category to "system"
+    category: "system",
     react: "🤕",
     desc: "Allows users to report a bug with a description.",
     filename: __filename,
-}, async (conn, mek, m, { from, isGroup, body, sender, pushname, groupMetadata }) => {
+}, async (conn, mek, m, { from, body, sender, pushname }) => {
     try {
         const bugDescription = body.split(" ").slice(1).join(" ");
 
         if (!bugDescription) {
-            await conn.sendMessage(from, {
-                text: `Use ${prefix}requestbug :\nExample: ${prefix}requestbug this command is not working.`,
-            }, { quoted: mek });
+            await conn.sendMessage(
+                from,
+                {
+                    text: `
+╭─────❏ *REQUEST BUG* ❏
+│ 𝙷𝙴𝙻𝙻𝙾 ${pushname || "User"}
+│──────────────────
+│ *USAGE:* 
+│ Please specify the bug you want to report.
+│ Example: .requestbug This command is not working.
+╰━━━━━━━━━━━━━━━──⊷
+                    `,
+                },
+                { quoted: mek }
+            );
             return;
         }
 
@@ -153,48 +154,53 @@ cmd({
         const devsNumber = JSON.parse(devsData)[0];
 
         const requestMessage = `
-➲ *Need user requested:* @${sender.split('@')[0]}
-➲ *Sent by:* ${pushname}
-➲ *Report:* ${bugDescription}
-`;
+╭─────❏ *BUG REPORT* ❏
+│ 𝙵𝚁𝙾𝙼: @${sender.split('@')[0]}
+│ 𝙽𝙰𝙼𝙴: ${pushname || "Unknown"}
+│──────────────────
+│ *REPORT:* 
+│ ${bugDescription}
+╰━━━━━━━━━━━━━━━──⊷
+        `;
 
-        await conn.sendMessage(devsNumber + "@s.whatsapp.net", {
-            text: requestMessage
+        // Send bug report to the developer
+        await conn.sendMessage(`${devsNumber}@s.whatsapp.net`, {
+            text: requestMessage,
         });
 
-        await conn.sendMessage(from, {
-            text: `Thank you! Your bug report has been sent to the devs for review.`,
-        }, { quoted: mek });
+        // Notify the user
+        await conn.sendMessage(
+            from,
+            {
+                text: `
+╭─────❏ *REQUEST BUG* ❏
+│ Thank you, ${pushname || "User"}!
+│──────────────────
+│ Your bug report has been sent to the developers for review.
+╰━━━━━━━━━━━━━━━──⊷
+                `,
+            },
+            { quoted: mek }
+        );
 
     } catch (e) {
         console.log(e);
-        await conn.sendMessage(from, {
-            text: `An error occurred while submitting the bug report. Please try again.`,
-        }, { quoted: mek });
+        await conn.sendMessage(
+            from,
+            {
+                text: `
+╭─────❏ *ERROR* ❏
+│ Sorry, an error occurred while submitting your bug report.
+│ Please try again later.
+╰━━━━━━━━━━━━━━━──⊷
+                `,
+            },
+            { quoted: mek }
+        );
     }
 });
 
-cmd({
-    pattern: "ping",
-    react: "♻️",
-    alias: ["speed"],
-    desc: "Check bot\'s ping",
-    category: "system",
-    use: '.ping',
-    filename: __filename
-},
-async(conn, mek, m,{from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply}) => {
-try{
-const startTime = Date.now()
-        const message = await conn.sendMessage(from, { text: '*_Pinging..._*' })
-        const endTime = Date.now()
-        const ping = endTime - startTime
-        await conn.sendMessage(from, { text: `*Pong.. : ${ping}ms*`}, { quoted: message })
-    } catch (e) {
-        console.log(e)
-        reply(`${e}`)
-    }
-})
+
 // shutdown commands 
 cmd({
     pattern: "shutdown",
@@ -257,46 +263,4 @@ async (conn, mek, m, {
     console.log(e);
     reply(`Error updating commands: ${e.message}`);
   }
-});
-// update commands 
-
-cmd({
-    pattern: "update",
-    react: "🔄",
-    desc: "Update folder from GitHub",
-    category: "system",
-    use: '.update',
-    filename: __filename
-}, async (conn, mek, m, { from, reply }) => {
-    try {
-        const repoUrl = 'https://github.com/efeurhobo/Empire_X.git'; // لینک مخزن گیت‌هاب
-        const targetFolder = 'plugins'; // پوشه‌ای که باید به‌روز شود
-
-        // بررسی وجود پوشه هدف
-        if (!fs.existsSync(targetFolder)) {
-            fs.mkdirSync(targetFolder); // ساخت پوشه در صورت عدم وجود
-        }
-
-        // تعیین دستور مناسب گیت
-        const gitCommand = fs.existsSync(`${targetFolder}/.git`)
-            ? `git -C ${targetFolder} pull`
-            : `git clone ${repoUrl} ${targetFolder}`;
-
-        // اجرای دستور گیت
-        await new Promise((resolve, reject) => {
-            exec(gitCommand, (err, stdout, stderr) => {
-                if (err) {
-                    reject(`Git command failed: ${stderr}`);
-                } else {
-                    resolve(stdout);
-                }
-            });
-        });
-
-        // ارسال پیام موفقیت
-        await conn.sendMessage(from, { text: '*✅ Update completed successfully!*' }, { quoted: mek });
-    } catch (error) {
-        console.error(error);
-        reply(`*Error during update:* ${error.message}`);
-    }
 });
