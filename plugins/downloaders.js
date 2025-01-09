@@ -633,19 +633,3 @@ cmd({
         return reply("❌ Unable to fetch Pinterest media. Please try again later.");
     }
 });
-
-//apk commands 
-cmd({
-    pattern: "apk",
-    desc: "Download APK from APKMirror or APKPure.",
-    category: "download",
-    filename: __filename,
-}, async (conn, mek, m, { args, reply }) => {
-    try {
-        const apkName = args[0];
-        if (!apkName) {
-            return reply("Please provide the APK name.");
-        }
-
-        // Send the API request to fetch the download URL
-        const response = await axios.get(`https://a
