@@ -92,7 +92,7 @@ const infoMessage = {
         // Send the audio file
         await conn.sendMessage(from, {
             audio: { url: downloadUrl },
-            fileName: `${data.title}.mp3`,
+            fileName: ${data.title}.mp3,
             mimetype: 'audio/mpeg',
             contextInfo: {
                 externalAdReply: {
@@ -197,7 +197,7 @@ const infoMessage = {
         // Send the video file
         await conn.sendMessage(from, {
             video: { url: downloadUrl },
-            fileName: `${data.title}.mp4`,
+            fileName: ${data.title}.mp4,
             mimetype: 'video/mp4',
             contextInfo: {
                 externalAdReply: {
@@ -315,7 +315,7 @@ const infoMessage = {
         // Send the audio file as a document
         await conn.sendMessage(from, {
             document: { url: downloadUrl },
-            fileName: `${data.title}.mp3`,
+            fileName: ${data.title}.mp3,
             mimetype: "audio/mpeg",
             contextInfo: {
                 externalAdReply: {
@@ -441,7 +441,7 @@ const infoMessage = {
         // Send the video file as a document
         await conn.sendMessage(from, {
             document: { url: downloadUrl },
-            fileName: `${data.title}.mp4`,
+            fileName: ${data.title}.mp4,
             mimetype: "video/mp4",
             contextInfo: {
                 externalAdReply: {
