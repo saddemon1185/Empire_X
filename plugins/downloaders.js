@@ -107,9 +107,10 @@ const infoMessage = {
             }
         }, { quoted: mek });
 
-        await m.react("✅");
-        } catch (e) {
-        return reply(`❌ Error: ${e.message}`);
+                await m.react("✅");
+    } catch (e) {
+        console.error("Error in video download command:", e);
+        reply(`❌ Error: ${e.message}`);
     }
 });
 
