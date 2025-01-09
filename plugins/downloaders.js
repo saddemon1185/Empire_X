@@ -77,7 +77,7 @@ const infoMessage = {
             contextInfo: {
                 mentionedJid: [mek.sender],
                 forwardingScore: 5,
-                isForwarded: true,
+                isForwarded: true, 
                 forwardedNewsletterMessageInfo: {
                     newsletterJid: '120363337275149306@newsletter',
                     newsletterName: "Empire_X",
@@ -88,6 +88,7 @@ const infoMessage = {
 
         await conn.sendMessage(from, infoMessage, { quoted: mek });
 
+        
         // Send the audio file
         await conn.sendMessage(from, {
             audio: { url: downloadUrl },
