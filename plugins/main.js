@@ -201,7 +201,7 @@ async (conn, mek, m, { from, quoted, sender, pushname, reply }) => {
 *🍁 ᴛᴏᴅᴀʏ ɪs :* ${date}
 *🎗 ɴᴏᴡ ᴛɪᴍᴇ :* ${time}
 
-➮Fᴏᴜɴᴅᴇʀ - Only_one_🥇Empire
+➮Fᴏᴜɴᴅᴇʀ - 𝐄𝐦𝐩𝐢𝐫𝐞 𝐓𝐞𝐜𝐡 [ 𝐃𝐞𝐯𝐞𝐥𝐨𝐩𝐞𝐫 ]
 ➮Oᴡɴᴇʀ - User: ${pushname}
 ➮Nᴜᴍ - ${config.OWNER_NUMBER} 
 ➮Mᴇᴍᴏ - ${memoryUsed} MB / ${memoryTotal} MB
