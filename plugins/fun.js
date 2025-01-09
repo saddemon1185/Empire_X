@@ -75,7 +75,7 @@ cmd({
     filename: __filename
 }, async (conn, mek, m, { from, reply }) => {
     try {
-        let data = await get(`https://api.giftedtech.my.id/api/fun/motivation?apikey=gifted`);
+        let data = await get(`https://api.giftedtech.web.id/api/fun/motivation?apikey=gifted`);
         return reply(`${data.result}`);
     } catch (e) {
         console.log(e);
@@ -107,7 +107,7 @@ cmd({
     filename: __filename
 }, async (conn, mek, m, { from, reply }) => {
     try {
-        let data = await get(`https://api.giftedtech.my.id/api/fun/advice?apikey=gifted`);
+        let data = await get(`https://api.giftedtech.web.id/api/fun/advice?apikey=gifted`);
         return reply(`${data.result}`);
     } catch (e) {
         console.log(e);
@@ -122,7 +122,7 @@ cmd({
     filename: __filename
 }, async (conn, mek, m, { from, reply }) => {
     try {
-        let data = await get(`https://api.giftedtech.my.id/api/fun/truth?apikey=gifted`);
+        let data = await get(`https://api.giftedtech.web.id/api/fun/truth?apikey=gifted`);
         return reply(`${data.result}`);
     } catch (e) {
         console.log(e);
