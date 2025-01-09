@@ -34,7 +34,7 @@ cmd({
         }
 
         
-        let data = await fetchJson(`https://api.giftedtech.my.id/api/ai/gpt4?apikey=gifted&q=${encodeURIComponent(q)}`);
+        let data = await fetchJson(`https://api.giftedtech.web.id/api/ai/gpt4?apikey=gifted&q=${encodeURIComponent(q)}`);
         return reply(`${data.result}`);
     } catch (e) {
         console.log(e);
@@ -56,7 +56,7 @@ cmd({
         }
 
         // Fetch the response from the Blackbox AI API
-        let data = await fetchJson(`https://api.giftedtech.my.id/api/ai/blackbox?apikey=gifted&q=${encodeURIComponent(q)}`);
+        let data = await fetchJson(`https://api.giftedtech.web.id/api/ai/blackbox?apikey=gifted&q=${encodeURIComponent(q)}`);
         
         // Reply with the AI's response
         return reply(`${data.result}`);
@@ -80,7 +80,7 @@ cmd({
         }
 
         // Fetch the response from the LetMeGPT API
-        let data = await fetchJson(`https://api.giftedtech.my.id/api/ai/letmegpt?apikey=gifted&query=${encodeURIComponent(q)}`);
+        let data = await fetchJson(`https://api.giftedtech.web.id/api/ai/letmegpt?apikey=gifted&query=${encodeURIComponent(q)}`);
         
         // Reply with the AI's response
         return reply(`${data.result}`);
@@ -103,7 +103,7 @@ cmd({
         }
 
         // Fetch the response from the Llama AI API
-        let data = await fetchJson(`https://api.giftedtech.my.id/api/ai/llamaai?apikey=gifted&q=${encodeURIComponent(q)}`);
+        let data = await fetchJson(`https://api.giftedtech.web.id/api/ai/llamaai?apikey=gifted&q=${encodeURIComponent(q)}`);
         
         console.log(data); // Log the entire response to inspect its structure
         
@@ -130,7 +130,7 @@ cmd({
             return reply("Hello! How can I assist you with Gemini AI today?");
         }
 
-        let data = await fetchJson(`https://api.giftedtech.my.id/api/ai/geminiai?apikey=gifted&q=${encodeURIComponent(q)}`);
+        let data = await fetchJson(`https://api.giftedtech.web.id/api/ai/geminiai?apikey=gifted&q=${encodeURIComponent(q)}`);
         return reply(`${data.result}`);
     } catch (e) {
         console.log(e);
