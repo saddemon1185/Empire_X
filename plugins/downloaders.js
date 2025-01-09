@@ -98,7 +98,7 @@ const infoMessage = {
                 externalAdReply: {
                     showAdAttribution: false,
                     title: data.title,
-                    body: 'Powered by Empire_X',
+                    body: 'Made By  𝐄𝐦𝐩𝐢𝐫𝐞 𝐓𝐞𝐜𝐡 [ 𝐃𝐞𝐯𝐞𝐥𝐨𝐩𝐞𝐫 ]',
                     thumbnailUrl: data.thumbnail,
                     sourceUrl: config.channelUrl,
                     mediaType: 1,
@@ -203,7 +203,7 @@ const infoMessage = {
                 externalAdReply: {
                     showAdAttribution: false,
                     title: data.title,
-                    body: 'Powered by Empire_X',
+                    body: 'Made By  𝐄𝐦𝐩𝐢𝐫𝐞 𝐓𝐞𝐜𝐡 [ 𝐃𝐞𝐯𝐞𝐥𝐨𝐩𝐞𝐫 ]',
                     thumbnailUrl: data.thumbnail,
                     sourceUrl: config.channelUrl,
                     mediaType: 2, // video
@@ -321,7 +321,7 @@ const infoMessage = {
                 externalAdReply: {
                     showAdAttribution: false,
                     title: data.title,
-                    body: "Powered by Empire_X",
+                    body: "Made By  𝐄𝐦𝐩𝐢𝐫𝐞 𝐓𝐞𝐜𝐡 [ 𝐃𝐞𝐯𝐞𝐥𝐨𝐩𝐞𝐫 ]",
                     thumbnailUrl: data.thumbnail,
                     sourceUrl: config.channelUrl,
                     mediaType: 1,
@@ -447,7 +447,7 @@ const infoMessage = {
                 externalAdReply: {
                     showAdAttribution: false,
                     title: data.title,
-                    body: "Powered by Empire_X",
+                    body: "Made By  𝐄𝐦𝐩𝐢𝐫𝐞 𝐓𝐞𝐜𝐡 [ 𝐃𝐞𝐯𝐞𝐥𝐨𝐩𝐞𝐫 ]",
                     thumbnailUrl: data.thumbnail,
                     sourceUrl: config.channelUrl,
                     mediaType: 2, // video
@@ -499,7 +499,7 @@ cmd({
         }, { quoted: mek });
 
         setTimeout(async () => {
-            await conn.sendMessage(from, { text: "Here is your Google file made by Empire_X" }, { quoted: mek });
+            await conn.sendMessage(from, { text: "Made By  𝐄𝐦𝐩𝐢𝐫𝐞 𝐓𝐞𝐜𝐡 [ 𝐃𝐞𝐯𝐞𝐥𝐨𝐩𝐞𝐫 ]" }, { quoted: mek });
         }, 5000);
     } catch (e) {
         console.log(e);
