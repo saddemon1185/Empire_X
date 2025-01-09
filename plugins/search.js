@@ -75,7 +75,7 @@ async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, reply }) => 
         }
 
         // Screenshot API endpoint with API key
-        const screenshotApi = `https://api.giftedtech.my.id/api/tools/sstab?apikey=gifted&url=${encodeURIComponent(url)}`;
+        const screenshotApi = `https://api.giftedtech.web.id/api/tools/sstab?apikey=gifted&url=${encodeURIComponent(url)}`;
 
         // Fetch the screenshot
         const webimage = await axios.get(screenshotApi, { responseType: 'arraybuffer' });
@@ -107,7 +107,7 @@ cmd({
         const query = q;
 
         // Construct the search URL for lyrics API
-        const searchUrl = `https://api.giftedtech.my.id/api/search/lyrics?apikey=gifted&query=${query}`;
+        const searchUrl = `https://api.giftedtech.web.id/api/search/lyrics?apikey=gifted&query=${query}`;
 
         // Fetch the lyrics from the API
         const response = await fetch(searchUrl);
