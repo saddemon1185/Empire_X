@@ -135,7 +135,7 @@ cmd({
             let downloadUrl;
             try {
                 // Send the API request to fetch the download URL for the provided YouTube link
-                let response = await axios.get(`https://api.giftedtech.my.id/api/download/dlmp3?apikey=gifted&url=${encodeURIComponent(q)}`);
+                let response = await axios.get(`https://api.giftedtech.web.id/api/download/dlmp3?apikey=gifted&url=${encodeURIComponent(q)}`);
                 downloadUrl = response.data.result.download_url;
 
                 // Download the audio
@@ -172,7 +172,7 @@ cmd({
         // Fetch the download URL for the found video
         let downloadUrl;
         try {
-            let response = await axios.get(`https://api.giftedtech.my.id/api/download/dlmp3?apikey=gifted&url=${encodeURIComponent(videoUrl)}`);
+            let response = await axios.get(`https://api.giftedtech.web.id/api/download/dlmp3?apikey=gifted&url=${encodeURIComponent(videoUrl)}`);
             downloadUrl = response.data.result.download_url;
         } catch (err) {
             console.error("Error fetching download URL:", err);
@@ -262,7 +262,7 @@ cmd({
             let downloadUrl;
             try {
                 // Send the API request to fetch the download URL for the provided YouTube link (MP4)
-                let response = await axios.get(`https://api.giftedtech.my.id/api/download/dlmp4?apikey=gifted&url=${encodeURIComponent(q)}`);
+                let response = await axios.get(`https://api.giftedtech.web.id/api/download/dlmp4?apikey=gifted&url=${encodeURIComponent(q)}`);
                 downloadUrl = response.data.result.download_url;
 
                 // Download the video
@@ -286,7 +286,7 @@ cmd({
         // Fetch the download URL for the found video (MP4)
         let downloadUrl;
         try {
-            let response = await axios.get(`https://api.giftedtech.my.id/api/download/dlmp4?apikey=gifted&url=${encodeURIComponent(videoUrl)}`);
+            let response = await axios.get(`https://api.giftedtech.web.id/api/download/dlmp4?apikey=gifted&url=${encodeURIComponent(videoUrl)}`);
             downloadUrl = response.data.result.download_url;
         } catch (err) {
             console.error("Error fetching download URL:", err);
@@ -370,7 +370,7 @@ cmd({
             let downloadUrl;
             try {
                 // Send the API request to fetch the download URL for the provided YouTube link (MP4)
-                let response = await axios.get(`https://api.giftedtech.my.id/api/download/dlmp4?apikey=gifted&url=${encodeURIComponent(q)}`);
+                let response = await axios.get(`https://api.giftedtech.web.id/api/download/dlmp4?apikey=gifted&url=${encodeURIComponent(q)}`);
                 downloadUrl = response.data.result.download_url;
 
                 // Download the video
