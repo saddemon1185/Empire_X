@@ -108,9 +108,8 @@ const infoMessage = {
         }, { quoted: mek });
 
         await m.react("✅");
-    } catch (e) {
-        console.error("Error in play command:", e);
-        reply(`❌ Error: ${e.message}`);
+        } catch (e) {
+        return reply(`❌ Error: ${e.message}`);
     }
 });
 
