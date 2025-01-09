@@ -16,7 +16,7 @@ cmd({
     category: "download",
     react: "🎶",
     filename: __filename
-}, async (conn, mek, m, { from, quoted, body, args, q, reply }) => {
+}, async (conn, mek, m, { from, quoted, body, args, q, pushname, reply }) => {
     try {
         // Check for query
         if (!q) {
@@ -63,19 +63,17 @@ cmd({
 const infoMessage = {
     image: { url: data.thumbnail },
     caption: `
-╭━━━▻〔 *EMPIRE_X SONG DOWNLOADER* 〕━━━━⬤
-┃𖠄╭────────────────────·๏
-┃𖠄┃• *Title:* ${data.title}
-┃𖠄┃• *Quality:* mp3 (128kbps)
-┃𖠄┃• *Duration:* ${data.timestamp}
-┃𖠄┃• *Viewers:* ${data.views}
-┃𖠄┃• *Uploaded:* ${data.ago}
-┃𖠄┃• *Artist:* ${data.author.name}
-┃𖠄└────────────────────·๏
-┃𖠄╭────────────────────·๏
-┃𖠄┃ Powered by Empire_X
-┃𖠄└────────────────────·๏
-╰━━━━━━━━━━━━━━━━━━━━━⬤`,
+╭─────❏ *EMPIRE_X DOWNLOADER* ❏
+│ 𝙷𝙴𝙻𝙻𝙾 ${pushname || "User"}
+│───────────────────
+│ *Title:* ${data.title}
+│ *Quality:* mp3 (128kbps)
+│ *Duration:* ${data.timestamp}
+│ *Viewers:* ${data.views}
+│ *Uploaded:* ${data.ago}
+│ *Artist:* ${data.author.name}
+│ > Made By  𝐄𝐦𝐩𝐢𝐫𝐞 𝐓𝐞𝐜𝐡 [ 𝐃𝐞𝐯𝐞𝐥𝐨𝐩𝐞𝐫 ]
+╰━━━━━━━━━━━━━━━━━━━──⊷``,
             contextInfo: {
                 mentionedJid: [mek.sender],
                 forwardingScore: 5,
@@ -123,7 +121,7 @@ cmd({
     category: "download",
     react: "🎬",
     filename: __filename
-}, async (conn, mek, m, { from, quoted, body, args, q, reply }) => {
+}, async (conn, mek, m, { from, quoted, body, args, q, pushname, reply }) => {
     try {
         // Check for query
         if (!q) {
@@ -170,19 +168,17 @@ cmd({
 const infoMessage = {
     image: { url: data.thumbnail },
     caption: `
-╭━━━▻〔 *EMPIRE_X VIDEO DOWNLOADER* 〕━━━━⬤
-┃𖠄╭────────────────────·๏
-┃𖠄┃• *Title:* ${data.title}
-┃𖠄┃• *Quality:* mp3 (128kbps)
-┃𖠄┃• *Duration:* ${data.timestamp}
-┃𖠄┃• *Viewers:* ${data.views}
-┃𖠄┃• *Uploaded:* ${data.ago}
-┃𖠄┃• *Artist:* ${data.author.name}
-┃𖠄└────────────────────·๏
-┃𖠄╭────────────────────·๏
-┃𖠄┃ Powered by Empire_X
-┃𖠄└────────────────────·๏
-╰━━━━━━━━━━━━━━━━━━━━━⬤`,
+╭─────❏ *EMPIRE_X DOWNLOADER* ❏
+│ 𝙷𝙴𝙻𝙻𝙾 ${pushname || "User"}
+│───────────────────
+│ *Title:* ${data.title}
+│ *Quality:* Mp4 (128kbps)
+│ *Duration:* ${data.timestamp}
+│ *Viewers:* ${data.views}
+│ *Uploaded:* ${data.ago}
+│ *Artist:* ${data.author.name}
+│ > Made By  𝐄𝐦𝐩𝐢𝐫𝐞 𝐓𝐞𝐜𝐡 [ 𝐃𝐞𝐯𝐞𝐥𝐨𝐩𝐞𝐫 ]
+╰━━━━━━━━━━━━━━━━━━━──⊷``,
             contextInfo: {
                 mentionedJid: [mek.sender],
                 forwardingScore: 5,
@@ -230,7 +226,7 @@ cmd({
     category: "download",
     react: "🎶",
     filename: __filename
-}, async (conn, mek, m, { from, quoted, body, args, q, reply }) => {
+}, async (conn, mek, m, { from, quoted, body, args, q, pushname, reply }) => {
     try {
         // Check for query
         if (!q) {
@@ -290,19 +286,17 @@ cmd({
 const infoMessage = {
     image: { url: data.thumbnail },
     caption: `
-╭━━━▻〔 *EMPIRE_X SONG DOWNLOADER* 〕━━━━⬤
-┃𖠄╭────────────────────·๏
-┃𖠄┃• *Title:* ${data.title}
-┃𖠄┃• *Quality:* mp3 (128kbps)
-┃𖠄┃• *Duration:* ${data.timestamp}
-┃𖠄┃• *Viewers:* ${data.views}
-┃𖠄┃• *Uploaded:* ${data.ago}
-┃𖠄┃• *Artist:* ${data.author.name}
-┃𖠄└────────────────────·๏
-┃𖠄╭────────────────────·๏
-┃𖠄┃ Powered by Empire_X
-┃𖠄└────────────────────·๏
-╰━━━━━━━━━━━━━━━━━━━━━⬤`,
+╭─────❏ *EMPIRE_X DOWNLOADER* ❏
+│ 𝙷𝙴𝙻𝙻𝙾 ${pushname || "User"}
+│───────────────────
+│ *Title:* ${data.title}
+│ *Quality:* mp3 (128kbps)
+│ *Duration:* ${data.timestamp}
+│ *Viewers:* ${data.views}
+│ *Uploaded:* ${data.ago}
+│ *Artist:* ${data.author.name}
+│ > Made By  𝐄𝐦𝐩𝐢𝐫𝐞 𝐓𝐞𝐜𝐡 [ 𝐃𝐞𝐯𝐞𝐥𝐨𝐩𝐞𝐫 ]
+╰━━━━━━━━━━━━━━━━━━━──⊷`,
             contextInfo: {
                 mentionedJid: [mek.sender],
                 forwardingScore: 5,
@@ -358,7 +352,7 @@ cmd({
     category: "download",
     react: "🎬",
     filename: __filename
-}, async (conn, mek, m, { from, quoted, body, args, q, reply }) => {
+}, async (conn, mek, m, { from, quoted, body, args, q, pushname, reply }) => {
     try {
         // Check for query
         if (!q) {
@@ -418,19 +412,17 @@ cmd({
 const infoMessage = {
     image: { url: data.thumbnail },
     caption: `
-╭━━━▻〔 *EMPIRE_X VIDEO DOWNLOADER* 〕━━━━⬤
-┃𖠄╭────────────────────·๏
-┃𖠄┃• *Title:* ${data.title}
-┃𖠄┃• *Quality:* mp3 (128kbps)
-┃𖠄┃• *Duration:* ${data.timestamp}
-┃𖠄┃• *Viewers:* ${data.views}
-┃𖠄┃• *Uploaded:* ${data.ago}
-┃𖠄┃• *Artist:* ${data.author.name}
-┃𖠄└────────────────────·๏
-┃𖠄╭────────────────────·๏
-┃𖠄┃ Powered by Empire_X
-┃𖠄└────────────────────·๏
-╰━━━━━━━━━━━━━━━━━━━━━⬤`,
+╭─────❏ *EMPIRE_X DOWNLOADER* ❏
+│ 𝙷𝙴𝙻𝙻𝙾 ${pushname || "User"}
+│───────────────────
+│ *Title:* ${data.title}
+│ *Quality:* mp3 (128kbps)
+│ *Duration:* ${data.timestamp}
+│ *Viewers:* ${data.views}
+│ *Uploaded:* ${data.ago}
+│ *Artist:* ${data.author.name}
+│ > Made By 𝐄𝐦𝐩𝐢𝐫𝐞 𝐓𝐞𝐜𝐡 [ 𝐃𝐞𝐯𝐞𝐥𝐨𝐩𝐞𝐫 ]
+╰━━━━━━━━━━━━━━━━━━━──⊷``,
             contextInfo: {
                 mentionedJid: [mek.sender],
                 forwardingScore: 5,
@@ -585,13 +577,14 @@ async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sen
         await conn.sendMessage(from, {
             video: { url: videoUrl },
             caption: `
-*🎬TikTok Video Downloaded!🎬*
-
-*Title*: ${title}
-*Author*: ${authorName}
-*Duration*: ${videoDetails.duration}s
-
-> 🌟*Empire_X*`
+╭─────❏ *EMPIRE_X DOWNLOADER* ❏
+│ 𝙷𝙴𝙻𝙻𝙾 ${pushname || "User"}
+│───────────────────
+│ *Title*: ${title}
+│ *Author*: ${authorName}
+│ *Duration*: ${videoDetails.duration}s
+│ > Made By 𝐄𝐦𝐩𝐢𝐫𝐞 𝐓𝐞𝐜𝐡 [ 𝐃𝐞𝐯𝐞𝐥𝐨𝐩𝐞𝐫 ]
+╰━━━━━━━━━━━━━━━━━━━──⊷``
         }, { quoted: mek });
 
         // Optionally, send the thumbnail as well
