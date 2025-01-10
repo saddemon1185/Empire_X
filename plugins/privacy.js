@@ -4,7 +4,12 @@ const { cmd, commands } = require("../command");
 const path = require('path');
 
 // Load dev.json to get the contact number
-const devData = JSON.parse(fs.readFileSync("./lib/dev.json", "utf8"));
+let devData = [];
+try {
+    devData = JSON.parse(fs.readFileSync("./lib/dev.json", "utf8"));
+} catch (e) {
+    console.error("Error loading dev.json:", e);
+}
 
 cmd({
     pattern: "getprivacy",
@@ -16,7 +21,9 @@ cmd({
 async (conn, mek, m, { from, l, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
     try {
         if (!isOwner) return reply('🚫 *You must be an Owner to use this command*');
-        const duka = await conn.fetchPrivacySettings(true);
+        const duka = await conn.fetchPrivacySettings?.(true);
+        if (!duka) return reply('🚫 *Failed to fetch privacy settings*');
+        
         let puka = `🛠️  *Empire_X ᴡʜᴀᴛꜱᴀᴘᴘ ᴘʀɪᴠᴀᴄʏ ꜱᴇᴛᴛɪɴɢꜱ*  ⚙️
 
 ⚙️▕  *Read Receipt* - ${duka.readreceipts}
@@ -64,7 +71,8 @@ cmd({
 }, async (conn, mek, m, { args, reply }) => {
     try {
         const jid = args[0] || mek.key.remoteJid;
-        const about = await conn.fetchStatus(jid);
+        const about = await conn.fetchStatus?.(jid);
+        if (!about) return reply("No bio found.");
         return reply(`User Bio:\n\n${about.status}`);
     } catch (error) {
         console.error("Error in bio command:", error);
@@ -80,7 +88,7 @@ cmd({
 }, async (conn, mek, m, { reply }) => {
     try {
         // Load the phone number from dev.json
-        const number = devData[0]; // First number in the dev.json array
+        const number = devData[0] || 'undefined';  // First number in the dev.json array, fallback to 'undefined' if not found
         const name = "Only_one_🥇Empire";  // VCard Name
         const info = "Empire_X";  // Profile Information
 
@@ -109,7 +117,7 @@ cmd({
         config.AUTO_REACT = "false";
         await reply("Auto-reacting to messages is now disabled.");
     } else {
-        await reply(`Invalid input! Use either 'true' or 'false'. Example:\n${prefix}autoreact true`);
+        await reply(`Invalid input! Use either 'true' or 'false'. Example:\n${use}autoreact true`);
     }
 });
 
@@ -129,6 +137,6 @@ cmd({
         config.OWNER_REACT = "false";
         await reply("Owner-only reacting to messages is now disabled.");
     } else {
-        await reply(`Invalid input! Use either 'true' or 'false'. Example:\n${prefix}ownerreact true`);
+        await reply(`Invalid input! Use either 'true' or 'false'. Example:\n${use}ownerreact true`);
     }
 });
