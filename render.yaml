@@ -2,29 +2,35 @@ services:
   - type: web
     name: Empire_X
     buildCommand: "npm install"  # Install dependencies
-    startCommand: "pm2 start index.js --deep-monitoring --attach --name Empire_X"  # Start command with PM2
-    plan: free  # Choose the free plan, or upgrade depending on your needs
-    runtime: "node"  # Use the Node.js runtime (this should work on Render)
+    startCommand: "pm2 start index.js --deep-monitoring --attach --name Empire_X"  # Start PM2
+    plan: free  # Free plan
+    runtime: "node"  # Node.js runtime
     envVars:
       - key: OWNER_NUMBER
-        value: "2348078582627"  # Replace with your actual owner's phone number
+        value: "2348078582627"  # Owner's number
       - key: OWNER_NAME
-        value: "Ony_one_🥇Empire"  # Replace with owner name 
+        value: "Ony_one_🥇Empire"  # Owner's name
       - key: BOT_NAME
-        value: "Empire_X"  # Do not change
+        value: "Empire_X"  # Bot's name
       - key: SESSION_ID
-        value: "aBFCXRAQ#aqmJ8WLCU5uivbV31E7GYaQBa8HzbYVxH5xd-XxRW4k"  # Replace with your actual session ID (if needed)
+        value: "aBFCXRAQ#aqmJ8WLCU5uivbV31E7GYaQBa8HzbYVxH5xd-XxRW4k"  # Session ID
       - key: PREFIX
-        value: "."  # Your bot's prefix
+        value: "."  # Bot's prefix
       - key: MODE
-        value: "private"  # Set the bot's mode: "private" or "groups"
+        value: "private"  # Bot's mode
       - key: AUTO_VIEW_STATUS
-        value: "false"  # Enable auto-read status
+        value: "false"  # Auto-view status
       - key: AUTO_REACT
-        value: "false"  # Enable auto reactions if required
+        value: "false"  # Auto reactions
       - key: OWNER_REACT
-        value: "false"  # Enable owner-specific reactions if needed
+        value: "false"  # Owner reactions
       - key: ALIVE_IMG
-        value: "https://raw.githubusercontent.com/efeurhobo/Empire_X/main/lib/assets/empire.jpg"  # Replace with owner
-      - key: CAPTION
-        value: "Made By 𝐎𝐧𝐥𝐲_𝐨𝐧𝐞_🥇𝐞𝐦𝐩𝐢𝐫𝐞"  # do not change 
+        value: "https://raw.githubusercontent.com/efeurhobo/Empire_X/main/lib/assets/empire.jpg"  # Alive image
+      - key: AUTO_LIKE_STATUS
+        value: "false"  # Auto-like status
+      - key: AUTO_LIKE_EMOJI
+        value: "💜"  # Like emoji
+      - key: AUTO_REPLY_STATUS
+        value: "false"  # Auto-reply status
+      - key: STATUS_REPLY_MSG
+        value: "✅ Status Viewed By Empire_X"  # Auto-reply message
