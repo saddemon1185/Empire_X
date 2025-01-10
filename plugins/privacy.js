@@ -8,7 +8,7 @@ const devData = JSON.parse(fs.readFileSync("./lib/dev.json", "utf8"));
 
 
     pattern: "getprivacy",
-    desc: "Get the bot Number Privacy Setting Updates",
+    desc: "Get the bot Number Privacy Setting Updates.",
     category: "privacy",
     use: '.getprivacy',
     filename: __filename
@@ -38,7 +38,7 @@ async (conn, mek, m, { from, l, quoted, body, isCmd, command, args, q, isGroup, 
 cmd({
     pattern: "updatebio",
     react: "🥏",
-    desc: "Change the Bot number Bio",
+    desc: "Change the Bot number Bio.",
     category: "privacy",
     use: '.updatebio',
     filename: __filename
