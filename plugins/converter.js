@@ -157,8 +157,8 @@ async (conn, mek, m, { reply }) => {
         } else {
             return reply("Failed to upload the image. Please try again.");
         }
-    } catch (error) {
-        console.error(error);
-        return reply("An error occurred while uploading the image. Please try again.");
+    } catch (e) {
+        console.error(e);
+        return reply("An error occurred while uploading the urL. Please try again.");
     }
 });
