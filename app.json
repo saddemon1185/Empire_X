@@ -16,7 +16,7 @@
       "required": true
     },
     "MODE": {
-      "description": "Work type of your bot. Use 'public' or 'private'. If private, only the bot number can use it.",
+      "description": " Use 'public' or 'private'.",
       "value": "private",
       "required": true
     },
