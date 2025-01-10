@@ -2,6 +2,7 @@ const { Sticker, StickerTypes } = require('wa-sticker-formatter');
 const { cmd } = require('../command');
 const axios = require('axios');
 const { getBuffer, getGroupAdmins, getRandom, h2k, isUrl, Json, sleep, fetchJson } = require('../lib/functions');
+const { downloadMediaMessage } = require('./lib/msg'); // Adjusted path for `msg.js`
 
 const imgmsg = 'Reply to a photo for sticker!'; // Default message when no image or sticker is found.
 
@@ -116,5 +117,48 @@ async (conn, mek, m, { from, quoted, isOwner, isAdmins, reply, args }) => {
     } catch (e) {
         console.error(e);
         return reply("An error occurred while shortening the URL. Please try again.");
+    }
+});
+
+
+cmd({
+    pattern: "url",
+    desc: "Uploads an image to ImgBB and sends the URL.",
+    category: "converter",
+    react: "✅",
+    filename: __filename,
+},
+async (conn, mek, m, { reply }) => {
+    const apiKey = '13f46d61ad4bc99ec0d75602dff37851';
+    const apiUrl = `https://api.imgbb.com/1/upload?key=${apiKey}`;
+
+    // Check if the command is used in reply to an image
+    if (!m.quoted || m.quoted.type !== 'imageMessage') {
+        return reply("Please reply to an image with .url to upload it.");
+    }
+
+    try {
+        // Download the image from the quoted message
+        const buffer = await downloadMediaMessage(m.quoted);
+
+        // Convert the buffer to Base64
+        const base64Image = buffer.toString('base64');
+
+        // Upload the image to ImgBB
+        const response = await axios.post(apiUrl, {
+            image: base64Image,
+        });
+
+        const result = response.data;
+
+        if (result.success) {
+            const imageUrl = result.data.url;
+            return reply(`*🖼️ Uploaded Image URL:*\n${imageUrl}`);
+        } else {
+            return reply("Failed to upload the image. Please try again.");
+        }
+    } catch (error) {
+        console.error(error);
+        return reply("An error occurred while uploading the image. Please try again.");
     }
 });
