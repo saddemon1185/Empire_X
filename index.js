@@ -103,35 +103,40 @@ conn.ev.on('creds.update', saveCreds)
 
 conn.ev.on('messages.upsert', async(mek) => {
     mek = mek.messages[0]
-    if (!mek.message) return	
-    mek.message = (getContentType(mek.message) === 'ephemeralMessage') ? mek.message.ephemeralMessage.message : mek.message
-
-    if (mek.key && mek.key.remoteJid === 'status@broadcast' && config.AUTO_VIEW_STATUS === "false") {
-        await conn.readMessages([mek.key])
-    }
-
-    if (mek.key && mek.key.remoteJid === 'status@broadcast' && config.AUTO_LIKE_STATUS === "false") {
-        const customEmoji = config.AUTO_LIKE_EMOJI || '💜';
-        if (mek.key.remoteJid && mek.key.participant) {
-            await conn.sendMessage(
-                mek.key.remoteJid,
-                { react: { key: mek.key, text: customEmoji } },
-                { statusJidList: [mek.key.participant] }
-            );
+    if (mek.key && mek.key.remoteJid === "status@broadcast") {
+    try {
+        // Auto view status
+        if (config.AUTO_VIEW_STATUS === "true" && mek.key) {
+            await conn.readMessages([mek.key]);
         }
-    }
 
-    if (mek.key && mek.key.remoteJid === 'status@broadcast' && config.AUTO_REPLY_STATUS === "false") {
-        const customMessage = config.STATUS_REPLY_MSG || '✅ Status Viewed By Empire_X';
-        if (mek.key.remoteJid) {
-            await conn.sendMessage(
-                mek.key.remoteJid,
-                { text: customMessage },
-                { quoted: mek }
-            );
+        // Auto like status
+        if (config.AUTO_LIKE_STATUS === "true") {
+            const customEmoji = config.AUTO_LIKE_EMOJI || '💜';
+            if (mek.key.remoteJid && mek.key.participant) {
+                await conn.sendMessage(
+                    mek.key.remoteJid,
+                    { react: { key: mek.key, text: customEmoji } },
+                    { statusJidList: [mek.key.participant] }
+                );
+            }
         }
-    }
 
+        // Auto reply to status
+        if (config.AUTO_REPLY_STATUS === "true") {
+            const customMessage = config.STATUS_REPLY_MSG || '✅ Status Viewed By Empire_X';
+            if (mek.key.remoteJid) {
+                await conn.sendMessage(
+                    mek.key.remoteJid,
+                    { text: customMessage },
+                    { quoted: mek }
+                );
+            }
+        }
+    } catch (error) {
+        console.error("Error processing status actions:", error);
+    }
+}
     const m = sms(conn, mek)
     const type = getContentType(mek.message)
     const content = JSON.stringify(mek.message)
