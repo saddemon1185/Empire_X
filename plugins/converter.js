@@ -2,7 +2,7 @@ const { Sticker, StickerTypes } = require('wa-sticker-formatter');
 const { cmd } = require('../command');
 const axios = require('axios');
 const { getBuffer, getGroupAdmins, getRandom, h2k, isUrl, Json, sleep, fetchJson } = require('../lib/functions');
-const { downloadMediaMessage } = require('./lib/msg'); // Adjusted path for `msg.js`
+const { proto, downloadContentFromMessage } = require('@whiskeysockets/baileys');
 
 const imgmsg = 'Reply to a photo for sticker!'; // Default message when no image or sticker is found.
 
