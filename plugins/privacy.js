@@ -154,7 +154,7 @@ cmd({
     pattern: "autoreact",
     alias: ["areact"],
     desc: "Enable or disable auto-reacting to messages",
-    category: "owner",
+    category: "privacy",
     react: "🔁",
     filename: __filename
 }, async (conn, mek, m, { from, quoted, body, args, q, pushname, reply }) => {
@@ -174,7 +174,7 @@ cmd({
     pattern: "ownerreact",
     alias: ["oreact"],
     desc: "Enable or disable owner-only reaction to messages",
-    category: "owner",
+    category: "privacy",
     react: "🔥",
     filename: __filename
 }, async (conn, mek, m, { from, quoted, body, args, q, pushname, reply }) => {
