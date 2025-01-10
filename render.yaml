@@ -13,7 +13,7 @@ services:
       - key: BOT_NAME
         value: "Empire_X"  # Bot's name
       - key: SESSION_ID
-        value: "aBFCXRAQ#aqmJ8WLCU5uivbV31E7GYaQBa8HzbYVxH5xd-XxRW4k"  # Session ID
+        value: "vYUVmIxL#MaaAtgDWLQtPeCvsq2sX2IHIV01VPC3nivz8OMa_KT0"  # Session ID
       - key: PREFIX
         value: "."  # Bot's prefix
       - key: MODE
