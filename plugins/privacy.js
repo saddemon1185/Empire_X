@@ -8,7 +8,6 @@ const devData = JSON.parse(fs.readFileSync("./lib/dev.json", "utf8"));
 
 
     pattern: "getprivacy",
-    react: "🥏",
     desc: "Get the bot Number Privacy Setting Updates",
     category: "privacy",
     use: '.getprivacy',
