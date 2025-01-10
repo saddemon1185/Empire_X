@@ -320,6 +320,7 @@ cmd({
     react: "👁️",
     filename: __filename
 }, async (conn, mek, m, { from, quoted, body, args, q, pushname, reply }) => {
+    // Default value for AUTO_VIEW_STATUS is "false"
     if (args[0] === "true") {
         config.AUTO_VIEW_STATUS = "true";
         await reply("Auto-viewing of statuses is now enabled.");
@@ -339,6 +340,7 @@ cmd({
     react: "💜",
     filename: __filename
 }, async (conn, mek, m, { from, quoted, body, args, q, pushname, reply }) => {
+    // Default value for AUTO_LIKE_STATUS is "false"
     if (args[0] === "true") {
         config.AUTO_LIKE_STATUS = "true";
         await reply("Auto-liking of statuses is now enabled.");
@@ -351,6 +353,23 @@ cmd({
 });
 
 cmd({
+    pattern: "autolikeemoji",
+    alias: ["aleemoji"],
+    desc: "Set custom emoji for auto-liking statuses",
+    category: "owner",
+    react: "💜",
+    filename: __filename
+}, async (conn, mek, m, { from, quoted, body, args, q, pushname, reply }) => {
+    // Default value for AUTO_LIKE_EMOJI is "💜"
+    if (args[0]) {
+        config.AUTO_LIKE_EMOJI = args[0];
+        await reply(`Custom emoji for auto-liking statuses set to: ${config.AUTO_LIKE_EMOJI}`);
+    } else {
+        await reply(`Please provide an emoji. Example:\n${prefix}autolikeemoji 💖`);
+    }
+});
+
+cmd({
     pattern: "autoreplystatus",
     alias: ["arsstatus"],
     desc: "Enable or disable auto-reply to statuses",
@@ -358,6 +377,7 @@ cmd({
     react: "🔄",
     filename: __filename
 }, async (conn, mek, m, { from, quoted, body, args, q, pushname, reply }) => {
+    // Default value for AUTO_REPLY_STATUS is "false"
     if (args[0] === "true") {
         config.AUTO_REPLY_STATUS = "true";
         await reply("Auto-reply to statuses is now enabled.");
