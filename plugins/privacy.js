@@ -10,7 +10,7 @@ cmd({
     pattern: "autoreadsatus",
     alias: ["avstatus"],
     desc: "Enable or disable auto-viewing of statuses",
-    category: "owner",
+    category: "privacy",
     react: "👁️",
     filename: __filename
 }, async (conn, mek, m, { from, quoted, body, args, q, pushname, reply }) => {
