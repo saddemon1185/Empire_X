@@ -59,6 +59,26 @@
       "description": "Enable auto-read status with true or false.",
       "value": "false",
       "required": true
+    },
+    "AUTO_LIKE_STATUS": {
+      "description": "Enable auto-like status with true or false.",
+      "value": "false",
+      "required": true
+    },
+    "AUTO_LIKE_EMOJI": {
+      "description": "Set custom emoji for auto-like status.",
+      "value": "💜",
+      "required": true
+    },
+    "AUTO_REPLY_STATUS": {
+      "description": "Enable auto-reply status with true or false.",
+      "value": "false",
+      "required": true
+    },
+    "STATUS_REPLY_MSG": {
+      "description": "Set custom message for auto-reply status.",
+      "value": "✅ Status Viewed By Empire_X",
+      "required": true
     }
   },
   "buildpacks": [
