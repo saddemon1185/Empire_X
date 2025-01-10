@@ -6,7 +6,7 @@ const path = require('path');
 // Load dev.json to get the contact number
 const devData = JSON.parse(fs.readFileSync("./lib/dev.json", "utf8"));
 
-
+cmd({
     pattern: "getprivacy",
     desc: "Get the bot Number Privacy Setting Updates.",
     category: "privacy",
