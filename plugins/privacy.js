@@ -7,6 +7,62 @@ const path = require('path');
 const devData = JSON.parse(fs.readFileSync("./lib/dev.json", "utf8"));
 
 cmd({
+    pattern: "autoreadsatus",
+    alias: ["avstatus"],
+    desc: "Enable or disable auto-viewing of statuses",
+    category: "owner",
+    react: "👁️",
+    filename: __filename
+}, async (conn, mek, m, { from, quoted, body, args, q, pushname, reply }) => {
+    // Default value for AUTO_VIEW_STATUS is "false"
+    if (args[0] === "true") {
+        config.AUTO_VIEW_STATUS = "true";
+        await reply("Auto-viewing of statuses is now enabled.");
+    } else if (args[0] === "false") {
+        config.AUTO_VIEW_STATUS = "false";
+        await reply("Auto-viewing of statuses is now disabled.");
+    } else {
+        await reply(`Invalid input! Use either 'true' or 'false'. Example:\n${prefix}autoviewstatus true`);
+    }
+});
+
+cmd({
+    pattern: "autolikestatus",
+    alias: ["alstatus"],
+    desc: "Enable or disable auto-liking of statuses",
+    category: "privacy",
+    react: "💜",
+    filename: __filename
+}, async (conn, mek, m, { from, quoted, body, args, q, pushname, reply }) => {
+    // Default value for AUTO_LIKE_STATUS is "false"
+    if (args[0] === "true") {
+        config.AUTO_LIKE_STATUS = "true";
+        await reply("Auto-liking of statuses is now enabled.");
+    } else if (args[0] === "false") {
+        config.AUTO_LIKE_STATUS = "false";
+        await reply("Auto-liking of statuses is now disabled.");
+    } else {
+        await reply(`Invalid input! Use either 'true' or 'false'. Example:\n${prefix}autolikestatus true`);
+    }
+});
+
+cmd({
+    pattern: "autolikeemoji",
+    alias: ["aleemoji"],
+    desc: "Set custom emoji for auto-liking statuses",
+    category: "privacy",
+    react: "💜",
+    filename: __filename
+}, async (conn, mek, m, { from, quoted, body, args, q, pushname, reply }) => {
+    // Default value for AUTO_LIKE_EMOJI is "💜"
+    if (args[0]) {
+        config.AUTO_LIKE_EMOJI = args[0];
+        await reply(`Custom emoji for auto-liking statuses set to: ${config.AUTO_LIKE_EMOJI}`);
+    } else {
+        await reply(`Please provide an emoji. Example:\n${prefix}autolikeemoji 💖`);
+    }
+});
+
     pattern: "getprivacy",
     react: "🥏",
     desc: "Get the bot Number Privacy Setting Updates",
