@@ -207,6 +207,7 @@ conn.sendFileUrl = async (jid, url, caption, quoted, options = {}) => {
             m.react(randomReaction);  // React with a random emoji
         }
     }
+//===========================
 
 //===================WORKTYPE===============================
 if(!isOwner && config.MODE === "private") return
