@@ -149,3 +149,43 @@ cmd({
         reply("An error occurred while sending VCard.");
     }
 });
+
+cmd({
+    pattern: "autoreact",
+    alias: ["areact"],
+    desc: "Enable or disable auto-reacting to messages",
+    category: "owner",
+    react: "🔁",
+    filename: __filename
+}, async (conn, mek, m, { from, quoted, body, args, q, pushname, reply }) => {
+    // Default value for AUTO_REACT is "false"
+    if (args[0] === "true") {
+        config.AUTO_REACT = "true";
+        await reply("Auto-reacting to messages is now enabled.");
+    } else if (args[0] === "false") {
+        config.AUTO_REACT = "false";
+        await reply("Auto-reacting to messages is now disabled.");
+    } else {
+        await reply(`Invalid input! Use either 'true' or 'false'. Example:\n${prefix}autoreact true`);
+    }
+});
+
+cmd({
+    pattern: "ownerreact",
+    alias: ["oreact"],
+    desc: "Enable or disable owner-only reaction to messages",
+    category: "owner",
+    react: "🔥",
+    filename: __filename
+}, async (conn, mek, m, { from, quoted, body, args, q, pushname, reply }) => {
+    // Default value for OWNER_REACT is "false"
+    if (args[0] === "true") {
+        config.OWNER_REACT = "true";
+        await reply("Owner-only reacting to messages is now enabled.");
+    } else if (args[0] === "false") {
+        config.OWNER_REACT = "false";
+        await reply("Owner-only reacting to messages is now disabled.");
+    } else {
+        await reply(`Invalid input! Use either 'true' or 'false'. Example:\n${prefix}ownerreact true`);
+    }
+});
