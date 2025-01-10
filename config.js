@@ -20,4 +20,5 @@ module.exports = {
     AUTO_LIKE_STATUS: process.env.AUTO_LIKE_STATUS || "false",
     AUTO_REPLY_STATUS: process.env.AUTO_REPLY_STATUS || "false",
     STATUS_REPLY_MSG: process.env.STATUS_REPLY_MSG || "✅ Status Viewed By Empire_X",
+    AUTO_LIKE_EMOJI: process.env.AUTO_LIKE_EMOJI || "💜",
 };
