@@ -75,6 +75,11 @@
       "value": "false",
       "required": true
     },
+    "ANTILINK": {
+      "description": "Enable or disable the anti-link feature in groups",
+      "value": "false",
+      "required": true
+    },
     "STATUS_REPLY_MSG": {
       "description": "Set custom message for auto-reply status.",
       "value": "✅ Status Viewed By Empire_X",
