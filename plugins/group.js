@@ -3,6 +3,27 @@ const config = require('../config');
 
 const prefix = config.PREFIX; // Get the prefix from the config
 
+//antilink command 
+
+cmd({
+    pattern: "antilink",
+    alias: ["alink"],
+    desc: "Enable or disable anti-link feature in groups",
+    category: "group",
+    react: "🚫",
+    filename: __filename
+}, async (conn, mek, m, { from, quoted, body, args, q, pushname, reply }) => {
+    // Default value for ANTI_LINK is "false"
+    if (args[0] === "true") {
+        config.ANTILINK = "true";
+        await reply("Anti-link feature is now enabled in this group.");
+    } else if (args[0] === "false") {
+        config.ANTILINK = "false";
+        await reply("Anti-link feature is now disabled in this group.");
+    } else {
+        await reply(`Invalid input! Use either 'true' or 'false'. Example:\n${prefix}antilink true`);
+    }
+});
 
 // Join a group
 cmd({
