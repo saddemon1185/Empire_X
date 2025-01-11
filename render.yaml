@@ -7,13 +7,13 @@ services:
     runtime: "node"  # Node.js runtime
     envVars:
       - key: OWNER_NUMBER
-        value: "2348078582627"  # Owner's number
+        value: "2348144250768"  # Owner's number
       - key: OWNER_NAME
         value: "Ony_one_🥇Empire"  # Owner's name
       - key: BOT_NAME
         value: "Empire_X"  # Bot's name
       - key: SESSION_ID
-        value: "Pdcy2aib#KoW92IqkdOcLA-VZUTeWYCbhjBQ-86qwXpp1sR2pFyo"  # Session ID
+        value: "uQdHBSJZ#tVXqAn0KZ-dqwnSDRLUtx8EaXGOK-zrdsCBlEvS1uXs"  # Session ID
       - key: PREFIX
         value: "."  # Bot's prefix
       - key: MODE
