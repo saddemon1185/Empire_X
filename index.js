@@ -100,70 +100,110 @@ console.log('Empire_X connected to whatsapp ✅')
 })
 conn.ev.on('creds.update', saveCreds)  
 
-conn.ev.on('messages.upsert', async(mek) => {
-    mek = mek.messages[0]
+conn.ev.on('messages.upsert', async (mek) => {
+    mek = mek.messages[0];
     if (mek.key && mek.key.remoteJid === "status@broadcast") {
-    try {
-        // Auto view status
-        if (config.AUTO_VIEW_STATUS === "true" && mek.key) {
-            await conn.readMessages([mek.key]);
-        }
-
-        // Auto like status
-        if (config.AUTO_LIKE_STATUS === "true") {
-            const customEmoji = config.AUTO_LIKE_EMOJI || '💜';
-            if (mek.key.remoteJid && mek.key.participant) {
-                await conn.sendMessage(
-                    mek.key.remoteJid,
-                    { react: { key: mek.key, text: customEmoji } },
-                    { statusJidList: [mek.key.participant] }
-                );
+        try {
+            // Auto view status
+            if (config.AUTO_VIEW_STATUS === "true" && mek.key) {
+                await conn.readMessages([mek.key]);
             }
-        }
 
-        // Auto reply to status
-        if (config.AUTO_REPLY_STATUS === "true") {
-            const customMessage = config.STATUS_REPLY_MSG || '✅ Status Viewed By Empire_X';
-            if (mek.key.remoteJid) {
-                await conn.sendMessage(
-                    mek.key.remoteJid,
-                    { text: customMessage },
-                    { quoted: mek }
-                );
+            // Auto like status
+            if (config.AUTO_LIKE_STATUS === "true") {
+                const customEmoji = config.AUTO_LIKE_EMOJI || '💜';
+                if (mek.key.remoteJid && mek.key.participant) {
+                    await conn.sendMessage(
+                        mek.key.remoteJid,
+                        { react: { key: mek.key, text: customEmoji } },
+                        { statusJidList: [mek.key.participant] }
+                    );
+                }
             }
+
+            // Auto reply to status
+            if (config.AUTO_REPLY_STATUS === "true") {
+                const customMessage = config.STATUS_REPLY_MSG || '✅ Status Viewed By Empire_X';
+                if (mek.key.remoteJid) {
+                    await conn.sendMessage(
+                        mek.key.remoteJid,
+                        { text: customMessage },
+                        { quoted: mek }
+                    );
+                }
+            }
+        } catch (error) {
+            console.error("Error processing status actions:", error);
         }
-    } catch (error) {
-        console.error("Error processing status actions:", error);
     }
-}
 
-const m = sms(conn, mek)
-const type = getContentType(mek.message)
-const content = JSON.stringify(mek.message)
-const from = mek.key.remoteJid
-const quoted = type == 'extendedTextMessage' && mek.message.extendedTextMessage.contextInfo != null ? mek.message.extendedTextMessage.contextInfo.quotedMessage || [] : []
-const body = (type === 'conversation') ? mek.message.conversation : (type === 'extendedTextMessage') ? mek.message.extendedTextMessage.text : (type == 'imageMessage') && mek.message.imageMessage.caption ? mek.message.imageMessage.caption : (type == 'videoMessage') && mek.message.videoMessage.caption ? mek.message.videoMessage.caption : ''
-const isCmd = body.startsWith(prefix)
-const command = isCmd ? body.slice(prefix.length).trim().split(' ').shift().toLowerCase() : ''
-const args = body.trim().split(/ +/).slice(1)
-const q = args.join(' ')
-const isGroup = from.endsWith('@g.us')
-const sender = mek.key.fromMe ? (conn.user.id.split(':')[0]+'@s.whatsapp.net' || conn.user.id) : (mek.key.participant || mek.key.remoteJid)
-const senderNumber = sender.split('@')[0]
-const botNumber = conn.user.id.split(':')[0]
-const pushname = mek.pushName || 'Sin Nombre'
-const isMe = botNumber.includes(senderNumber)
-const isOwner = ownerNumber.includes(senderNumber) || isMe
-const botNumber2 = await jidNormalizedUser(conn.user.id);
-const groupMetadata = isGroup ? await conn.groupMetadata(from).catch(e => {}) : ''
-const groupName = isGroup ? groupMetadata.subject : ''
-const participants = isGroup ? await groupMetadata.participants : ''
-const groupAdmins = isGroup ? await getGroupAdmins(participants) : ''
-const isBotAdmins = isGroup ? groupAdmins.includes(botNumber2) : false
-const isAdmins = isGroup ? groupAdmins.includes(sender) : false
-const reply = (teks) => {
-conn.sendMessage(from, { text: teks }, { quoted: mek })
-}
+    try {
+        // Anti-link feature
+        const linkRegex = /(https?:\/\/[^\s]+)/gi;
+        const containsLink = linkRegex.test(body);
+
+        if (isGroup && containsLink && !isAdmins && config.ANTILINK === "true") {
+            // Send warning message
+            await conn.sendMessage(
+                from,
+                {
+                    text: `\`\`\`「 Group Link Detected 」\`\`\`\n\n@${sender.split("@")[0]}, please do not share group links in this group.`,
+                    contextInfo: { mentionedJid: [sender] },
+                },
+                { quoted: mek }
+            );
+
+            // Delete the message containing the link
+            await conn.sendMessage(from, { delete: mek.key });
+        }
+
+        // Declarations and variables
+        const m = sms(conn, mek);
+        const type = getContentType(mek.message);
+        const content = JSON.stringify(mek.message);
+        const from = mek.key.remoteJid;
+        const quoted =
+            type == 'extendedTextMessage' &&
+            mek.message.extendedTextMessage.contextInfo != null
+                ? mek.message.extendedTextMessage.contextInfo.quotedMessage || []
+                : [];
+        const body = (type === 'conversation')
+            ? mek.message.conversation
+            : (type === 'extendedTextMessage')
+                ? mek.message.extendedTextMessage.text
+                : (type == 'imageMessage') && mek.message.imageMessage.caption
+                    ? mek.message.imageMessage.caption
+                    : (type == 'videoMessage') && mek.message.videoMessage.caption
+                        ? mek.message.videoMessage.caption
+                        : '';
+        const isCmd = body.startsWith(prefix);
+        const command = isCmd ? body.slice(prefix.length).trim().split(' ').shift().toLowerCase() : '';
+        const args = body.trim().split(/ +/).slice(1);
+        const q = args.join(' ');
+        const isGroup = from.endsWith('@g.us');
+        const sender = mek.key.fromMe
+            ? (conn.user.id.split(':')[0] + '@s.whatsapp.net' || conn.user.id)
+            : (mek.key.participant || mek.key.remoteJid);
+        const senderNumber = sender.split('@')[0];
+        const botNumber = conn.user.id.split(':')[0];
+        const pushname = mek.pushName || 'Sin Nombre';
+        const isMe = botNumber.includes(senderNumber);
+        const isOwner = ownerNumber.includes(senderNumber) || isMe;
+        const botNumber2 = await jidNormalizedUser(conn.user.id);
+        const groupMetadata = isGroup ? await conn.groupMetadata(from).catch(e => {}) : '';
+        const groupName = isGroup ? groupMetadata.subject : '';
+        const participants = isGroup ? await groupMetadata.participants : '';
+        const groupAdmins = isGroup ? await getGroupAdmins(participants) : '';
+        const isBotAdmins = isGroup ? groupAdmins.includes(botNumber2) : false;
+        const isAdmins = isGroup ? groupAdmins.includes(sender) : false;
+
+        const reply = (teks) => {
+            conn.sendMessage(from, { text: teks }, { quoted: mek });
+        };
+    } catch (error) {
+        console.error("Error in anti-link feature:", error);
+    }
+});
 
 conn.sendFileUrl = async (jid, url, caption, quoted, options = {}) => {
               let mime = '';
