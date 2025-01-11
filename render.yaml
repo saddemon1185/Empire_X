@@ -32,5 +32,7 @@ services:
         value: "💜"  # Like emoji
       - key: AUTO_REPLY_STATUS
         value: "false"  # Auto-reply status
+      - key: ANTILINK
+        value: "false"  # Auto-delete-group-link
       - key: STATUS_REPLY_MSG
         value: "✅ Status Viewed By Empire_X"  # Auto-reply message
