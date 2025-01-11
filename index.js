@@ -83,8 +83,7 @@ require("./plugins/" + plugin);
 }
 });
 console.log('Plugins installed successful 🔁')
-console.log('Bot connected to whatsapp ✅')
-console.log('Empire_X Connected 🔌')
+console.log('Empire_X connected to whatsapp ✅')
 
         let up = `╭━━━〔 Empire_X 〕━━━⬤
 ┃𖠄│ *Prefix*: *[ ${prefix} ]*
@@ -187,26 +186,7 @@ conn.sendFileUrl = async (jid, url, caption, quoted, options = {}) => {
                 return conn.sendMessage(jid, { audio: await getBuffer(url), caption: caption, mimetype: 'audio/mpeg', ...options }, { quoted: quoted, ...options })
               }
             }
-   
-
-//==============owner reacts==================
-    if (senderNumber.includes(config.OWNER_NUMBER)) {
-        if (config.AUTO_REACT === 'true') {
-            const reaction = ["🪀", "💀"];
-            const randomReaction = reaction[Math.floor(Math.random() * reaction.length)];
-            m.react(randomReaction);  // React with a random emoji
-        }
-    }
-
-    // Check if sender is the owner and OWNER_REACT is enabled
-    if (senderNumber.includes(config.OWNER_NUMBER)) {
-        if (config.OWNER_REACT === 'true') {
-            const reaction = ["🪀", "💀"];
-            const randomReaction = reaction[Math.floor(Math.random() * reaction.length)];
-            m.react(randomReaction);  // React with a random emoji
-        }
-    }
-//===========================
+  
 
 //===================WORKTYPE===============================
 if(!isOwner && config.MODE === "private") return
