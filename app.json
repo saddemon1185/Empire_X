@@ -1,18 +1,18 @@
 {
-  "name": "Empire_X",
-  "description": "Javascript WhatsApp bot made by 𝐎𝐧𝐥𝐲_𝐨𝐧𝐞_🥇𝐞𝐦𝐩𝐢𝐫𝐞",
+  "name": "Reincarnated uchiha",
+  "description": "Javascript WhatsApp bot made by sad demon",
   "logo": "https://files.catbox.moe/r4decc.jpg",
   "keywords": ["Empire_V1", "Bot"],
   "success_url": "/",
   "env": {
     "OWNER_NUMBER": {
       "description": "Put the owner number below.",
-      "value": "2348144250768",
+      "value": "254757959246",
       "required": true
     },
     "SESSION_ID": {
       "description": "Put session ID below.",
-      "value": "uQdHBSJZ#tVXqAn0KZ-dqwnSDRLUtx8EaXGOK-zrdsCBlEvS1uXs",
+      "value": "bBtSGRBY#96BHMKyRqhg0x4gkDT5HlhOWKz25Xf0iegdXjF13q60",
       "required": true
     },
     "MODE": {
@@ -22,12 +22,12 @@
     },
     "OWNER_NAME": {
       "description": "Owner name.",
-      "value": "𝐎𝐧𝐥𝐲_𝐨𝐧𝐞_🥇𝐞𝐦𝐩𝐢𝐫𝐞",
+      "value": "reincanated uchiha",
       "required": true
     },
     "BOT_NAME": {
       "description": "Bot name.",
-      "value": "Empire_X",
+      "value": "sad demon",
       "required": false
     },
     "AUTO_REACT": {
@@ -52,7 +52,7 @@
     },
     "CAPTION": {
       "description": "do not change.",
-      "value": "Made By 𝐎𝐧𝐥𝐲_𝐨𝐧𝐞_🥇𝐞𝐦𝐩𝐢𝐫𝐞",
+      "value": "Made By sad demon",
       "required": false
     },
     "AUTO_VIEW_STATUS": {
@@ -62,7 +62,7 @@
     },
     "AUTO_LIKE_STATUS": {
       "description": "Enable auto-like status with true or false.",
-      "value": "false",
+      "value": "true",
       "required": true
     },
     "AUTO_LIKE_EMOJI": {
@@ -72,7 +72,7 @@
     },
     "AUTO_REPLY_STATUS": {
       "description": "Enable auto-reply status with true or false.",
-      "value": "false",
+      "value": "true",
       "required": true
     },
     "ANTILINK": {
